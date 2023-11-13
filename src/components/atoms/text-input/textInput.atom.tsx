@@ -6,6 +6,8 @@ interface IInputAtomProps {
   addonBefore?: string;
   disabled?: boolean;
   size?: 'large' | 'default' | 'small';
+  showCount?: boolean;
+  maxLength?: number;
 }
 const TextInputAtom = ({
   placeholder,
@@ -14,6 +16,8 @@ const TextInputAtom = ({
   addonBefore,
   disabled,
   size,
+  showCount,
+  maxLength,
 }: IInputAtomProps) => {
   return (
     <Input
@@ -22,6 +26,8 @@ const TextInputAtom = ({
       placeholder={placeholder}
       disabled={disabled}
       size={size}
+      showCount={showCount}
+      maxLength={maxLength}
       {...fieldValues}
     />
   );
