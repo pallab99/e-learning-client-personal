@@ -1,0 +1,15 @@
+.table-skeleton-div {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  .ant-skeleton-paragraph:nth-child(3) {
+    display: none;
+  }
+  .ant-skeleton-title {
+    display: none;
+  }
+  .ant-skeleton-paragraph {
+    margin-block-start: 0px;
+  }
+}

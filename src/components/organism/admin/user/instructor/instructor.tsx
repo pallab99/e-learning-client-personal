@@ -2,13 +2,13 @@ import { SearchOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import type { InputRef } from 'antd';
-import { Card, Input, Space, Table } from 'antd';
+import { Card, Empty, Input, Space, Table } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import ButtonAtom from '../../../../atoms/button/button.attom';
 import './instructor.scss';
 import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import SpinnerAtom from '../../../../atoms/spin/spin';
+import TableSkeletonAtom from '../../../../atoms/table-skeleton/tableSkeleton';
 interface DataType {
   id: string;
   avatar: any;
@@ -196,24 +196,23 @@ const AllInstructorTableOrganism: React.FC<AllInstructorTableOrganismProps> = ({
 
   return (
     <div className="all-student-table-div mt-50">
-      {loading ? (
-        <SpinnerAtom />
-      ) : (
-        <Card>
-          <HeadingAtom text="All instructor list" level={1} className="mb-30" />
-          <Table
-            columns={columns}
-            dataSource={data}
-            scroll={{ x: 1300 }}
-            pagination={{
-              pageSize: 5,
-              total: data?.length,
-              showTotal: (total, range) =>
-                `${range[0]}-${range[1]} of ${total} items`,
-            }}
-          />
-        </Card>
-      )}
+      <Card>
+        <HeadingAtom text="All instructor list" level={1} className="mb-30" />
+        <Table
+          columns={columns}
+          dataSource={data}
+          scroll={{ x: 1300 }}
+          pagination={{
+            pageSize: 5,
+            total: data?.length,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`,
+          }}
+          locale={{
+            emptyText: loading ? <TableSkeletonAtom /> : <Empty />,
+          }}
+        />
+      </Card>
     </div>
   );
 };

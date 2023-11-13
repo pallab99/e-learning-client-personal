@@ -15,7 +15,7 @@ const useGetAllStudent = () => {
     try {
       setLoading(true);
       const response = await UserApi.getAllStudent();
-      setData(response?.data);
+      setData(response?.data?.data);
       setLoading(false);
     } catch (error: any) {
       setLoading(false);

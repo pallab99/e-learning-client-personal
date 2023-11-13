@@ -1,14 +1,15 @@
-import { SearchOutlined } from "@ant-design/icons";
-import type { InputRef } from "antd";
-import { Card, Input, Space, Table } from "antd";
-import type { ColumnType, ColumnsType } from "antd/es/table";
-import type { FilterConfirmProps } from "antd/es/table/interface";
-import React, { useRef, useState } from "react";
-import Highlighter from "react-highlight-words";
-import ButtonAtom from "../../../../atoms/button/button.attom";
-import HeadingAtom from "../../../../atoms/heading/heading.atom";
-import SpinnerAtom from "../../../../atoms/spin/spin";
-import "./student.scss";
+import { SearchOutlined } from '@ant-design/icons';
+import type { InputRef } from 'antd';
+import { Card, Empty, Input, Space, Table } from 'antd';
+import type { ColumnType, ColumnsType } from 'antd/es/table';
+import type { FilterConfirmProps } from 'antd/es/table/interface';
+import React, { useRef, useState } from 'react';
+import Highlighter from 'react-highlight-words';
+import ButtonAtom from '../../../../atoms/button/button.attom';
+import HeadingAtom from '../../../../atoms/heading/heading.atom';
+import SpinnerAtom from '../../../../atoms/spin/spin';
+import './student.scss';
+import TableSkeletonAtom from '../../../../atoms/table-skeleton/tableSkeleton';
 interface DataType {
   id: string;
   avatar: any;
@@ -28,8 +29,8 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
   data,
   loading,
 }) => {
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
 
   const handleSearch = (
@@ -44,7 +45,7 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
 
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
-    setSearchText("");
+    setSearchText('');
   };
 
   const getColumnSearchProps = (
@@ -68,7 +69,7 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
           onPressEnter={() =>
             handleSearch(selectedKeys as string[], confirm, dataIndex)
           }
-          style={{ marginBottom: 8, display: "block" }}
+          style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
           <ButtonAtom
@@ -100,7 +101,7 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+      <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
@@ -115,10 +116,10 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ""}
+          textToHighlight={text ? text.toString() : ''}
         />
       ) : (
         text
@@ -132,48 +133,48 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
   };
   const columns: ColumnsType<DataType> = [
     {
-      title: "Avatar",
-      dataIndex: "avatar",
-      key: "avatar",
-      width: "10%",
+      title: 'Avatar',
+      dataIndex: 'avatar',
+      key: 'avatar',
+      width: '10%',
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: "15%",
-      ...getColumnSearchProps("name"),
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      width: '15%',
+      ...getColumnSearchProps('name'),
       sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ['descend', 'ascend'],
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      width: "20%",
-      ...getColumnSearchProps("email"),
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      width: '20%',
+      ...getColumnSearchProps('email'),
       sorter: (a, b) => a.email.length - b.email.length,
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ['descend', 'ascend'],
     },
     {
-      title: "PhoneNumber",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-      ...getColumnSearchProps("phoneNumber"),
+      title: 'PhoneNumber',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber',
+      ...getColumnSearchProps('phoneNumber'),
       sorter: (a, b) => a.phoneNumber.length - b.phoneNumber.length,
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ['descend', 'ascend'],
     },
     {
-      title: "CreatedAt",
-      dataIndex: "createdAt",
-      key: "createdAt",
+      title: 'CreatedAt',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       sorter: (a, b) => a.createdAt.length - b.createdAt.length,
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ['descend', 'ascend'],
     },
     {
-      title: "action",
-      dataIndex: "action",
-      key: "action",
+      title: 'action',
+      dataIndex: 'action',
+      key: 'action',
       render: (_: any, record: any) => {
         return (
           <>
@@ -196,25 +197,23 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
 
   return (
     <div className="all-student-table-div mt-50">
-      {loading ? (
-        <SpinnerAtom></SpinnerAtom>
-      ) : (
-        <Card>
-          <HeadingAtom text="All student list" level={1} className="mb-30" />
-          <Table
-            columns={columns}
-            dataSource={data}
-            scroll={{ x: 1300 }}
-            pagination={{
-              pageSize: 5,
-              total: data?.length,
-              showTotal: (total, range) =>
-                `${range[0]}-${range[1]} of ${total} items`,
-            }}
-            // title={'student'}
-          />
-        </Card>
-      )}
+      <Card>
+        <HeadingAtom text="All student list" level={1} className="mb-30" />
+        <Table
+          columns={columns}
+          dataSource={data}
+          scroll={{ x: 1300 }}
+          pagination={{
+            pageSize: 5,
+            total: data?.length,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`,
+          }}
+          locale={{
+            emptyText: loading ? <TableSkeletonAtom /> : <Empty />,
+          }}
+        />
+      </Card>
     </div>
   );
 };
