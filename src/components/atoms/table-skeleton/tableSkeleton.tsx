@@ -6,9 +6,9 @@ const TableSkeletonAtom = () => {
       {[1, 2, 3, 4].map((ele: any) => {
         return (
           <div key={ele} className="table-skeleton-div">
-            <Skeleton.Image />
-            <Skeleton />
-            <Skeleton.Button />
+            <Skeleton.Image active />
+            <Skeleton active />
+            <Skeleton.Button active />
           </div>
         );
       })}

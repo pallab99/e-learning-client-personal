@@ -7,7 +7,6 @@ import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import ButtonAtom from '../../../../atoms/button/button.attom';
 import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import SpinnerAtom from '../../../../atoms/spin/spin';
 import './student.scss';
 import TableSkeletonAtom from '../../../../atoms/table-skeleton/tableSkeleton';
 interface DataType {

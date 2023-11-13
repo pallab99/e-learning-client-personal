@@ -1,17 +1,17 @@
-import { Divider, Form } from "antd";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ADMIN, INSTRUCTOR } from "../../../constant/userType";
-import useLogin from "../../../hooks/auth/useLogin";
-import { useAppSelector } from "../../../redux/store";
-import { ILogin } from "../../../types/loginData";
-import ButtonAtom from "../../atoms/button/button.attom";
-import HeadingAtom from "../../atoms/heading/heading.atom";
-import CenteredBtnOrganism from "../../molecules/centered-btn/centered-btn.molecules";
-import InputBoxPasswordMolecules from "../../molecules/input-box-password/inputBoxPassword.molecules";
-import InputBoxMolecules from "../../molecules/input-box/inputBox.molecules";
-import ForgetPasswordModalOrganism from "../modal/modal.organism";
-import "./signInForm.style.scss";
+import { Divider, Form } from 'antd';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ADMIN, INSTRUCTOR } from '../../../constant/userType';
+import useLogin from '../../../hooks/auth/useLogin';
+import { useAppSelector } from '../../../redux/store';
+import { ILogin } from '../../../types/loginData';
+import ButtonAtom from '../../atoms/button/button.attom';
+import HeadingAtom from '../../atoms/heading/heading.atom';
+import CenteredBtnOrganism from '../../molecules/centered-btn/centered-btn.molecules';
+import InputBoxPasswordMolecules from '../../molecules/input-box-password/inputBoxPassword.molecules';
+import InputBoxMolecules from '../../molecules/input-box/inputBox.molecules';
+import ForgetPasswordModalOrganism from '../modal/modal.organism';
+import './signInForm.style.scss';
 
 const SignInFormOrganism = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -23,9 +23,11 @@ const SignInFormOrganism = () => {
     console.log(userRank);
 
     if (userRank === INSTRUCTOR) {
-      navigate("/instructor/courses");
+      navigate('/instructor/courses');
     } else if (userRank === ADMIN) {
-      navigate("/admin/user/student");
+      navigate('/admin/user/student');
+    } else {
+      navigate('/profile/basic-information');
     }
   };
   const openForgetPasswordModal = () => {
@@ -54,10 +56,10 @@ const SignInFormOrganism = () => {
             name="email"
             rules={[
               {
-                type: "email",
-                message: "The input is not valid E-mail!",
+                type: 'email',
+                message: 'The input is not valid E-mail!',
               },
-              { required: true, message: "Please input your email!" },
+              { required: true, message: 'Please input your email!' },
             ]}
             placeholder="Please Enter your email"
           ></InputBoxMolecules>
@@ -79,7 +81,7 @@ const SignInFormOrganism = () => {
           </Form.Item>
         </Form>
         <p className="text-center">
-          or{" "}
+          or{' '}
           <span className="text-18">
             <ButtonAtom
               text="Forgot Password"
@@ -91,8 +93,8 @@ const SignInFormOrganism = () => {
         </p>
         <Divider></Divider>
         <p className="text-center">
-          Don't have an account?{" "}
-          <Link className="text-18" to={"/sign-up"}>
+          Don't have an account?{' '}
+          <Link className="text-18" to={'/sign-up'}>
             Sign up
           </Link>
         </p>

@@ -1,5 +1,5 @@
-import useGetProfile from "../../../hooks/user/useGetProfile";
-import ProfilePictureOrganism from "../../organism/forget-password-form/profile/profilePicture";
+import useGetProfile from '../../../hooks/user/useGetProfile';
+import ProfilePictureOrganism from '../../organism/profile/profilePicture';
 
 const ProfilePicturePage = () => {
   const { loading, data, error } = useGetProfile();

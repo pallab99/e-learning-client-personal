@@ -1,0 +1,29 @@
+.edit-profile-skeleton {
+  display: flex;
+  gap: 20px;
+}
+
+.edit-profile-skeleton-left-div {
+  display: grid;
+  grid-gap: 20px;
+  width: 100%;
+  .ant-skeleton.ant-skeleton-element .ant-skeleton-input {
+    width: 100%;
+    min-height: 50px;
+  }
+}
+.edit-profile-skeleton-right-div {
+  display: grid;
+  grid-gap: 20px;
+  width: 100%;
+  .ant-skeleton.ant-skeleton-element .ant-skeleton-input {
+    width: 100%;
+    min-height: 50px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .edit-profile-skeleton {
+    flex-direction: column;
+  }
+}

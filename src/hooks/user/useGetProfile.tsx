@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import UserApi from "../../api/UserApi";
+import { useEffect, useState } from 'react';
+import UserApi from '../../api/UserApi';
 
 const useGetProfile = () => {
   const [data, setData] = useState<object>({});
