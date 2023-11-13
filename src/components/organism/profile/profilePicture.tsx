@@ -1,5 +1,5 @@
 import type { TabsProps } from 'antd';
-import { Image, Space, Tabs, Upload } from 'antd';
+import { Image, Skeleton, Space, Tabs, Upload } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import ButtonAtom from '../../atoms/button/button.attom';
@@ -9,6 +9,7 @@ import SpinnerAtom from '../../atoms/spin/spin';
 import './profile.scss';
 import './profilePicture.scss';
 import { PlusOutlined } from '@ant-design/icons';
+import EditProfilePicSkeleton from '../../edit-profile-picture/editProfilePicture';
 
 const items: TabsProps['items'] = [
   {
@@ -61,7 +62,7 @@ const ProfilePictureOrganism = ({ data, loading }: any) => {
       />
       <HeadingAtom text="Profile Picture"></HeadingAtom>
       {loading ? (
-        <SpinnerAtom />
+        <EditProfilePicSkeleton />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* <Image src={data && data.dp} height={150}></Image> */}
