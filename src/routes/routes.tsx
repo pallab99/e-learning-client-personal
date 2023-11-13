@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useLocation,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SignInPage from '../components/pages/signIn/signIn.pages';
 import SignUPPage from '../components/pages/signUp/signIp.pages';
 import ForgetPasswordPage from '../components/pages/forget-password/forgetPassword.pages';

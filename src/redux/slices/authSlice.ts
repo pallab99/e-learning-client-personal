@@ -1,14 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IUserData } from "../../types/userData";
+import { createSlice } from '@reduxjs/toolkit';
+import { IUserLoginData } from '../../types/userData';
 interface AuthState {
-  userData: IUserData;
+  userData: IUserLoginData;
+  cnt: number;
 }
 
 const initialState: AuthState = {
-  userData: {} as IUserData,
+  userData: {} as IUserLoginData,
+  cnt: 0,
 };
 export const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     addUserData: (state, action) => {
@@ -16,17 +18,20 @@ export const authSlice = createSlice({
     },
     logOut: (state) => {
       state.userData = {
-        id: "",
-        email: "",
-        name: "",
-        phoneNumber: "",
+        id: '',
+        email: '',
+        name: '',
+        phoneNumber: '',
         rank: 0,
-        accessToken: "",
-        refreshToken: "",
+        accessToken: '',
+        refreshToken: '',
       };
+    },
+    recallUserApi: (state) => {
+      state.cnt += 1;
     },
   },
 });
-export const { addUserData, logOut } = authSlice.actions;
+export const { addUserData, logOut, recallUserApi } = authSlice.actions;
 
 export default authSlice.reducer;

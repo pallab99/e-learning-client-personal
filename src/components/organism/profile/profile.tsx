@@ -1,17 +1,25 @@
+//@ts-nocheck
 import type { TabsProps } from 'antd';
-import { Space, Switch, Tabs } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
-import { useEffect, useState } from 'react';
+import { Input, Space, Tabs } from 'antd';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import ButtonAtom from '../../atoms/button/button.attom';
 import HeadingAtom from '../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
-import TextInputAtom from '../../atoms/text-input/textInput.atom';
+const { TextArea } = Input;
+
 import './profile.scss';
 import EditProfileSkeleton from '../../atoms/edit-profile-skeleton/editProfileSkeleton';
+import useUpdateUser from '../../../hooks/user/updateUser';
+import { InputField } from '../../molecules/input-field-controller/inputFieldController';
+import {
+  FACEBOOK_URL,
+  LINKEDIN_URL,
+  TWITTER_URL,
+  YOUTUBE_URL,
+} from '../../../constant/url';
+import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
 
-//@ts-ignore
 const items: TabsProps['items'] = [
   {
     key: '1',
@@ -41,9 +49,34 @@ const ProfileOrganism = ({ data, loading }: any) => {
     setValue('lastName', data?.name?.split(' ')[1] as string);
     setValue('bio', data?.bio);
     setValue('email', data?.email);
+    setValue('heading', data?.heading);
+    setValue('website', data?.website);
+    setValue('facebook', data?.facebook?.split('/')[3]);
+    setValue('twitter', data?.twitter?.split('/')[3]);
+    setValue('linkedIn', data?.linkedIn?.split('/')[3]);
+    setValue('youtube', data?.youtube?.split('/')[3]);
   }, [data, setValue]);
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const { btnLoading, updateUser } = useUpdateUser();
+
+  const onSubmit = async (data: any) => {
+    const userData = {
+      name: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      bio: data.bio,
+      heading: data.heading,
+      website: data?.website,
+      facebook: `${
+        data.facebook ? `http://www.facebook.com/${data?.facebook}` : ''
+      }`,
+      twitter: `${data.twitter ? `http://twitter.com/${data?.twitter}` : ''}`,
+      linkedIn: `${
+        data.linkedIn ? `http://www.linkedin.com/${data?.linkedIn}` : ''
+      }`,
+      youtube: `${
+        data.youtube ? `http://www.youtube.com/${data?.youtube}` : ''
+      }`,
+    };
+    await updateUser(userData);
   };
   const tabOnchange = (key: string) => {
     if (key === '1') {
@@ -52,11 +85,7 @@ const ProfileOrganism = ({ data, loading }: any) => {
       navigate('/profile/photo');
     }
   };
-  const [editForm, setEditForm] = useState<boolean>(true);
 
-  const handleEditForm = () => {
-    setEditForm(!editForm);
-  };
   return (
     <div className="profile-form mb-40 mt-40">
       <Tabs
@@ -69,185 +98,80 @@ const ProfileOrganism = ({ data, loading }: any) => {
       {loading ? (
         <EditProfileSkeleton />
       ) : (
-        <>
-          <Switch
-            unCheckedChildren="edit"
-            checkedChildren="close"
-            onChange={handleEditForm}
-          />
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Space
-              direction="vertical"
-              size="middle"
-              style={{ display: 'flex' }}
-            >
-              <div className="form-wrapper">
-                <div className="form-left">
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="First name" />
-                    <Controller
-                      name="firstName"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Last Name" />
-                    <Controller
-                      name="lastName"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Email" />
-                    <Controller
-                      name="email"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Biography" />
-                    <Controller
-                      name="bio"
-                      control={control}
-                      render={({ field }) => (
-                        <TextArea
-                          disabled={editForm}
-                          {...field}
-                          rows={3}
-                          maxLength={6}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Heading" />
-                    <Controller
-                      name="heading"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+            <div className="form-wrapper">
+              <div className="form-left">
+                <InputField
+                  name="firstName"
+                  control={control}
+                  text="First name"
+                />
+                <InputField
+                  name="lastName"
+                  control={control}
+                  text="Last Name"
+                />
+                <InputField name="email" control={control} text="Email" />
+                <div className="input-group mb-20">
+                  <ParagraphAtom text="Biography" />
+                  <Controller
+                    name="bio"
+                    control={control}
+                    render={({ field }) => (
+                      <TextArea {...field} rows={3} maxLength={100} showCount />
+                    )}
+                  />
                 </div>
-                <div className="form-right">
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Website" />
-                    <Controller
-                      name="website"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm}
-                          placeholder={'Url'}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Facebook" />
-                    <Controller
-                      name="facebook"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm}
-                          addonBefore="http://www.facebook.com/"
-                          placeholder={'username'}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Website" />
-                    <Controller
-                      name="twitter"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm}
-                          addonBefore="http://www.twitter.com/"
-                          placeholder={'username'}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Linkedin" />
-                    <Controller
-                      name="linkedin"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm}
-                          addonBefore="http://www.linkedin.com/"
-                          placeholder={'resources ID'}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="input-group mb-20">
-                    <ParagraphAtom text="Youtube" />
-                    <Controller
-                      name="youtube"
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          disabled={editForm || true}
-                          addonBefore="http://www.youtube.com/"
-                          placeholder={'Username'}
-                          size="large"
-                          fieldValues={field}
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
+                <InputField name="heading" control={control} text="Heading" />
               </div>
+              <div className="form-right">
+                <InputField
+                  name="website"
+                  control={control}
+                  text="Website"
+                  placeholder="Url"
+                />
+                <InputField
+                  name="facebook"
+                  control={control}
+                  text="Facebook"
+                  addonBefore={FACEBOOK_URL}
+                  placeholder="username"
+                />
+                <InputField
+                  name="twitter"
+                  control={control}
+                  text="Twitter"
+                  addonBefore={TWITTER_URL}
+                  placeholder="username"
+                />
+                <InputField
+                  name="linkedIn"
+                  control={control}
+                  text="LinkedIn"
+                  addonBefore={LINKEDIN_URL}
+                  placeholder="username"
+                />
+                <InputField
+                  name="youtube"
+                  control={control}
+                  text="Youtube"
+                  addonBefore={YOUTUBE_URL}
+                  placeholder="username"
+                />
+              </div>
+            </div>
 
-              <ButtonAtom
-                text="Save"
-                type="primary"
-                htmlType="submit"
-                size="large"
-                disabled={editForm}
-              />
-            </Space>
-          </form>
-        </>
+            <ButtonAtom
+              text="Save"
+              type="primary"
+              htmlType="submit"
+              size="large"
+              loading={btnLoading}
+            />
+          </Space>
+        </form>
       )}
     </div>
   );
