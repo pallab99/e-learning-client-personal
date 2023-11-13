@@ -8,6 +8,7 @@ import type { FilterConfirmProps } from 'antd/es/table/interface';
 import ButtonAtom from '../../../../atoms/button/button.attom';
 import './instructor.scss';
 import HeadingAtom from '../../../../atoms/heading/heading.atom';
+import SpinnerAtom from '../../../../atoms/spin/spin';
 interface DataType {
   id: string;
   avatar: any;
@@ -20,10 +21,12 @@ interface DataType {
 type DataIndex = keyof DataType;
 interface AllInstructorTableOrganismProps {
   data: DataType[];
+  loading: boolean;
 }
 
 const AllInstructorTableOrganism: React.FC<AllInstructorTableOrganismProps> = ({
   data,
+  loading,
 }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -193,20 +196,24 @@ const AllInstructorTableOrganism: React.FC<AllInstructorTableOrganismProps> = ({
 
   return (
     <div className="all-student-table-div mt-50">
-      <Card>
-        <HeadingAtom text="All instructor list" level={1} className="mb-30" />
-        <Table
-          columns={columns}
-          dataSource={data}
-          scroll={{ x: 1300 }}
-          pagination={{
-            pageSize: 5,
-            total: data.length,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`,
-          }}
-        />
-      </Card>
+      {loading ? (
+        <SpinnerAtom />
+      ) : (
+        <Card>
+          <HeadingAtom text="All instructor list" level={1} className="mb-30" />
+          <Table
+            columns={columns}
+            dataSource={data}
+            scroll={{ x: 1300 }}
+            pagination={{
+              pageSize: 5,
+              total: data?.length,
+              showTotal: (total, range) =>
+                `${range[0]}-${range[1]} of ${total} items`,
+            }}
+          />
+        </Card>
+      )}
     </div>
   );
 };

@@ -1,16 +1,14 @@
-import { Image } from "antd";
-import useGetAllStudent from "../../../../../hooks/user/useGetAllStudent";
-import AllStudentTableOrganism from "../../../../organism/admin/user/student/students";
-import "./student.scss";
+import { Image } from 'antd';
+import useGetAllStudent from '../../../../../hooks/user/useGetAllStudent';
+import AllStudentTableOrganism from '../../../../organism/admin/user/student/students';
+import './student.scss';
 
 const AllStudentPage = () => {
   const { data, loading } = useGetAllStudent();
-  // useEffect(() => {
-  //   window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  // }, []);
+
   const tableData =
     data &&
-    data?.data?.map((ele: any) => {
+    data?.map((ele: any) => {
       return {
         id: ele?._id,
         avatar: <Image src={ele?.user?.dp}></Image>,

@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import UserApi from '../../api/UserApi';
 
-const useGetAllStudent = () => {
+const useGetAllInstructor = () => {
   const [data, setData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
   useEffect(() => {
-    getAllStudent();
+    getAllInstructor();
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, []);
 
-  const getAllStudent = async () => {
+  const getAllInstructor = async () => {
     try {
       setLoading(true);
-      const response = await UserApi.getAllStudent();
-      setData(response?.data);
+      const response = await UserApi.getAllInstructor();
+      setData(response?.data?.data);
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
@@ -28,4 +28,4 @@ const useGetAllStudent = () => {
   return { data, loading, error };
 };
 
-export default useGetAllStudent;
+export default useGetAllInstructor;
