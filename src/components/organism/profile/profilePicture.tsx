@@ -8,7 +8,8 @@ import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
 import SpinnerAtom from '../../atoms/spin/spin';
 import './profile.scss';
 import './profilePicture.scss';
-const { Dragger } = Upload;
+import { PlusOutlined } from '@ant-design/icons';
+
 const items: TabsProps['items'] = [
   {
     key: '1',
@@ -41,6 +42,15 @@ const ProfilePictureOrganism = ({ data, loading }: any) => {
   const onSubmit = (data: any) => {
     console.log(data);
   };
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+  const imageOnChange = (e: any) => {
+    console.log(e);
+  };
   return (
     <div className="profile-picture-form mb-40 mt-40">
       <Tabs
@@ -54,7 +64,7 @@ const ProfilePictureOrganism = ({ data, loading }: any) => {
         <SpinnerAtom />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Image src={data && data.dp} height={150}></Image>
+          {/* <Image src={data && data.dp} height={150}></Image> */}
           <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
             <div className="input-group">
               <ParagraphAtom text="Profile picture" />
@@ -62,21 +72,34 @@ const ProfilePictureOrganism = ({ data, loading }: any) => {
                 name="thumbnail"
                 control={control}
                 render={({ field }) => (
-                  <Dragger {...field} listType="picture">
-                    <p className="ant-upload-drag-icon">
-                      <img
-                        src="https://img-c.udemycdn.com/user/200_H/anonymous_3.png"
-                        alt=""
-                      />
-                    </p>
-                    <ParagraphAtom
-                      text="Click or drag the profile picture to this area to upload"
-                      className="ant-upload-text"
-                    ></ParagraphAtom>
-                  </Dragger>
+                  <Upload
+                    name="avatar"
+                    listType="picture-circle"
+                    className="avatar-uploader"
+                    {...field}
+                  >
+                    {data && data.dp ? (
+                      <div
+                        className=""
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                      >
+                        <Image
+                          src={data && data.dp}
+                          alt="avatar"
+                          style={{ width: '100%', borderRadius: '50%' }}
+                          onChange={imageOnChange}
+                        />
+                      </div>
+                    ) : (
+                      uploadButton
+                    )}
+                  </Upload>
                 )}
               />
             </div>
+
             <ButtonAtom
               text="Save"
               type="primary"
