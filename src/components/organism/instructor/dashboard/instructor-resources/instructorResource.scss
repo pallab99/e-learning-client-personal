@@ -1,0 +1,21 @@
+// .instructor-resource-div {
+//   display: flex;
+//   flex-direction: column;
+//   flex-wrap: wrap;
+// }
+.instructor-resource-middle {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 600px) {
+  .instructor-resource-middle {
+    flex-direction: column;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .instructor-resource-middle {
+    flex-direction: column;
+  }
+}

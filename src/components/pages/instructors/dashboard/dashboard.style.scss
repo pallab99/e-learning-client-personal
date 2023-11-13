@@ -1,0 +1,10 @@
+.create-course-div {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+}
+.instructor-dashboard-div {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-left: 10%;
+  padding-right: 2%;
+}

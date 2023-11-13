@@ -1,0 +1,33 @@
+.create-course-form {
+  padding: 0 2%;
+}
+.select-div {
+  display: flex;
+  gap: 10px;
+  .input-group {
+    width: 100%;
+  }
+}
+.upload-div {
+  display: flex;
+  justify-content: space-between;
+  .ant-upload {
+    width: 100%;
+    .ant-button {
+      width: 100% !important;
+    }
+  }
+}
+.ant-upload-drag-icon img {
+  width: 30%;
+  height: 50%;
+  object-fit: cover;
+}
+@media only screen and (max-width: 600px) {
+  .select-div {
+    flex-direction: column;
+  }
+  .upload-div {
+    flex-direction: column;
+  }
+}

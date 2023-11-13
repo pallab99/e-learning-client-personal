@@ -1,0 +1,10 @@
+.profile-picture-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.profile-picture-form {
+  padding: 20px;
+  .ant-upload-drag-icon img {
+    width: 20%;
+  }
+}

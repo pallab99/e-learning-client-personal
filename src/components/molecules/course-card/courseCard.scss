@@ -1,0 +1,14 @@
+.course-card-bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.card-content {
+  padding: 2%;
+}
+.course-card {
+  cursor: pointer;
+}
+.course-card img:hover {
+  opacity: 0.5;
+}

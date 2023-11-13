@@ -1,0 +1,49 @@
+.course-card {
+  .ant-card .ant-card-bordered {
+    display: flex;
+    width: 100% !important;
+    background-color: red;
+  }
+  .ant-card-body {
+    padding: 0px;
+  }
+}
+.card-left {
+  display: flex;
+  //   justify-content: center;
+  align-items: center;
+  gap: 6%;
+  flex-basis: 30%;
+}
+.card-left img {
+  width: 35%;
+  height: 20%;
+  object-fit: cover;
+}
+.card-right {
+  display: flex;
+  //   justify-content: center;
+  align-items: center;
+  gap: 6%;
+  flex-basis: 69%;
+  padding: 0px 1rem;
+}
+.overlay {
+  display: none;
+}
+.card-hover {
+  position: relative;
+}
+.card-hover:hover {
+  .ant-flex {
+    // background-color: rgb(255, 255, 255);
+  }
+  .ant-card-body {
+    opacity: 0.5;
+  }
+  .overlay {
+    display: flex;
+    position: absolute;
+    left: 40rem;
+  }
+}

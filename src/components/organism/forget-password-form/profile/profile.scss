@@ -1,0 +1,20 @@
+.profile-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2%;
+}
+.form-wrapper {
+  display: flex;
+  gap: 20px;
+}
+.form-left {
+  flex-basis: 49%;
+}
+.form-right {
+  flex-basis: 49%;
+}
+@media only screen and (max-width: 600px) {
+  .form-wrapper {
+    flex-direction: column;
+  }
+}

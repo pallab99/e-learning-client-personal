@@ -1,0 +1,20 @@
+.footer-link-three-div {
+  display: flex;
+  gap: 60px;
+}
+.footer-link-left-div {
+  display: grid;
+}
+.footer-link-middle-div {
+  display: grid;
+}
+.footer-link-right-div {
+  display: grid;
+}
+
+@media only screen and (max-width: 600px) {
+  .footer-link-three-div {
+    flex-direction: column;
+    gap: 30px;
+  }
+}

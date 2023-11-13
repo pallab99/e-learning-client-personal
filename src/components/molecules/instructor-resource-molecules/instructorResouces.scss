@@ -1,0 +1,39 @@
+.instructor-resource-molecules-left img {
+  width: 20rem;
+  height: 15rem;
+  object-fit: cover;
+}
+.instructor-resource-molecules-card {
+  .ant-card-body {
+    padding: 0px;
+  }
+}
+
+.instructor-resource-molecules-right {
+  .ant-btn {
+    padding: 0px;
+  }
+}
+.instructor-resource-molecules-two-div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+@media only screen and (max-width: 600px) {
+  .instructor-resource-molecules-two-div {
+    flex-direction: column;
+  }
+}
+
+// @media only screen and (min-width: 600px) {
+//   .instructor-resource-molecules-two-div {
+//     flex-direction: column;
+//   }
+// }
+
+// /* Medium devices (landscape tablets, 768px and up) */
+// @media only screen and (min-width: 768px) {
+//   .instructor-resource-molecules-two-div {
+//     flex-direction: column;
+//   }
+// }
