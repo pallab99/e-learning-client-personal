@@ -1,15 +1,25 @@
-import React from 'react';
-import HeadingAtom from '../../atoms/heading/heading.atom';
-import { Form } from 'antd';
-import ButtonAtom from '../../atoms/button/button.attom';
-import InputBoxPasswordMolecules from '../../molecules/input-box-password/inputBoxPassword.molecules';
-import { passwordValidator } from '../../../helper/passwordValidator';
-import CenteredBtnOrganism from '../../molecules/centered-btn/centered-btn.molecules';
+//@ts-nocheck
+import { Form } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import { passwordValidator } from "../../../helper/passwordValidator";
+import useResetPassword from "../../../hooks/auth/useResetPassword";
+import HeadingAtom from "../../atoms/heading/heading.atom";
+import CenteredBtnOrganism from "../../molecules/centered-btn/centered-btn.molecules";
+import InputBoxPasswordMolecules from "../../molecules/input-box-password/inputBoxPassword.molecules";
 
 const ForgetPasswordFormOrganism = () => {
   const [form] = Form.useForm();
+  const { userId, resetToken } = useParams();
+  const { resetPasswordLoading, data, resetPassword } = useResetPassword();
+  const navigate = useNavigate();
   const onFinish = async (values: any) => {
-    console.log(values);
+    const resetPasswordData = {
+      ...values,
+      userId,
+      resetToken,
+    };
+    console.log(resetPasswordData);
+    await resetPassword(resetPasswordData);
   };
   return (
     <div className="form-div">
@@ -20,10 +30,8 @@ const ForgetPasswordFormOrganism = () => {
           form={form}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 24 }}
-          // style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          //   onFinishFailed={onFinishFailed}
           layout="vertical"
           autoComplete="off"
           scrollToFirstError
@@ -32,27 +40,29 @@ const ForgetPasswordFormOrganism = () => {
           <InputBoxPasswordMolecules
             label="Password"
             name="password"
+            size="large"
             rules={[
-              { required: true, message: 'Please input your password!' },
+              { required: true, message: "Please input your password!" },
               { validator: passwordValidator },
             ]}
             placeholder="Please Enter your password"
           ></InputBoxPasswordMolecules>
           <InputBoxPasswordMolecules
             label="Confirm Password"
+            size="large"
             name="confirmPassword"
             rules={[
               {
                 required: true,
-                message: 'Please input your confirm password!',
+                message: "Please input your confirm password!",
               },
               ({ getFieldValue }) => ({
                 validator(_: any, value: any) {
-                  if (!value || getFieldValue('password') === value) {
+                  if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    new Error('The new password that you entered do not match!')
+                    new Error("The new password that you entered do not match!")
                   );
                 },
               }),
@@ -65,7 +75,9 @@ const ForgetPasswordFormOrganism = () => {
               justify="center"
               text="Change password"
               type="primary"
+              size="large"
               htmlType="submit"
+              loading={resetPasswordLoading}
               // size="large"
             />
           </Form.Item>

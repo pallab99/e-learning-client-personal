@@ -1,4 +1,4 @@
-//@ts-ignore
+//@ts-nocheck
 import { Checkbox, Divider, Form, Select } from "antd";
 import { Link } from "react-router-dom";
 import { passwordValidator } from "../../../helper/passwordValidator";
@@ -6,7 +6,7 @@ import HeadingAtom from "../../atoms/heading/heading.atom";
 import CenteredBtnOrganism from "../../molecules/centered-btn/centered-btn.molecules";
 import InputBoxPasswordMolecules from "../../molecules/input-box-password/inputBoxPassword.molecules";
 import InputBoxMolecules from "../../molecules/input-box/inputBox.molecules";
-
+import "./signupForm.scss";
 const { Option } = Select;
 
 const SignUpFormOrganism = () => {
@@ -17,7 +17,7 @@ const SignUpFormOrganism = () => {
   };
 
   return (
-    <div className="form-div">
+    <div className="signup-form-div  mt-50 mb-30">
       <div className="form-div-wrapper">
         <HeadingAtom level={4} text="Sign up and start learning" />
         <Form
@@ -37,10 +37,12 @@ const SignUpFormOrganism = () => {
             name="name"
             rules={[{ required: true, message: "Please input your name!" }]}
             placeholder="Please Enter your name"
+            size="large"
           />
           <InputBoxMolecules
             label="Email"
             name="email"
+            size="large"
             rules={[
               { required: true, message: "Please input your email!" },
               {
@@ -54,6 +56,7 @@ const SignUpFormOrganism = () => {
           <InputBoxPasswordMolecules
             label="Password"
             name="password"
+            size="large"
             rules={[
               { required: true, message: "Please input your password!" },
               { validator: passwordValidator },
@@ -63,6 +66,7 @@ const SignUpFormOrganism = () => {
           <InputBoxPasswordMolecules
             label="Confirm Password"
             name="confirmPassword"
+            size="large"
             rules={[
               {
                 required: true,
@@ -84,6 +88,7 @@ const SignUpFormOrganism = () => {
           <InputBoxMolecules
             label="Phone Number"
             name="phoneNumber"
+            size="large"
             rules={[
               { required: true, message: "Please input your phone number!" },
             ]}
@@ -92,6 +97,7 @@ const SignUpFormOrganism = () => {
           <Form.Item
             name="rank"
             label="You are a?"
+            size="large"
             rules={[{ required: true, message: "Please Select an option" }]}
           >
             <Select placeholder="Select a option" allowClear>
@@ -101,7 +107,7 @@ const SignUpFormOrganism = () => {
           </Form.Item>
 
           <Form.Item name="notificationSetting" valuePropName="checked">
-            <Checkbox>Send me regular updates via email</Checkbox>
+            <Checkbox size="large">Send me regular updates via email</Checkbox>
           </Form.Item>
           <Form.Item>
             <CenteredBtnOrganism
@@ -109,6 +115,7 @@ const SignUpFormOrganism = () => {
               text="Sign Up"
               type="primary"
               htmlType="submit"
+              size="large"
               // size="large"
             />
           </Form.Item>

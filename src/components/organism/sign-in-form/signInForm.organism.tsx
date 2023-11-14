@@ -1,21 +1,23 @@
-import { Divider, Form } from 'antd';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ADMIN, INSTRUCTOR } from '../../../constant/userType';
-import useLogin from '../../../hooks/auth/useLogin';
-import { useAppSelector } from '../../../redux/store';
-import { ILogin } from '../../../types/loginData';
-import ButtonAtom from '../../atoms/button/button.attom';
-import HeadingAtom from '../../atoms/heading/heading.atom';
-import CenteredBtnOrganism from '../../molecules/centered-btn/centered-btn.molecules';
-import InputBoxPasswordMolecules from '../../molecules/input-box-password/inputBoxPassword.molecules';
-import InputBoxMolecules from '../../molecules/input-box/inputBox.molecules';
-import ForgetPasswordModalOrganism from '../modal/modal.organism';
-import './signInForm.style.scss';
+import { Divider, Form } from "antd";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ADMIN, INSTRUCTOR } from "../../../constant/userType";
+import useForgetPassword from "../../../hooks/auth/useForgetPassword";
+import useLogin from "../../../hooks/auth/useLogin";
+import { useAppSelector } from "../../../redux/store";
+import { ILogin } from "../../../types/loginData";
+import ButtonAtom from "../../atoms/button/button.attom";
+import HeadingAtom from "../../atoms/heading/heading.atom";
+import CenteredBtnOrganism from "../../molecules/centered-btn/centered-btn.molecules";
+import InputBoxPasswordMolecules from "../../molecules/input-box-password/inputBoxPassword.molecules";
+import InputBoxMolecules from "../../molecules/input-box/inputBox.molecules";
+import ForgetPasswordModalOrganism from "../modal/modal.organism";
+import "./signInForm.style.scss";
 
 const SignInFormOrganism = () => {
   const [openModal, setOpenModal] = useState(false);
   const { loading, login } = useLogin();
+  const { forgetPasswordLoading, forgetPassword } = useForgetPassword();
   const userRank = useAppSelector((state) => state.auth.userData?.rank);
   const navigate = useNavigate();
   const onFinish = async (values: ILogin) => {
@@ -23,18 +25,18 @@ const SignInFormOrganism = () => {
     console.log(userRank);
 
     if (userRank === INSTRUCTOR) {
-      navigate('/instructor/courses');
+      navigate("/instructor/courses");
     } else if (userRank === ADMIN) {
-      navigate('/admin/user/student');
+      navigate("/admin/user/student");
     } else {
-      navigate('/profile/basic-information');
+      navigate("/profile/basic-information");
     }
   };
   const openForgetPasswordModal = () => {
     setOpenModal(true);
   };
   const handleForgetPassword = async (values: any) => {
-    console.log(values);
+    await forgetPassword(values);
   };
 
   return (
@@ -54,12 +56,13 @@ const SignInFormOrganism = () => {
           <InputBoxMolecules
             label="Email"
             name="email"
+            size="large"
             rules={[
               {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
+                type: "email",
+                message: "The input is not valid E-mail!",
               },
-              { required: true, message: 'Please input your email!' },
+              { required: true, message: "Please input your email!" },
             ]}
             placeholder="Please Enter your email"
           ></InputBoxMolecules>
@@ -68,6 +71,8 @@ const SignInFormOrganism = () => {
             label="Password"
             name="password"
             placeholder="Please Enter your password"
+            size="large"
+            rules={[{ required: true, message: "Please input your password!" }]}
           ></InputBoxPasswordMolecules>
 
           <Form.Item>
@@ -77,11 +82,12 @@ const SignInFormOrganism = () => {
               type="primary"
               htmlType="submit"
               loading={loading}
+              size="large"
             />
           </Form.Item>
         </Form>
         <p className="text-center">
-          or{' '}
+          or{" "}
           <span className="text-18">
             <ButtonAtom
               text="Forgot Password"
@@ -93,8 +99,8 @@ const SignInFormOrganism = () => {
         </p>
         <Divider></Divider>
         <p className="text-center">
-          Don't have an account?{' '}
-          <Link className="text-18" to={'/sign-up'}>
+          Don't have an account?{" "}
+          <Link className="text-18" to={"/sign-up"}>
             Sign up
           </Link>
         </p>
@@ -103,6 +109,7 @@ const SignInFormOrganism = () => {
           setOpenModal={setOpenModal}
           onFinish={handleForgetPassword}
           name="Forget password"
+          loading={forgetPasswordLoading}
         ></ForgetPasswordModalOrganism>
       </div>
     </div>

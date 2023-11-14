@@ -1,26 +1,23 @@
 import { SearchOutlined } from "@ant-design/icons";
 import type { InputRef } from "antd";
-import { Card, Empty, Image, Input, Space, Table } from "antd";
+import { Card, Empty, Image, Input, Space, Table, message } from "antd";
 import type { ColumnType, ColumnsType } from "antd/es/table";
 import type { FilterConfirmProps } from "antd/es/table/interface";
 import React, { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import ButtonAtom from "../../../../atoms/button/button.attom";
-import HeadingAtom from "../../../../atoms/heading/heading.atom";
-import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
-import { SelectField } from "../../../../atoms/select-filed/selectField";
-import TableSkeletonAtom from "../../../../atoms/table-skeleton/tableSkeleton";
-import "./publishedCourse.scss";
+import subscriptionApi from "../../../../api/subscriptionApi";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import { SelectField } from "../../../atoms/select-filed/selectField";
+import TableSkeletonAtom from "../../../atoms/table-skeleton/tableSkeleton";
+import SubscriptRequestCourseModal from "../../../molecules/subscription-request-course/subscriptionRequestCourseModal";
 interface DataType {
   _id: number;
-  title: string;
-  instructors: string;
-  totalStudent: number;
-  category: string;
-  level: string;
-  totalHours: number;
-  numberOfSection: number;
-  thumbnail: string;
+  dp: string;
+  userName: string;
+  pendingCourses: number;
+  courses: Array<any>;
 }
 
 type DataIndex = keyof DataType;
@@ -30,7 +27,7 @@ interface AllAdminOrganismProps {
   setSelectValue: any;
 }
 
-const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
+const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
   data,
   loading,
   setSelectValue,
@@ -132,11 +129,17 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
         text
       ),
   });
-  const handleEdit = (key: string) => {
-    console.log(key);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [courseData, setCourseData] = useState<any[]>([]);
+  const showModal = (record: any) => {
+    console.log(record);
+    setCourseData(record);
+
+    setIsModalOpen(true);
   };
-  const handleDelete = (key: string) => {
-    console.log(key);
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
   const columns: ColumnsType<DataType> = [
     {
@@ -150,69 +153,34 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
             width={100}
             height={80}
             style={{ objectFit: "cover" }}
-            src={record.thumbnail}
+            src={record.dp}
           />
         );
       },
     },
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
+      title: "UserName",
+      dataIndex: "userName",
+      key: "userName",
       width: "15%",
-      ...getColumnSearchProps("title"),
-      sorter: (a, b) => a.title.length - b.title.length,
+      ...getColumnSearchProps("userName"),
+      sorter: (a, b) => a.userName.length - b.userName.length,
       sortDirections: ["descend", "ascend"],
       render: (_: any, record: any) => {
-        return <ParagraphAtom text={record.title} ellipsis={true} />;
+        return <ParagraphAtom text={record.userName} ellipsis={true} />;
       },
     },
     {
-      title: "Instructors",
-      dataIndex: "instructors",
-      key: "instructors",
+      title: "PendingCourses",
+      dataIndex: "pendingCourses",
+      key: "pendingCourses",
       width: "10%",
-      ...getColumnSearchProps("instructors"),
-      sorter: (a, b) => a.instructors.length - b.instructors.length,
+      ...getColumnSearchProps("pendingCourses"),
+      sorter: (a, b) => a.pendingCourses - b.pendingCourses,
       sortDirections: ["descend", "ascend"],
       render: (_: any, record: any) => {
-        return <ParagraphAtom text={record.instructors} ellipsis={true} />;
+        return <ParagraphAtom text={record.pendingCourses} ellipsis={true} />;
       },
-    },
-    {
-      title: "TotalStudent",
-      dataIndex: "totalStudent",
-      key: "totalStudent",
-      sorter: (a, b) => a.totalStudent - b.totalStudent,
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      ...getColumnSearchProps("category"),
-    },
-    {
-      title: "Level",
-      dataIndex: "level",
-      key: "level",
-      sorter: (a, b) => a.level.length - b.level.length,
-      ...getColumnSearchProps("level"),
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: "TotalHours",
-      dataIndex: "totalHours",
-      key: "totalHours",
-      sorter: (a, b) => a.totalHours - b.totalHours,
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: "NumberOfSection",
-      dataIndex: "numberOfSection",
-      key: "numberOfSection",
-      sorter: (a, b) => a.numberOfSection - b.numberOfSection,
-      sortDirections: ["descend", "ascend"],
     },
     {
       title: "action",
@@ -222,15 +190,9 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
         return (
           <div className="flex">
             <ButtonAtom
-              text="edit"
+              text="Details"
               type="default"
-              handleButtonClick={() => handleEdit(record._id)}
-            />
-            <ButtonAtom
-              text="delete"
-              type="default"
-              dangerBtn={true}
-              handleButtonClick={() => handleDelete(record._id)}
+              handleButtonClick={() => showModal(record)}
             />
           </div>
         );
@@ -252,7 +214,31 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
       setSelectValue({ type: "verified", value: String(e) });
     }
   };
+  const acceptRequest = async (subscriptionId: string, courseId: string) => {
+    try {
+      const res = await subscriptionApi.acceptSubscription(
+        subscriptionId,
+        courseId
+      );
+      console.log(res);
 
+      message.success(res?.data?.message);
+    } catch (error: any) {
+      message.error(error?.response?.message);
+    }
+  };
+  const rejectRequest = async (subscriptionId: string, courseId: string) => {
+    try {
+      const res = await subscriptionApi.rejectSubscription(
+        subscriptionId,
+        courseId
+      );
+      message.success(res?.data?.message);
+      console.log(res);
+    } catch (error: any) {
+      message.error(error?.response?.message);
+    }
+  };
   return (
     <div className="course-table-div mt-50">
       <Card>
@@ -287,9 +273,16 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
             emptyText: loading ? <TableSkeletonAtom /> : <Empty />,
           }}
         />
+        <SubscriptRequestCourseModal
+          isModalOpen={isModalOpen}
+          closeModal={closeModal}
+          courseData={courseData}
+          acceptRequest={acceptRequest}
+          rejectRequest={rejectRequest}
+        ></SubscriptRequestCourseModal>
       </Card>
     </div>
   );
 };
 
-export default AllPublishedCourseTableOrganism;
+export default AllSubscriptionTableOrganism;

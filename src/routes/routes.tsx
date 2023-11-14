@@ -1,21 +1,21 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SignInPage from '../components/pages/signIn/signIn.pages';
-import SignUPPage from '../components/pages/signUp/signIp.pages';
-import ForgetPasswordPage from '../components/pages/forget-password/forgetPassword.pages';
-import NotFoundPage from '../components/pages/404/404.pages';
-import UnauthorizedPage from '../components/pages/unauthorized/unauthorized';
-import InstructorDashboardPage from '../components/pages/instructors/dashboard/dashboard.page';
-import CreateCoursePage from '../components/pages/instructors/course/create-course/createCourse';
-import UpdateCourseOrganism from '../components/organism/instructor/update-course/updateCourse';
-import ProfilePage from '../components/pages/profile/profile';
-import ProfilePicturePage from '../components/pages/profile/profilePicture';
-import HomePage from '../components/pages/home/home';
-import AllStudentPage from '../components/pages/admin/user/student/students';
-import AllInstructorPage from '../components/pages/admin/user/instructor/instrctor';
-import AllAdminPage from '../components/pages/admin/user/admin/admin';
-import AllPublishedCoursePage from '../components/pages/admin/course/published/publishedCourse';
-import AllPendingCoursePage from '../components/pages/admin/course/pending/pendingCourse';
-import HeaderFooterLayout from '../components/pages/header-footer-layout/headerFooterLayout';
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import UpdateCourseOrganism from "../components/organism/instructor/update-course/updateCourse";
+import NotFoundPage from "../components/pages/404/404.pages";
+import AllPublishedCoursePage from "../components/pages/admin/course/published/publishedCourse";
+import AllSubscriptionListPage from "../components/pages/admin/subscriptionList/subscriptionList";
+import AllAdminPage from "../components/pages/admin/user/admin/admin";
+import AllInstructorPage from "../components/pages/admin/user/instructor/instrctor";
+import AllStudentPage from "../components/pages/admin/user/student/students";
+import ForgetPasswordPage from "../components/pages/forget-password/forgetPassword.pages";
+import HeaderFooterLayout from "../components/pages/header-footer-layout/headerFooterLayout";
+import HomePage from "../components/pages/home/home";
+import CreateCoursePage from "../components/pages/instructors/course/create-course/createCourse";
+import InstructorDashboardPage from "../components/pages/instructors/dashboard/dashboard.page";
+import ProfilePage from "../components/pages/profile/profile";
+import ProfilePicturePage from "../components/pages/profile/profilePicture";
+import SignInPage from "../components/pages/signIn/signIn.pages";
+import SignUPPage from "../components/pages/signUp/signIp.pages";
+import UnauthorizedPage from "../components/pages/unauthorized/unauthorized";
 // import { lazy } from 'react';
 // const ProfilePage=lazy("../components/pages/profile/profile")
 const AllRoutes = () => {
@@ -39,9 +39,26 @@ const AllRoutes = () => {
           }
         />
 
-        <Route path="/log-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUPPage />} />
-        <Route path="/forget-password" element={<ForgetPasswordPage />} />
+        <Route
+          path="/log-in"
+          element={
+            <HeaderFooterLayout>
+              <SignInPage />
+            </HeaderFooterLayout>
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={
+            <HeaderFooterLayout>
+              <SignUPPage />
+            </HeaderFooterLayout>
+          }
+        />
+        <Route
+          path="/forget-password/:resetToken/:userId"
+          element={<ForgetPasswordPage />}
+        />
         <Route
           path="*"
           element={
@@ -123,11 +140,12 @@ const AllRoutes = () => {
             </HeaderFooterLayout>
           }
         />
+
         <Route
-          path="/admin/course/pending"
+          path="/admin/subscription/all"
           element={
             <HeaderFooterLayout>
-              <AllPendingCoursePage />
+              <AllSubscriptionListPage />
             </HeaderFooterLayout>
           }
         />

@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import UserApi from "../../api/UserApi";
-import { useAppSelector } from "../../redux/store";
+import subscriptionApi from "../../api/subscriptionApi";
 
-const useGetProfile = () => {
+const useGetAllSubscriptionListByAdmin = () => {
   const [data, setData] = useState<object>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
-  const recallUserApi = useAppSelector((state) => state.auth.cnt);
-  useEffect(() => {
-    getAllCourse();
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [recallUserApi]);
 
-  const getAllCourse = async () => {
+  useEffect(() => {
+    getAllSubscriptionAdmin();
+  }, []);
+
+  const getAllSubscriptionAdmin = async () => {
     try {
       setLoading(true);
-      const response = await UserApi.myProfile();
+      const response = await subscriptionApi.getAllSubscription();
       setData(response?.data);
       setLoading(false);
     } catch (error: any) {
@@ -29,4 +27,4 @@ const useGetProfile = () => {
   return { data, loading, error };
 };
 
-export default useGetProfile;
+export default useGetAllSubscriptionListByAdmin;

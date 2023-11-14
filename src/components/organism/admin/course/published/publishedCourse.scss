@@ -1,4 +1,30 @@
 .course-table-div {
   max-width: 1300px;
   margin: 0 auto;
+  .card-header-flex {
+    display: flex;
+    justify-content: space-between;
+  }
+  .table-header-div {
+    flex-basis: 48%;
+  }
+  .table-header-select {
+    flex-basis: 48%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .card-header-flex {
+    flex-direction: column;
+  }
+  .table-header-div {
+    flex-basis: 100%;
+    .ant-typography {
+      margin-bottom: 10px !important;
+    }
+  }
+  .table-header-select {
+    flex-basis: 100%;
+    margin-bottom: 10px;
+  }
 }

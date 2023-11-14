@@ -1,11 +1,12 @@
-import Api from './apiConfigs';
+import Api from "./apiConfigs";
 
 class AuthApi {
   endPoints = {
-    allInstructor: '/user/instructor/all',
-    profile: '/user/me',
-    allStudents: '/user/students/all',
-    updateUser: '/user/update',
+    allInstructor: "/user/instructor/all",
+    profile: "/user/me",
+    allStudents: "/user/students/all",
+    updateUser: "/user/update",
+    updateDp: "/user/update-DP",
   };
   async myProfile() {
     return await Api?.http?.get(this.endPoints.profile);
@@ -18,6 +19,9 @@ class AuthApi {
   }
   async updateUser(data: any) {
     return await Api?.http?.patch(this.endPoints.updateUser, data);
+  }
+  async updateDp(data: any) {
+    return await Api?.http?.patch(this.endPoints.updateDp, data);
   }
 }
 

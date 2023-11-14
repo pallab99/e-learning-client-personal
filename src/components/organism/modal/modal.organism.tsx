@@ -1,7 +1,8 @@
-import { Form, Modal } from 'antd';
-import InputBoxMolecules from '../../molecules/input-box/inputBox.molecules';
-import ButtonAtom from '../../atoms/button/button.attom';
-import HeadingAtom from '../../atoms/heading/heading.atom';
+import { Form, Modal } from "antd";
+import ButtonAtom from "../../atoms/button/button.attom";
+import HeadingAtom from "../../atoms/heading/heading.atom";
+import InputBoxMolecules from "../../molecules/input-box/inputBox.molecules";
+import "./modal.scss";
 interface IModalOrganismProps {
   open?: boolean;
   name?: string;
@@ -11,6 +12,7 @@ interface IModalOrganismProps {
   style?: object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   centered?: any;
+  loading?: boolean;
 }
 export default function ForgetPasswordModalOrganism({
   open,
@@ -18,6 +20,7 @@ export default function ForgetPasswordModalOrganism({
   setOpenModal,
   onFinish,
   style,
+  loading,
 }: IModalOrganismProps) {
   return (
     <Modal
@@ -47,20 +50,21 @@ export default function ForgetPasswordModalOrganism({
         onFinish={onFinish}
         layout="vertical"
         autoComplete="off"
-        className="sign-in-form"
+        className="forget-password-modal-form"
       >
         <Form.Item>
           <InputBoxMolecules
             label="Email"
             name="email"
+            size="large"
             rules={[
               {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
+                type: "email",
+                message: "The input is not valid E-mail!",
               },
               {
                 required: true,
-                message: 'Please input your email!',
+                message: "Please input your email!",
               },
             ]}
             placeholder="Please Enter your email"
@@ -72,6 +76,8 @@ export default function ForgetPasswordModalOrganism({
             htmlType="submit"
             text="submit"
             className="login-btn"
+            loading={loading}
+            size="large"
           ></ButtonAtom>
         </Form.Item>
       </Form>
