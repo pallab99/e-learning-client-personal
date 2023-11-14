@@ -1,14 +1,17 @@
-import { Card, Image, Modal } from "antd";
-import React from "react";
-import ButtonAtom from "../../atoms/button/button.attom";
-import FlexAtom from "../../atoms/flex/flex.atom";
-import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+import { Card, Image, Modal } from 'antd';
+import React from 'react';
+import ButtonAtom from '../../atoms/button/button.attom';
+import FlexAtom from '../../atoms/flex/flex.atom';
+import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
+import './SubscriptRequestCourseModal.scss';
 interface ISubscriptRequestCourseModal {
   isModalOpen: boolean;
   closeModal: any;
   courseData: any;
   acceptRequest: any;
   rejectRequest: any;
+  btnLoading1?: any;
+  btnLoading2?: any;
 }
 const SubscriptRequestCourseModal: React.FC<ISubscriptRequestCourseModal> = ({
   isModalOpen,
@@ -16,10 +19,16 @@ const SubscriptRequestCourseModal: React.FC<ISubscriptRequestCourseModal> = ({
   courseData,
   acceptRequest,
   rejectRequest,
+  btnLoading1,
+  btnLoading2,
 }) => {
   return (
-    <>
-      <Modal open={isModalOpen} onCancel={closeModal}>
+    <div className="Subscription-request-course-modal-div">
+      <Modal
+        className="Subscription-request-course-modal-div"
+        open={isModalOpen}
+        onCancel={closeModal}
+      >
         {courseData &&
           courseData?.courses?.map((ele: any) => {
             return (
@@ -29,7 +38,7 @@ const SubscriptRequestCourseModal: React.FC<ISubscriptRequestCourseModal> = ({
                 class="mt-20 cursor-pointer card-hover"
                 key={ele._id}
               >
-                <Card className="course-card" style={{ width: "100%" }}>
+                <Card className="course-card" style={{ width: '100%' }}>
                   <FlexAtom gap="large" align="center">
                     <div className="card-left">
                       <Image
@@ -48,6 +57,7 @@ const SubscriptRequestCourseModal: React.FC<ISubscriptRequestCourseModal> = ({
                       <ButtonAtom
                         text="accept"
                         type="link"
+                        loading={btnLoading1}
                         handleButtonClick={() =>
                           acceptRequest(courseData?._id, ele?._id)
                         }
@@ -56,6 +66,7 @@ const SubscriptRequestCourseModal: React.FC<ISubscriptRequestCourseModal> = ({
                         text="reject"
                         type="link"
                         dangerBtn={true}
+                        loading={btnLoading2}
                         handleButtonClick={() =>
                           rejectRequest(courseData?._id, ele?._id)
                         }
@@ -67,7 +78,7 @@ const SubscriptRequestCourseModal: React.FC<ISubscriptRequestCourseModal> = ({
             );
           })}
       </Modal>
-    </>
+    </div>
   );
 };
 

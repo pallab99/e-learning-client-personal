@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import subscriptionApi from "../../api/subscriptionApi";
+import { useEffect, useState } from 'react';
+import subscriptionApi from '../../api/subscriptionApi';
 
-const useGetAllSubscriptionListByAdmin = () => {
+const useGetAllSubscriptionListByAdmin = (recallApi: any) => {
   const [data, setData] = useState<object>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
   useEffect(() => {
     getAllSubscriptionAdmin();
-  }, []);
+  }, [recallApi]);
 
   const getAllSubscriptionAdmin = async () => {
     try {

@@ -1,13 +1,12 @@
 //@ts-nocheck
-import { useState } from "react";
-import useGetAllSubscriptionListByAdmin from "../../../../hooks/subscriptionList/getAllSubscriptionList";
-import AllSubscriptionTableOrganism from "../../../organism/admin/subscriptionList/subscriptionList";
+import { useState } from 'react';
+import useGetAllSubscriptionListByAdmin from '../../../../hooks/subscriptionList/getAllSubscriptionList';
+import AllSubscriptionTableOrganism from '../../../organism/admin/subscriptionList/subscriptionList';
 
 const AllSubscriptionListPage = () => {
   const [selectValue, setSelectValue] = useState({});
-  const { loading, data } = useGetAllSubscriptionListByAdmin();
-  console.log("jjj", data);
-
+  const [recallApi, setRecallApi] = useState(false);
+  const { loading, data } = useGetAllSubscriptionListByAdmin(recallApi);
   const tableData = data?.data?.map((ele: any) => {
     return {
       _id: ele?._id,
@@ -22,6 +21,8 @@ const AllSubscriptionListPage = () => {
     <AllSubscriptionTableOrganism
       data={tableData}
       loading={loading}
+      setRecallApi={setRecallApi}
+      recallApi={recallApi}
       // setSelectValue={setSelectValue}
     />
   );

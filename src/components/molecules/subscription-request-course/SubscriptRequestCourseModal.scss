@@ -1,0 +1,12 @@
+.Subscription-request-course-modal-div {
+  background-color: red;
+  .ant-modal {
+    width: 80%;
+  }
+  .ant-modal .ant-modal-footer {
+    display: none;
+  }
+  .ant-card-body {
+    opacity: 1;
+  }
+}
