@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import CourseApi from "../../api/CourseApi";
+import { useEffect, useState } from 'react';
+import CourseApi from '../../api/CourseApi';
 
-const useGetAllCourseByAdmin = (selectFieldData: any) => {
+const useGetAllCourseByAdmin = (recallApi: boolean, selectFieldData: any) => {
   const [data, setData] = useState<object>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
   useEffect(() => {
     getAllCourseAdmin(selectFieldData);
-  }, [selectFieldData]);
+  }, [selectFieldData, recallApi]);
 
   const getAllCourseAdmin = async (selectFieldData: any) => {
     try {
