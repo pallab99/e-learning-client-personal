@@ -1,0 +1,45 @@
+.desktop-header-searchBar-div {
+  width: 50%;
+  border-color: black;
+  outline: none;
+  .ant-input ant-input-lg {
+    border-start-end-radius: 20px;
+  }
+}
+.desktop-header-searchBar {
+  border-radius: 20px;
+
+  .ant-input-group-addon {
+    position: absolute;
+    bottom: 1px;
+    left: 1px;
+    border: none;
+  }
+  .ant-input-group-addon button {
+    border: none;
+    background: transparent;
+  }
+  .ant-input-search
+    > .ant-input-group
+    > .ant-input-group-addon:last-child
+    .ant-input-search-button:not(.ant-btn-primary) {
+    border: none;
+    background: transparent;
+  }
+  .ant-input-wrapper .ant-input-group {
+    .ant-input ant-input-lg {
+      border-start-end-radius: 20px;
+    }
+  }
+}
+.desktop-header-searchBar .ant-input {
+  border-radius: 20px;
+  border-start-end-radius: 20px !important;
+  border-end-end-radius: 20px !important;
+}
+
+.desktop-header-searchBar .ant-input :hover {
+  border-radius: 20px;
+  border-start-end-radius: 20px !important;
+  border-end-end-radius: 20px !important;
+}

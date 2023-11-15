@@ -2,6 +2,7 @@ import Api from "./apiConfigs";
 
 class SubscriptionApi {
   endPoints = {
+    applyForSubscription: "/subscription/create",
     allSubscription: "/subscription/all",
     acceptSubscription: "/subscription/accept-subscription",
     rejectSubscription: "/subscription/reject-subscription",
@@ -17,6 +18,12 @@ class SubscriptionApi {
     const rejectionDetails = "We are very sorry";
     const url = `${this.endPoints.rejectSubscription}/${subscriptionId}/${courseId}`;
     return await Api.http?.post(url, rejectionDetails);
+  }
+
+  async applyForSubscription(cartId: string) {
+    return await Api?.http?.post(this.endPoints.applyForSubscription, {
+      cartId,
+    });
   }
 }
 

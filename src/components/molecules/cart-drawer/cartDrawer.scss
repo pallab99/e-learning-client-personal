@@ -1,0 +1,30 @@
+.cart-drawer-div {
+  .ant-drawer-content-wrapper {
+    width: 40% !important;
+  }
+  .ant-flex {
+    flex-direction: column;
+  }
+  .ant-btn {
+    width: 100% !important;
+  }
+}
+.cart-card-left {
+  display: flex;
+  .ant-rate {
+    font-size: 15px;
+  }
+}
+.cart-left-div {
+  display: flex;
+  padding: 0rem 0.5rem;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-left-description {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

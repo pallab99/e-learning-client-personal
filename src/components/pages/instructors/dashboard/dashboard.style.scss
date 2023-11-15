@@ -1,10 +1,13 @@
-.create-course-div {
-  display: grid;
-  grid-template-columns: 0.3fr 1fr;
-}
+// .create-course-div {
+//   display: grid;
+//   grid-template-columns: 1fr;
+// }
 .instructor-dashboard-div {
-  max-width: 1300px;
-  margin: 0 auto;
-  padding-left: 10%;
-  padding-right: 2%;
+  width: 90%;
+  // margin: 0 auto;
+  margin-right: 2%;
+}
+.instructor-dashboard-div-wrapper {
+  display: flex;
+  gap: 20px;
 }

@@ -1,13 +1,15 @@
-import React from 'react';
 import {
-  UserOutlined,
-  NotificationOutlined,
-  LinkedinFilled,
   FacebookFilled,
-  TwitterCircleFilled,
+  HeartOutlined,
   InstagramFilled,
-} from '@ant-design/icons';
-import './icon.style.scss';
+  LinkedinFilled,
+  NotificationOutlined,
+  ShoppingCartOutlined,
+  TwitterCircleFilled,
+  UserOutlined,
+} from "@ant-design/icons";
+import React from "react";
+import "./icon.style.scss";
 const IconTypes = {
   user: UserOutlined,
   notification: NotificationOutlined,
@@ -15,6 +17,8 @@ const IconTypes = {
   facebook: FacebookFilled,
   twitter: TwitterCircleFilled,
   instagram: InstagramFilled,
+  heart: HeartOutlined,
+  cart: ShoppingCartOutlined,
 };
 interface IIconAtom {
   type: keyof typeof IconTypes;

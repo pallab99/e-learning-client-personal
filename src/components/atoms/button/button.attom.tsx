@@ -5,7 +5,7 @@ export interface IButtonAtomProps {
   loading?: boolean;
   dangerBtn?: boolean;
   disabled?: boolean;
-  handleButtonClick?: (data: any) => void;
+  handleButtonClick?: any;
   text?: string;
   htmlType?: "button" | "submit" | "reset";
   className?: string;
