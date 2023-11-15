@@ -1,6 +1,6 @@
-import { MenuOutlined } from "@ant-design/icons";
-import { Button, Menu } from "antd";
-import { useState } from "react";
+import { MenuOutlined } from '@ant-design/icons';
+import { Button, Drawer, Menu } from 'antd';
+import { useState } from 'react';
 
 const MobileSideBar = ({ items }: any) => {
   const [visible, setVisible] = useState(false);
@@ -18,12 +18,9 @@ const MobileSideBar = ({ items }: any) => {
       <Button type="primary" onClick={showDrawer}>
         <MenuOutlined />
       </Button>
-      <Menu
-        items={items}
-        visible={visible}
-        onClose={onClose}
-        placement="left"
-      />
+      <Drawer open={visible} onClose={onClose} placement="left">
+        <Menu items={items} placement="left" mode="inline" />
+      </Drawer>
     </div>
   );
 };

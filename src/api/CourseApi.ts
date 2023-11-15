@@ -1,3 +1,5 @@
+import { setProgress } from '../redux/slices/fileUploadProgressSlice';
+import { useAppDispatch } from '../redux/store';
 import Api from './apiConfigs';
 
 class CourseApi {
@@ -5,6 +7,8 @@ class CourseApi {
     getAllCourse: '/course/all',
     courseByInstructor: '/course/all/instructor',
     coursePublishRequest: '/course/publish-request',
+    createCourse: '/course/create',
+    uploadPromoVideo: '/course/upload/demoVideo/6554f0c725b550d271b1e012',
   };
   async getCourseByInstructor() {
     return await Api?.http?.get(this.endPoints.courseByInstructor);
@@ -22,6 +26,17 @@ class CourseApi {
   async coursePublishRequest(courseId: string, type: string) {
     const url = `${this.endPoints.coursePublishRequest}/${courseId}?type=${type}`;
     return await Api?.http?.post(url);
+  }
+  async createCourse(data: any) {
+    return await Api?.http?.post(this.endPoints.createCourse, data);
+  }
+  async uploadPromoVideo(data: any) {
+    // const dispatch=useAppDispatch()
+    // return await Api.http?.patch(this.endPoints.uploadPromoVideo, data,{
+    //   onUploadProgress: (progressEvent:any) => {
+    //     const percentCompleted = Math.floor((progressEvent?.loaded * 100) / progressEvent?.total);
+    //     dispatch(setProgress({ fileId: 'yourFileId', progress: percentCompleted }))
+    //   })
   }
 }
 

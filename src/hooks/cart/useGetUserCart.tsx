@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
-import CartApi from "../../api/CartApi";
+import { useEffect, useState } from 'react';
+import CartApi from '../../api/CartApi';
+import { useAppSelector } from '../../redux/store';
+import { STUDENT } from '../../constant/userType';
 
 const useGetCartByUser = (recallApi: any) => {
   const [data, setData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
-
+  const isStudent = useAppSelector((state) => state.auth.userData.rank);
   useEffect(() => {
-    getCartByUser();
-  }, [recallApi]);
+    if (isStudent === STUDENT) {
+      getCartByUser();
+    }
+  }, [isStudent, recallApi]);
 
   const getCartByUser = async () => {
     try {

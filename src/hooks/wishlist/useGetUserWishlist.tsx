@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
-import WishlistApi from "../../api/WishlistApi";
+import { useEffect, useState } from 'react';
+import WishlistApi from '../../api/WishlistApi';
+import { useAppSelector } from '../../redux/store';
+import { STUDENT } from '../../constant/userType';
 
 const useGetWishlistByUser = (open: any, recallApi: any) => {
   const [wishlistData, setWishlistData] = useState<Array<any>>([]);
   const [wishlistLoading, setWishListLoading] = useState(false);
   const [error, setError] = useState();
+  const isStudent = useAppSelector((state) => state.auth.userData.rank);
 
   useEffect(() => {
     if (open) {
-      getWishlistByUser();
+      if (isStudent === STUDENT) {
+        getWishlistByUser();
+      }
     }
-  }, [open, recallApi]);
+  }, [isStudent, open, recallApi]);
 
   const getWishlistByUser = async () => {
     try {

@@ -6,6 +6,8 @@ import CenteredBtnOrganism from '../../../molecules/centered-btn/centered-btn.mo
 import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
 import { SelectField } from '../../../atoms/select-filed/selectField';
 import TextArea from 'antd/es/input/TextArea';
+import InstructorDashboardSideBarOrganism from '../dashboard/sidebar/sidebar.organism';
+import CourseApi from '../../../../api/CourseApi';
 const { Dragger } = Upload;
 
 const CreateCourseOrganism = () => {
@@ -18,213 +20,259 @@ const CreateCourseOrganism = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('description', data.description);
+    formData.append('category', data.category);
+    formData.append('level', data.level);
+    formData.append('benefits', data.benefits);
+    formData.append('prerequisites', data.prerequisites);
+    formData.append('file_to_upload', data.thumbnail.file);
+    formData.append('file_to_upload', data.demovideo.file);
+    formData.append('tags', data.tags);
+
+    try {
+      const res = await CourseApi.createCourse(formData);
+      console.log(res?.data);
+    } catch (error: any) {
+      console.log(error?.response?.message);
+    }
   };
 
   return (
-    <div className="create-course-form mb-40 mt-40">
-      <Card headStyle={{ fontSize: '30px' }} title="Create a new course">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-            <div className="input-group">
-              <ParagraphAtom text="Enter the course title" />
-              <Controller
-                name="title"
-                control={control}
-                render={({ field }) => (
-                  <TextInputAtom
-                    placeholder={'Enter the course title'}
-                    fieldValues={field}
-                  />
-                )}
-              />
-              <ParagraphAtom
-                type="secondary"
-                text="Your title should be a mix of attention-grabbing, informative, and optimized for search"
-                className="mt-20 text-15"
-              />
-            </div>
-            <div className="input-group">
-              <ParagraphAtom text="Enter the course description" />
-
-              <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                  <TextArea
-                    {...field}
-                    rows={3}
-                    placeholder="Enter the course description"
-                    maxLength={6}
-                  />
-                )}
-              />
-              <ParagraphAtom
-                type="secondary"
-                text="Description should have minimum 200 words."
-                className="mt-20 text-15"
-              />
-            </div>
-            <div className="select-div">
+    <div className="create-course-wrapper">
+      <InstructorDashboardSideBarOrganism></InstructorDashboardSideBarOrganism>
+      <div className="create-course-form mb-40 mt-40">
+        <Card headStyle={{ fontSize: '30px' }} title="Create a new course">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Space
+              direction="vertical"
+              size="middle"
+              style={{ display: 'flex' }}
+            >
               <div className="input-group">
-                <ParagraphAtom text="Select Instructors" />
+                <ParagraphAtom text="Enter the course title" />
                 <Controller
-                  name="tag"
+                  name="title"
                   control={control}
                   render={({ field }) => (
-                    <SelectField
-                      placeholder={'Select Instructors'}
+                    <TextInputAtom
+                      placeholder={'Enter the course title'}
                       fieldValues={field}
-                      values={['a', 'b']}
                     />
                   )}
                 />
                 <ParagraphAtom
                   type="secondary"
-                  text="Select the Instructors"
+                  text="Your title should be a mix of attention-grabbing, informative, and optimized for search"
                   className="mt-20 text-15"
                 />
               </div>
               <div className="input-group">
-                <ParagraphAtom text="Select your category" />
+                <ParagraphAtom text="Enter the course description" />
+
                 <Controller
-                  name="category"
+                  name="description"
                   control={control}
                   render={({ field }) => (
-                    <SelectField
-                      placeholder={'Select your category'}
-                      fieldValues={field}
-                      values={['a', 'b']}
+                    <TextArea
+                      {...field}
+                      rows={3}
+                      placeholder="Enter the course description"
+                      maxLength={1000}
                     />
                   )}
                 />
                 <ParagraphAtom
                   type="secondary"
-                  text="Select the category of the course."
+                  text="Description should have minimum 200 words."
                   className="mt-20 text-15"
                 />
               </div>
-              <div className="input-group">
-                <ParagraphAtom text="Select the level of this course" />
-                <Controller
-                  name="level"
-                  control={control}
-                  render={({ field }) => (
-                    <SelectField
-                      placeholder={'Select the level of this course'}
-                      fieldValues={field}
-                      values={['Beginner', 'Intermediate', 'Advance']}
-                    />
-                  )}
-                />
-                <ParagraphAtom
-                  type="secondary"
-                  text="Select the appropriate level of this course"
-                  className="mt-20 text-15"
-                />
-              </div>
-            </div>
-
-            <div className="input-group">
-              <ParagraphAtom text="Enter the benefits of this course" />
-              <Controller
-                name="benefits"
-                control={control}
-                render={({ field }) => (
-                  <TextInputAtom
-                    placeholder={'Enter the benefits of this course'}
-                    fieldValues={field}
-                  />
-                )}
-              />
-              <ParagraphAtom
-                type="secondary"
-                text="Write some outcome of this course"
-                className="mt-20 text-15"
-              />
-            </div>
-            <div className="input-group">
-              <ParagraphAtom text="Enter the prerequiste for this course" />
-              <Controller
-                name="prerequisites"
-                control={control}
-                render={({ field }) => (
-                  <TextInputAtom
-                    placeholder={'Enter the prerequiste for this course'}
-                    fieldValues={field}
-                  />
-                )}
-              />
-              <ParagraphAtom
-                type="secondary"
-                text="Give some information about what the learner should before getting started this course"
-                className="mt-20 text-15"
-              />
-            </div>
-
-            <div className="input-group">
-              <ParagraphAtom text="Select a appropriate thumbnail for this course" />
-              <Controller
-                name="thumbnail"
-                control={control}
-                render={({ field }) => (
-                  <Dragger {...field} listType="picture">
-                    <p className="ant-upload-drag-icon">
-                      <img
-                        src="https://s.udemycdn.com/course/750x422/placeholder.jpg"
-                        alt=""
+              <div className="select-div">
+                <div className="input-group">
+                  <ParagraphAtom text="Select tags" />
+                  <Controller
+                    name="tags"
+                    control={control}
+                    render={({ field }) => (
+                      <SelectField
+                        placeholder={'Select Tags'}
+                        fieldValues={field}
+                        values={[
+                          { label: 'hello', value: 'a' },
+                          { label: 'hello', value: 'a' },
+                        ]}
                       />
-                    </p>
-                    <ParagraphAtom
-                      text="Click or drag the thumbnail to this area to upload"
-                      className="ant-upload-text"
-                    ></ParagraphAtom>
-                  </Dragger>
-                )}
-              />
-              <ParagraphAtom
-                type="secondary"
-                text="Select a thumbnail which will grab the learners attention"
-                className="mt-20 text-15"
-              />
-            </div>
-            <div className="input-group">
-              <ParagraphAtom text="Select a appropriate demo video for this course" />
-              <Controller
-                name="demovideo"
-                control={control}
-                render={({ field }) => (
-                  <Dragger {...field} listType="picture">
-                    <p className="ant-upload-drag-icon">
-                      <img
-                        src="https://s.udemycdn.com/course/750x422/placeholder.jpg"
-                        alt=""
+                    )}
+                  />
+                  <ParagraphAtom
+                    type="secondary"
+                    text="Select the Instructors"
+                    className="mt-20 text-15"
+                  />
+                </div>
+                <div className="input-group">
+                  <ParagraphAtom text="Select your category" />
+                  <Controller
+                    name="category"
+                    control={control}
+                    render={({ field }) => (
+                      <SelectField
+                        placeholder={'Select your category'}
+                        fieldValues={field}
+                        values={[
+                          { label: 'hello', value: 'a' },
+                          { label: 'hello', value: 'a' },
+                        ]}
                       />
-                    </p>
-                    <ParagraphAtom
-                      text=" Click or drag the demo video file to this area to upload"
-                      className="ant-upload-text"
+                    )}
+                  />
+                  <ParagraphAtom
+                    type="secondary"
+                    text="Select the category of the course."
+                    className="mt-20 text-15"
+                  />
+                </div>
+                <div className="input-group">
+                  <ParagraphAtom text="Select the level of this course" />
+                  <Controller
+                    name="level"
+                    control={control}
+                    render={({ field }) => (
+                      <SelectField
+                        placeholder={'Select the level of this course'}
+                        fieldValues={field}
+                        values={[
+                          { label: 'Beginner', value: 'beginner' },
+                          { label: 'Intermediate', value: 'intermediate' },
+                          { label: 'Advance', value: 'advance' },
+                        ]}
+                      />
+                    )}
+                  />
+                  <ParagraphAtom
+                    type="secondary"
+                    text="Select the appropriate level of this course"
+                    className="mt-20 text-15"
+                  />
+                </div>
+              </div>
+
+              <div className="input-group">
+                <ParagraphAtom text="Enter the benefits of this course" />
+                <Controller
+                  name="benefits"
+                  control={control}
+                  render={({ field }) => (
+                    <TextInputAtom
+                      placeholder={'Enter the benefits of this course'}
+                      fieldValues={field}
                     />
-                  </Dragger>
-                )}
+                  )}
+                />
+                <ParagraphAtom
+                  type="secondary"
+                  text="Write some outcome of this course"
+                  className="mt-20 text-15"
+                />
+              </div>
+              <div className="input-group">
+                <ParagraphAtom text="Enter the prerequiste for this course" />
+                <Controller
+                  name="prerequisites"
+                  control={control}
+                  render={({ field }) => (
+                    <TextInputAtom
+                      placeholder={'Enter the prerequiste for this course'}
+                      fieldValues={field}
+                    />
+                  )}
+                />
+                <ParagraphAtom
+                  type="secondary"
+                  text="Give some information about what the learner should before getting started this course"
+                  className="mt-20 text-15"
+                />
+              </div>
+
+              {/* <div className="input-group">
+                <ParagraphAtom text="Select a appropriate thumbnail for this course" />
+                <Controller
+                  name="thumbnail"
+                  control={control}
+                  render={({ field }) => (
+                    <Dragger
+                      {...field}
+                      listType="picture"
+                      beforeUpload={() => {
+                        return false;
+                      }}
+                    >
+                      <p className="ant-upload-drag-icon">
+                        <img
+                          src="https://s.udemycdn.com/course/750x422/placeholder.jpg"
+                          alt=""
+                        />
+                      </p>
+                      <ParagraphAtom
+                        text="Click or drag the thumbnail to this area to upload"
+                        className="ant-upload-text"
+                      ></ParagraphAtom>
+                    </Dragger>
+                  )}
+                />
+                <ParagraphAtom
+                  type="secondary"
+                  text="Select a thumbnail which will grab the learners attention"
+                  className="mt-20 text-15"
+                />
+              </div>
+              <div className="input-group">
+                <ParagraphAtom text="Select a appropriate demo video for this course" />
+                <Controller
+                  name="demovideo"
+                  control={control}
+                  render={({ field }) => (
+                    <Dragger
+                      {...field}
+                      listType="picture"
+                      beforeUpload={() => {
+                        return false;
+                      }}
+                    >
+                      <p className="ant-upload-drag-icon">
+                        <img
+                          src="https://s.udemycdn.com/course/750x422/placeholder.jpg"
+                          alt=""
+                        />
+                      </p>
+                      <ParagraphAtom
+                        text=" Click or drag the demo video file to this area to upload"
+                        className="ant-upload-text"
+                      />
+                    </Dragger>
+                  )}
+                />
+                <ParagraphAtom
+                  type="secondary"
+                  text="Select a demo video which will grab the learners attention"
+                  className="mt-20 text-15"
+                />
+              </div> */}
+              <CenteredBtnOrganism
+                justify="center"
+                text="Create Course"
+                type="primary"
+                htmlType="submit"
+                size="large"
               />
-              <ParagraphAtom
-                type="secondary"
-                text="Select a demo video which will grab the learners attention"
-                className="mt-20 text-15"
-              />
-            </div>
-            <CenteredBtnOrganism
-              justify="center"
-              text="Create Course"
-              type="primary"
-              htmlType="submit"
-              size="large"
-            />
-          </Space>
-        </form>
-      </Card>
+            </Space>
+          </form>
+        </Card>
+      </div>
     </div>
   );
 };

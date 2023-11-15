@@ -47,3 +47,8 @@
     left: 40rem;
   }
 }
+@media only screen and (max-width: 600px) {
+  .card-right {
+    display: none;
+  }
+}

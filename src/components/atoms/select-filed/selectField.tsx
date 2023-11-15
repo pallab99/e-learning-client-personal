@@ -1,10 +1,10 @@
-import { Select } from "antd";
-import React from "react";
+import { Select } from 'antd';
+import React from 'react';
 const { Option } = Select;
 
 interface ISelectField {
   defaultValue?: string;
-  values: { value: string; label: string }[]; // Update the type of the values prop
+  values: { value: string; label: string }[];
   placeholder?: string;
   fieldValues?: any;
   onChange?: any;
@@ -15,15 +15,16 @@ export const SelectField: React.FC<ISelectField> = ({
   values,
   placeholder,
   fieldValues,
-  onChange,
 }) => {
   return (
     <Select
       defaultValue={defaultValue}
-      style={{ width: "100%" }}
+      style={{ width: '100%' }}
       placeholder={placeholder}
       {...fieldValues}
-      onChange={onChange}
+      onChange={(value) => {
+        fieldValues.onChange(value);
+      }}
     >
       {values?.map((value: { value: string; label: string }, index: number) => {
         return (

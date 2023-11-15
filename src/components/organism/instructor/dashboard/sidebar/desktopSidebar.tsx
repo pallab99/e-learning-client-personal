@@ -1,8 +1,8 @@
-import type { MenuProps } from "antd";
-import { Menu } from "antd";
-import React, { useState } from "react";
-import "./sidebar.style.scss";
-type MenuItem = Required<MenuProps>["items"][number];
+import type { MenuProps } from 'antd';
+import { Menu } from 'antd';
+import React, { useState } from 'react';
+import './sidebar.style.scss';
+type MenuItem = Required<MenuProps>['items'][number];
 
 const DesktopSideBar: React.FC = ({ items }: any) => {
   const [collapsed, setCollapsed] = useState(true);
@@ -17,16 +17,16 @@ const DesktopSideBar: React.FC = ({ items }: any) => {
   return (
     <div
       className="instructor-dashboard-sidebar"
-      style={{ width: 300, height: "100vh" }}
+      style={{ width: 300, height: '100vh' }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <Menu
-        style={{ height: "inherit" }}
-        defaultSelectedKeys={["1"]}
+        style={{ height: 'inherit' }}
+        defaultSelectedKeys={['1']}
         mode="inline"
-        theme="dark"
-        inlineCollapsed={collapsed}
+        // theme="dark"
+        // inlineCollapsed={collapsed}
         items={items}
       />
     </div>
