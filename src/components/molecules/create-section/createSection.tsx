@@ -5,6 +5,7 @@ import CourseSectionApi from '../../../api/CourseSectionApi';
 import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
 import TextInputAtom from '../../atoms/text-input/textInput.atom';
 import CenteredBtnOrganism from '../centered-btn/centered-btn.molecules';
+import './courseSection.scss';
 interface ICourseSectionModalProps {
   courseId: string | undefined;
   data?: string;
@@ -57,7 +58,7 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
   }, [data, setValue]);
 
   return (
-    <Modal open={open} onCancel={onClose}>
+    <Modal open={open} onCancel={onClose} className="course-modal">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
           <div className="input-group">

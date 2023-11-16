@@ -1,7 +1,8 @@
-import ButtonAtom, { IButtonAtomProps } from "../../atoms/button/button.attom";
-import FlexAtom, { IFLexAtom } from "../../atoms/flex/flex.atom";
+import ButtonAtom, { IButtonAtomProps } from '../../atoms/button/button.attom';
+import FlexAtom, { IFLexAtom } from '../../atoms/flex/flex.atom';
 interface ICenteredBtn extends IFLexAtom, IButtonAtomProps {
   text?: string;
+  style: any;
 }
 const CenteredBtnOrganism = (props: ICenteredBtn) => {
   return (
@@ -23,6 +24,7 @@ const CenteredBtnOrganism = (props: ICenteredBtn) => {
         className={props.className}
         link={props.link}
         loading={props.loading}
+        style={props.style}
       ></ButtonAtom>
     </FlexAtom>
   );

@@ -1,13 +1,13 @@
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Card, Progress, Space, Upload, message } from "antd";
-import { useEffect, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import ReactPlayer from "react-player";
-import apiConfigs from "../../../../../../api/apiConfigs";
-import useGetCourseById from "../../../../../../hooks/course/useGetCourseById";
-import ParagraphAtom from "../../../../../atoms/paragraph/paragraph.atom";
-import CenteredBtnOrganism from "../../../../../molecules/centered-btn/centered-btn.molecules";
-import "./promoVideo.scss";
+import { UploadOutlined } from '@ant-design/icons';
+import { Button, Card, Progress, Space, Upload, message } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import ReactPlayer from 'react-player';
+import apiConfigs from '../../../../../../api/apiConfigs';
+import useGetCourseById from '../../../../../../hooks/course/useGetCourseById';
+import ParagraphAtom from '../../../../../atoms/paragraph/paragraph.atom';
+import CenteredBtnOrganism from '../../../../../molecules/centered-btn/centered-btn.molecules';
+import './promoVideo.scss';
 // import "./createCourse.scss";
 
 const UploadPromoVideo = ({ courseId }: any) => {
@@ -17,7 +17,7 @@ const UploadPromoVideo = ({ courseId }: any) => {
     formState: { errors },
     watch,
   } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const [recallApi, setRecallApi] = useState(0);
   const [btnLoading, setBtnLoading] = useState(false);
@@ -27,7 +27,7 @@ const UploadPromoVideo = ({ courseId }: any) => {
   const [file, setFile] = useState(null);
   const onSubmit = async (data: any) => {
     const formData = new FormData();
-    formData.append("file_to_upload", data.promoVideo.file);
+    formData.append('file_to_upload', data.promoVideo.file);
     try {
       setBtnLoading(true);
       const res = await apiConfigs.http?.patch(
@@ -53,31 +53,31 @@ const UploadPromoVideo = ({ courseId }: any) => {
     }
   };
   const beforeUpload = (file: File) => {
-    const isImage = file.type.indexOf("video/") === 0;
+    const isImage = file.type.indexOf('video/') === 0;
     const isLt100M = file.size / 1024 / 1024 < 100;
     if (!isImage) {
-      message.error("You can only upload video files!");
+      message.error('You can only upload video files!');
     } else if (!isLt100M) {
-      message.error("Image must smaller than 20MB!");
+      message.error('Image must smaller than 20MB!');
     } else {
       setFile(file);
     }
     return false;
   };
-  const [playerClass, setPlayerClass] = useState("");
+  const [playerClass, setPlayerClass] = useState('');
   const videoRef = useRef(null);
   useEffect(() => {
-    setPlayerClass("react-player");
+    setPlayerClass('react-player');
   }, [data]);
   return (
     <div className="create-course-wrapper">
       <div className="create-course-form mb-40 mt-40">
-        <Card headStyle={{ fontSize: "24px" }} title="Upload promo video">
+        <Card headStyle={{ fontSize: '24px' }} title="Upload promo video">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Space
               direction="vertical"
               size="middle"
-              style={{ display: "flex" }}
+              style={{ display: 'flex' }}
             >
               <div className="input-group">
                 <ParagraphAtom text="Select a appropriate thumbnail for this course" />
@@ -92,11 +92,11 @@ const UploadPromoVideo = ({ courseId }: any) => {
                         setFile(null);
                       }}
                       maxCount={1}
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                       {...field}
                     >
                       <Button
-                        style={{ width: "100%" }}
+                        style={{ width: '100%' }}
                         icon={<UploadOutlined />}
                       >
                         Upload (Max: 1)

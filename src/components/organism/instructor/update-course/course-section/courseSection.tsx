@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 // import './createCourse.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ButtonAtom from '../../../../atoms/button/button.attom';
 // import useGetCourseById from "../../../../hooks/course/useGetCourseById";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Card } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useGetCourseSection from '../../../../../hooks/course-section/useGetCourseSection';
 import HeadingAtom from '../../../../atoms/heading/heading.atom';
 import InstructorCourseListSkeletonAtom from '../../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
@@ -13,22 +13,8 @@ import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
 import CreateSectionModal from '../../../../molecules/create-section/createSection';
 import './courseSection.scss';
 const CourseSection = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    watch,
-    setValue,
-  } = useForm({
-    mode: 'onChange',
-  });
   const { courseId } = useParams();
   const { data, loading } = useGetCourseSection(courseId as string);
-  console.log(data);
-
-  const onSubmit = async (data: any) => {
-    // await updateCourse(courseId as string, data);
-  };
 
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => {
@@ -46,6 +32,8 @@ const CourseSection = () => {
       title: '',
     });
   };
+
+  const navigate = useNavigate();
 
   const handleSectionTitle = (id: any, title: any) => {
     setSectionData({ id: id, title: title });
