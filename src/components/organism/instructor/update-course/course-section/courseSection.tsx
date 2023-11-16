@@ -1,17 +1,17 @@
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 // import './createCourse.scss';
-import { useParams } from "react-router-dom";
-import ButtonAtom from "../../../../atoms/button/button.attom";
+import { useParams } from 'react-router-dom';
+import ButtonAtom from '../../../../atoms/button/button.attom';
 // import useGetCourseById from "../../../../hooks/course/useGetCourseById";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Card } from "antd";
-import { useState } from "react";
-import useGetCourseSection from "../../../../../hooks/course-section/useGetCourseSection";
-import HeadingAtom from "../../../../atoms/heading/heading.atom";
-import InstructorCourseListSkeletonAtom from "../../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton";
-import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
-import CreateSectionModal from "../../../../molecules/create-section/createSection";
-import "./courseSection.scss";
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Card } from 'antd';
+import { useState } from 'react';
+import useGetCourseSection from '../../../../../hooks/course-section/useGetCourseSection';
+import HeadingAtom from '../../../../atoms/heading/heading.atom';
+import InstructorCourseListSkeletonAtom from '../../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
+import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
+import CreateSectionModal from '../../../../molecules/create-section/createSection';
+import './courseSection.scss';
 const CourseSection = () => {
   const {
     handleSubmit,
@@ -20,7 +20,7 @@ const CourseSection = () => {
     watch,
     setValue,
   } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const { courseId } = useParams();
   const { data, loading } = useGetCourseSection(courseId as string);
@@ -34,9 +34,22 @@ const CourseSection = () => {
   const handleOpenModal = () => {
     setOpenModal(true);
   };
+  const [sectionData, setSectionData] = useState({
+    id: '',
+    title: '',
+  });
   const handleCloseModal = (event: any) => {
     event.stopPropagation();
     setOpenModal(false);
+    setSectionData({
+      id: '',
+      title: '',
+    });
+  };
+
+  const handleSectionTitle = (id: any, title: any) => {
+    setSectionData({ id: id, title: title });
+    handleOpenModal();
   };
 
   return (
@@ -56,11 +69,11 @@ const CourseSection = () => {
           : data?.data?.map((ele: any) => {
               return (
                 <div className="mt-20 cursor-pointer card-hover" key={ele._id}>
-                  <Card className="course-card" style={{ width: "100%" }}>
+                  <Card className="course-card" style={{ width: '100%' }}>
                     <div className="section-card-div">
                       <div className="card-left">
                         <HeadingAtom
-                          text={ele.title || "jjjj"}
+                          text={ele.title || 'jjjj'}
                           level={5}
                           ellipsis={true}
                         ></HeadingAtom>
@@ -76,7 +89,11 @@ const CourseSection = () => {
                         ></ParagraphAtom>
                       </div>
                       <div className="course-section-icon">
-                        <EditOutlined />
+                        <EditOutlined
+                          onClick={() =>
+                            handleSectionTitle(ele?._id, ele?.title)
+                          }
+                        />
                         <DeleteOutlined />
                       </div>
                     </div>
@@ -89,6 +106,7 @@ const CourseSection = () => {
         courseId={courseId}
         open={openModal}
         onClose={handleCloseModal}
+        data={sectionData}
       ></CreateSectionModal>
     </div>
   );

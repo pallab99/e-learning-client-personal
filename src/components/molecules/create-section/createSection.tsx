@@ -1,10 +1,10 @@
-import { Modal, Space, message } from "antd";
-import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import CourseSectionApi from "../../../api/CourseSectionApi";
-import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
-import TextInputAtom from "../../atoms/text-input/textInput.atom";
-import CenteredBtnOrganism from "../centered-btn/centered-btn.molecules";
+import { Modal, Space, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import CourseSectionApi from '../../../api/CourseSectionApi';
+import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
+import TextInputAtom from '../../atoms/text-input/textInput.atom';
+import CenteredBtnOrganism from '../centered-btn/centered-btn.molecules';
 interface ICourseSectionModalProps {
   courseId: string | undefined;
   data?: string;
@@ -24,13 +24,26 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
     watch,
     setValue,
   } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
   const [loading, setLoading] = useState(false);
-  const onSubmit = async (data: any) => {
+  console.log(data);
+
+  const onSubmit = async (formData: any) => {
     try {
       setLoading(true);
-      const res = await CourseSectionApi.createSection(courseId, data);
+      let res: any;
+      if (data?.title.length && data?.id.length) {
+        res = await CourseSectionApi.updateSection(
+          courseId,
+          data?.id,
+          formData
+        );
+        console.log('update');
+      } else {
+        res = await CourseSectionApi.createSection(courseId, formData);
+        console.log('create');
+      }
       message.success(res?.data?.message);
       setLoading(false);
     } catch (error) {
@@ -39,10 +52,14 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
     }
   };
 
+  useEffect(() => {
+    setValue('title', data.title || '');
+  }, [data, setValue]);
+
   return (
     <Modal open={open} onCancel={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
           <div className="input-group">
             <ParagraphAtom text="Enter the course title" />
             <Controller
@@ -50,7 +67,7 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
               control={control}
               render={({ field }) => (
                 <TextInputAtom
-                  placeholder={"Enter the course title"}
+                  placeholder={'Enter the course title'}
                   fieldValues={field}
                 />
               )}
@@ -63,11 +80,11 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
           </div>
           <CenteredBtnOrganism
             justify="center"
-            text="Create"
+            text={data?.title?.length && data?.id?.length ? 'Update' : 'Create'}
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             loading={loading}
           />
         </Space>
