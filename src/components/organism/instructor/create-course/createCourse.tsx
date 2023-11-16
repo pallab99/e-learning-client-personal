@@ -1,13 +1,14 @@
-import { Card, Space, Upload } from 'antd';
+import { Card, Space, Upload, message } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 import { Controller, useForm } from 'react-hook-form';
-import TextInputAtom from '../../../atoms/text-input/textInput.atom';
-import './createCourse.scss';
-import CenteredBtnOrganism from '../../../molecules/centered-btn/centered-btn.molecules';
+import { useNavigate } from 'react-router-dom';
+import CourseApi from '../../../../api/CourseApi';
 import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
 import { SelectField } from '../../../atoms/select-filed/selectField';
-import TextArea from 'antd/es/input/TextArea';
+import TextInputAtom from '../../../atoms/text-input/textInput.atom';
+import CenteredBtnOrganism from '../../../molecules/centered-btn/centered-btn.molecules';
 import InstructorDashboardSideBarOrganism from '../dashboard/sidebar/sidebar.organism';
-import CourseApi from '../../../../api/CourseApi';
+import './createCourse.scss';
 const { Dragger } = Upload;
 
 const CreateCourseOrganism = () => {
@@ -20,24 +21,16 @@ const CreateCourseOrganism = () => {
     mode: 'onChange',
   });
 
+  const navigate=useNavigate()
+
   const onSubmit = async (data: any) => {
     console.log(data);
-    const formData = new FormData();
-    formData.append('title', data.title);
-    formData.append('description', data.description);
-    formData.append('category', data.category);
-    formData.append('level', data.level);
-    formData.append('benefits', data.benefits);
-    formData.append('prerequisites', data.prerequisites);
-    formData.append('file_to_upload', data.thumbnail.file);
-    formData.append('file_to_upload', data.demovideo.file);
-    formData.append('tags', data.tags);
-
     try {
-      const res = await CourseApi.createCourse(formData);
-      console.log(res?.data);
+      const res = await CourseApi.createCourse(data);
+      message.success(res?.data?.message)
+      navigate("/instructor/courses")
     } catch (error: any) {
-      console.log(error?.response?.message);
+      message.error(error?.response?.message);
     }
   };
 

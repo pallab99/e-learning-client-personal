@@ -1,3 +1,4 @@
+//@ts-nocheck
 import type { TabsProps } from "antd";
 import { Space, Switch, Tabs } from "antd";
 import TextArea from "antd/es/input/TextArea";

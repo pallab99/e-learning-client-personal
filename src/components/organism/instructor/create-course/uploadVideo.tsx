@@ -1,36 +1,30 @@
-import { Card, Progress, Space, Upload } from 'antd';
-import { Controller, useForm } from 'react-hook-form';
-import TextInputAtom from '../../../atoms/text-input/textInput.atom';
-import './createCourse.scss';
-import CenteredBtnOrganism from '../../../molecules/centered-btn/centered-btn.molecules';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import { SelectField } from '../../../atoms/select-filed/selectField';
-import TextArea from 'antd/es/input/TextArea';
-import InstructorDashboardSideBarOrganism from '../dashboard/sidebar/sidebar.organism';
-import CourseApi from '../../../../api/CourseApi';
-import apiConfigs from '../../../../api/apiConfigs';
-import axios from 'axios';
-import { useState } from 'react';
+import { Card, Progress, Space, Upload } from "antd";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import apiConfigs from "../../../../api/apiConfigs";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import CenteredBtnOrganism from "../../../molecules/centered-btn/centered-btn.molecules";
+import "./createCourse.scss";
 const { Dragger } = Upload;
 
-const UploadCoursePromoVideo = () => {
+const UploadCoursePromoVideo = ({ courseId }: any) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
     watch,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
   });
 
   const [uploadProgress, setUploadProgress] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
   const onSubmit = async (data: any) => {
     const formData = new FormData();
-    formData.append('file_to_upload', data.promoVideo.file);
+    formData.append("file_to_upload", data.promoVideo.file);
     try {
       const res = await apiConfigs.http?.patch(
-        '/course/upload/demoVideo/6554f0c725b550d271b1e012',
+        `/course/upload/demoVideo/${courseId}`,
         formData,
         {
           onUploadProgress: (progressEvent: any) => {
@@ -61,17 +55,16 @@ const UploadCoursePromoVideo = () => {
 
   return (
     <div className="create-course-wrapper">
-      <InstructorDashboardSideBarOrganism></InstructorDashboardSideBarOrganism>
       <div className="create-course-form mb-40 mt-40">
-        <Card headStyle={{ fontSize: '30px' }} title="Create a new course">
+        <Card headStyle={{ fontSize: "30px" }} title="Upload promo video">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Space
               direction="vertical"
               size="middle"
-              style={{ display: 'flex' }}
+              style={{ display: "flex" }}
             >
               <div className="input-group">
-                <ParagraphAtom text="Select a appropriate thumbnail for this course" />
+                <ParagraphAtom text="Select a appropriate promo video for this course" />
                 <Controller
                   name="promoVideo"
                   control={control}
@@ -90,7 +83,7 @@ const UploadCoursePromoVideo = () => {
                         />
                       </p>
                       <ParagraphAtom
-                        text="Click or drag the thumbnail to this area to upload"
+                        text="Click or drag the promo video to this area to upload"
                         className="ant-upload-text"
                       ></ParagraphAtom>
                     </Dragger>
@@ -98,7 +91,7 @@ const UploadCoursePromoVideo = () => {
                 />
                 <ParagraphAtom
                   type="secondary"
-                  text="Select a thumbnail which will grab the learners attention"
+                  text="Select a promo video which will grab the learners attention"
                   className="mt-20 text-15"
                 />
               </div>

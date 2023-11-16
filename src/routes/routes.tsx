@@ -1,22 +1,21 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import UpdateCourseOrganism from '../components/organism/instructor/update-course/updateCourse';
-import NotFoundPage from '../components/pages/404/404.pages';
-import AllPublishedCoursePage from '../components/pages/admin/course/published/publishedCourse';
-import AllSubscriptionListPage from '../components/pages/admin/subscriptionList/subscriptionList';
-import AllAdminPage from '../components/pages/admin/user/admin/admin';
-import AllInstructorPage from '../components/pages/admin/user/instructor/instrctor';
-import AllStudentPage from '../components/pages/admin/user/student/students';
-import ForgetPasswordPage from '../components/pages/forget-password/forgetPassword.pages';
-import HeaderFooterLayout from '../components/pages/header-footer-layout/headerFooterLayout';
-import HomePage from '../components/pages/home/home';
-import CreateCoursePage from '../components/pages/instructors/course/create-course/createCourse';
-import InstructorDashboardPage from '../components/pages/instructors/dashboard/dashboard.page';
-import ProfilePage from '../components/pages/profile/profile';
-import ProfilePicturePage from '../components/pages/profile/profilePicture';
-import SignInPage from '../components/pages/signIn/signIn.pages';
-import SignUPPage from '../components/pages/signUp/signIp.pages';
-import UnauthorizedPage from '../components/pages/unauthorized/unauthorized';
-import UploadCoursePromoVideo from '../components/organism/instructor/create-course/uploadVideo';
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import NotFoundPage from "../components/pages/404/404.pages";
+import AllPublishedCoursePage from "../components/pages/admin/course/published/publishedCourse";
+import AllSubscriptionListPage from "../components/pages/admin/subscriptionList/subscriptionList";
+import AllAdminPage from "../components/pages/admin/user/admin/admin";
+import AllInstructorPage from "../components/pages/admin/user/instructor/instrctor";
+import AllStudentPage from "../components/pages/admin/user/student/students";
+import ForgetPasswordPage from "../components/pages/forget-password/forgetPassword.pages";
+import HeaderFooterLayout from "../components/pages/header-footer-layout/headerFooterLayout";
+import HomePage from "../components/pages/home/home";
+import CreateCoursePage from "../components/pages/instructors/course/create-course/createCourse";
+import UpdateCoursePage from "../components/pages/instructors/course/update-course/updateCourse";
+import InstructorDashboardPage from "../components/pages/instructors/dashboard/dashboard.page";
+import ProfilePage from "../components/pages/profile/profile";
+import ProfilePicturePage from "../components/pages/profile/profilePicture";
+import SignInPage from "../components/pages/signIn/signIn.pages";
+import SignUPPage from "../components/pages/signUp/signIp.pages";
+import UnauthorizedPage from "../components/pages/unauthorized/unauthorized";
 // import { lazy } from 'react';
 // const ProfilePage=lazy("../components/pages/profile/profile")
 const AllRoutes = () => {
@@ -86,10 +85,18 @@ const AllRoutes = () => {
           }
         />
         <Route
-          path="/instructor/course/promoVideo"
+          path="/instructor/course/landing-page/:courseId"
           element={
             <HeaderFooterLayout>
-              <UploadCoursePromoVideo />
+              <UpdateCoursePage />
+            </HeaderFooterLayout>
+          }
+        />
+        <Route
+          path="/instructor/course/section/:courseId"
+          element={
+            <HeaderFooterLayout>
+              <UpdateCoursePage />
             </HeaderFooterLayout>
           }
         />
@@ -97,7 +104,7 @@ const AllRoutes = () => {
           path="/instructor/course/update/:courseId"
           element={
             <HeaderFooterLayout>
-              <UpdateCourseOrganism />
+              <UpdateCoursePage />
             </HeaderFooterLayout>
           }
         />

@@ -1,4 +1,5 @@
 import { Card, Image, Progress } from "antd";
+import { Link } from "react-router-dom";
 import FlexAtom from "../../../../atoms/flex/flex.atom";
 import HeadingAtom from "../../../../atoms/heading/heading.atom";
 import "./courseCard.style.scss";
@@ -30,18 +31,20 @@ const CourseCardOrganism = ({ data }: any) => {
                   ellipsis={true}
                 ></HeadingAtom>
               </div>
-              <div className="card-right">
-                <HeadingAtom
-                  text="Finish your course"
-                  level={5}
-                  className="full-width"
-                ></HeadingAtom>
-                <Progress
-                  percent={40}
-                  showInfo={false}
-                  strokeColor="#8710d8"
-                ></Progress>
-              </div>
+              <Link to={`/instructor/course/update/${ele?._id}`}>
+                <div className="card-right">
+                  <HeadingAtom
+                    text="Finish your course"
+                    level={5}
+                    className="full-width"
+                  ></HeadingAtom>
+                  <Progress
+                    percent={40}
+                    showInfo={false}
+                    strokeColor="#8710d8"
+                  ></Progress>
+                </div>
+              </Link>
             </FlexAtom>
           </Card>
         </FlexAtom>

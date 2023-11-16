@@ -1,0 +1,19 @@
+.thumbnail-image-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .ant-image-img {
+    width: 50% !important;
+    height: 30%;
+    object-fit: cover;
+  }
+  .ant-image {
+    display: flex;
+    justify-content: center;
+  }
+}
+.thumbnail-image-div img {
+  width: 50%;
+  height: 30%;
+  object-fit: cover;
+}

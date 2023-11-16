@@ -1,14 +1,14 @@
-import { setProgress } from '../redux/slices/fileUploadProgressSlice';
-import { useAppDispatch } from '../redux/store';
-import Api from './apiConfigs';
+import Api from "./apiConfigs";
 
 class CourseApi {
   endPoints = {
-    getAllCourse: '/course/all',
-    courseByInstructor: '/course/all/instructor',
-    coursePublishRequest: '/course/publish-request',
-    createCourse: '/course/create',
-    uploadPromoVideo: '/course/upload/demoVideo/6554f0c725b550d271b1e012',
+    getAllCourse: "/course/all",
+    courseByInstructor: "/course/all/instructor",
+    coursePublishRequest: "/course/publish-request",
+    createCourse: "/course/create",
+    uploadPromoVideo: "/course/upload/demoVideo/6554f0c725b550d271b1e012",
+    getCourseById: "/course/getCourseById/",
+    updateCourseById: "/course/update/",
   };
   async getCourseByInstructor() {
     return await Api?.http?.get(this.endPoints.courseByInstructor);
@@ -37,6 +37,16 @@ class CourseApi {
     //     const percentCompleted = Math.floor((progressEvent?.loaded * 100) / progressEvent?.total);
     //     dispatch(setProgress({ fileId: 'yourFileId', progress: percentCompleted }))
     //   })
+  }
+
+  async getCourseById(courseId: string) {
+    const url = `${this.endPoints.getCourseById}${courseId}`;
+    return await Api?.http?.get(url);
+  }
+
+  async updateCourseById(courseId: string, data: any) {
+    const url = `${this.endPoints.updateCourseById}${courseId}`;
+    return await Api?.http?.patch(url, data);
   }
 }
 
