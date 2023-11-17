@@ -1,13 +1,10 @@
 .create-content-btn {
   display: flex;
-  justify-content: flex-end;
   gap: 0.3rem;
-}
-@media only screen and (max-width: 600px) {
-  .create-content-btn {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.3rem;
+  .ant-space-compact-block {
+    justify-content: flex-end;
   }
+}
+.ant-btn-link {
+  padding: 0px;
 }

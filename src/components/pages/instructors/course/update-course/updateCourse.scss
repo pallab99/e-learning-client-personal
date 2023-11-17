@@ -2,3 +2,12 @@
   display: flex;
   gap: 20px;
 }
+@media screen and (max-width: 600px) {
+  .tab-div {
+    flex-direction: column;
+  }
+}
+.ant-tabs-nav {
+  max-height: 50px;
+  overflow-x: auto;
+}
