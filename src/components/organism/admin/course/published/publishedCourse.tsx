@@ -12,6 +12,7 @@ import { SelectField } from '../../../../atoms/select-filed/selectField';
 import TableSkeletonAtom from '../../../../atoms/table-skeleton/tableSkeleton';
 import './publishedCourse.scss';
 import CourseApi from '../../../../../api/CourseApi';
+import { SelectFieldCustom } from '../../../../atoms/select-field-custom/selectFieldCustom';
 interface DataType {
   _id: number;
   title: string;
@@ -167,7 +168,8 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
   };
   const [renderBtn, setRenderBtn] = useState(false);
   const selectFieldOnchange = (e: any) => {
-    console.log(e);
+    console.log('onCancel');
+
     if (e === 'disable') {
       setSelectValue({ type: e });
     } else {
@@ -304,12 +306,12 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
             />
           </div>
           <div className="table-header-select">
-            <SelectField
+            <SelectFieldCustom
               values={selectValue}
-              onChange={selectFieldOnchange}
+              handleOnchange={selectFieldOnchange}
               defaultValue="All"
               placeholder="Select course type"
-            ></SelectField>
+            ></SelectFieldCustom>
           </div>
         </div>
         <Table

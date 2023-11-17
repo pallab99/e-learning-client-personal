@@ -201,21 +201,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
       },
     },
   ];
-  const selectValue = [
-    { value: 'all', label: 'All' },
-    { value: 'true', label: 'Published' },
-    { value: 'false', label: 'pending' },
-    { value: 'disable', label: 'Disabled' },
-  ];
 
-  const selectFieldOnchange = (e: any) => {
-    console.log(e);
-    if (e === 'disable') {
-      setSelectValue({ type: e });
-    } else {
-      setSelectValue({ type: 'verified', value: String(e) });
-    }
-  };
   const acceptRequest = async (subscriptionId: string, courseId: string) => {
     try {
       setBtnLoading1(true);
@@ -258,14 +244,6 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
               level={3}
               className="mb-30"
             />
-          </div>
-          <div className="table-header-select">
-            <SelectField
-              values={selectValue}
-              onChange={selectFieldOnchange}
-              defaultValue="All"
-              placeholder="Select course type"
-            ></SelectField>
           </div>
         </div>
         <Table
