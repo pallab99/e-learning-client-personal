@@ -60,3 +60,22 @@ body html {
 .ant-menu {
   border-inline-end: none;
 }
+
+// .hide {
+//   display: none;
+// }
+.ant-modal {
+  width: 70% !important;
+}
+
+@media only screen and (max-width: 640px) {
+  .ant-modal {
+    width: 98% !important;
+  }
+}
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) {
+  .ant-modal {
+    width: 90% !important;
+  }
+}
