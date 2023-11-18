@@ -4,12 +4,28 @@ import { Avatar, Divider, Rate } from 'antd';
 import HeadingAtom from '../../atoms/heading/heading.atom';
 import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
 import { EllipsisOutlined } from '@ant-design/icons';
+import ButtonAtom from '../../atoms/button/button.attom';
+import AddReviewModal from './add-review-modal/addReviewModal';
 const CourseReview = () => {
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
   return (
     <div className="course_review_main_Container">
       <div className="course_review_main_Container_header">
-        <Rate style={{ color: '#b4690e' }} count={1} value={1}></Rate>
-        <HeadingAtom text="4.7 course rating 337K ratings" level={4} />
+        <div className="course_review_header_rating">
+          <Rate style={{ color: '#b4690e' }} count={1} value={1}></Rate>
+          <HeadingAtom text="4.7 course rating 337K ratings" level={4} />
+        </div>
+        <ButtonAtom
+          text="Add Your Review"
+          type="primary"
+          handleButtonClick={handleOpenModal}
+        />
       </div>
       <div className="course_review_contents_container">
         <div className="course_review_contents_container_items">
@@ -261,6 +277,10 @@ const CourseReview = () => {
           </div>
         </div>
       </div>
+      <AddReviewModal
+        openModal={openModal}
+        closeModal={handleCloseModal}
+      ></AddReviewModal>
     </div>
   );
 };
