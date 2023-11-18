@@ -1,14 +1,16 @@
-import { Card, Collapse, Dropdown, MenuProps, Modal } from "antd";
-import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
-import { Link, useParams } from "react-router-dom";
-import useGetCourseSection from "../../../../../hooks/course-section/useGetCourseSection";
-import ButtonAtom from "../../../../atoms/button/button.attom";
-import HeadingAtom from "../../../../atoms/heading/heading.atom";
-import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
-import CourseContentMolecules from "../../../../molecules/course-content/courseContent";
-import CreateAssignmentMolecules from "../../../../molecules/course-content/create-assignment/createAssignment";
-import "./courseContent.scss";
+import { Card, Collapse, Dropdown, MenuProps, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
+import ReactPlayer from 'react-player';
+import { Link, useParams } from 'react-router-dom';
+import useGetCourseSection from '../../../../../hooks/course-section/useGetCourseSection';
+import ButtonAtom from '../../../../atoms/button/button.attom';
+import HeadingAtom from '../../../../atoms/heading/heading.atom';
+import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
+import CourseContentMolecules from '../../../../molecules/course-content/courseContent';
+import CreateAssignmentMolecules from '../../../../molecules/course-content/create-assignment/createAssignment';
+import './courseContent.scss';
+import CreateQuizModal from '../../../../molecules/course-content/create-quiz/createQuiz';
+import CourseContentSkeleton from '../../../../atoms/course-content skeleton/courseContentSkeleton';
 const CourseContent = () => {
   const { courseId } = useParams();
 
@@ -16,20 +18,20 @@ const CourseContent = () => {
 
   const items = [
     {
-      key: "1",
-      label: "Create Content",
+      key: '1',
+      label: 'Create Content',
     },
     {
-      key: "2",
-      label: "Create Assignment",
+      key: '2',
+      label: 'Create Assignment',
     },
     {
-      key: "3",
-      label: "Create Quiz",
+      key: '3',
+      label: 'Create Quiz',
     },
   ];
 
-  const [videoUrl, setVideoUrl] = React.useState("");
+  const [videoUrl, setVideoUrl] = React.useState('');
   const [isVideoModalVisible, setIsVideoModalVisible] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const handleOpenVideoModal = (url: string) => {
@@ -42,9 +44,9 @@ const CourseContent = () => {
     setIsVideoModalVisible(false);
     setIsPlaying(false);
   };
-  const [videoPlayerClassName, setVideoPlayerClassName] = useState("");
+  const [videoPlayerClassName, setVideoPlayerClassName] = useState('');
   useEffect(() => {
-    setVideoPlayerClassName("react-player");
+    setVideoPlayerClassName('react-player');
   }, [isVideoModalVisible]);
 
   const accordionItems = data?.data?.map((section: any) => {
@@ -66,8 +68,6 @@ const CourseContent = () => {
                   text="Preview"
                 />
               ) : (
-                //  { console.log(content.contentUrl)}
-
                 <Link to={content.contentUrl}>Preview</Link>
               )}
               {content?.contentLength > 0 && (
@@ -99,11 +99,20 @@ const CourseContent = () => {
     setOpenModal(false);
   };
   const [openAssignmentModal, setOpenAssignmentModal] = React.useState(false);
+  const [openQuizModal, setOpenQuizModal] = React.useState(false);
+
   const handleOpenAssignmentModal = () => {
     setOpenAssignmentModal(true);
   };
   const handleCloseAssignmentModal = () => {
     setOpenAssignmentModal(false);
+  };
+
+  const handleOpenQuizModal = () => {
+    setOpenQuizModal(true);
+  };
+  const handleCloseQuizModal = () => {
+    setOpenQuizModal(false);
   };
 
   const sectionData = data?.data?.map((ele: any) => {
@@ -113,11 +122,13 @@ const CourseContent = () => {
     };
   });
 
-  const onMenuClick: MenuProps["onClick"] = (e) => {
-    if (e.key === "1") {
+  const onMenuClick: MenuProps['onClick'] = (e) => {
+    if (e.key === '1') {
       handleOpenModal();
-    } else if (e.key === "2") {
+    } else if (e.key === '2') {
       handleOpenAssignmentModal();
+    } else if (e.key === '3') {
+      handleOpenQuizModal();
     }
   };
   return (
@@ -128,7 +139,17 @@ const CourseContent = () => {
             Actions
           </Dropdown.Button>
         </div>
-        <Collapse accordion items={accordionItems} />
+        {loading ? (
+          <CourseContentSkeleton></CourseContentSkeleton>
+        ) : (
+          <div className="accordion-div mt-20">
+            <Collapse
+              defaultActiveKey={accordionItems && accordionItems[0]?.key}
+              accordion
+              items={accordionItems}
+            />
+          </div>
+        )}
         <CourseContentMolecules
           open={openModal}
           onClose={handleCloseModal}
@@ -141,6 +162,13 @@ const CourseContent = () => {
           sectionData={sectionData}
           courseId={courseId}
         ></CreateAssignmentMolecules>
+
+        <CreateQuizModal
+          open={openQuizModal}
+          onClose={handleCloseQuizModal}
+          sectionData={sectionData}
+          courseId={courseId}
+        ></CreateQuizModal>
         <Modal
           open={isVideoModalVisible}
           onCancel={() => {

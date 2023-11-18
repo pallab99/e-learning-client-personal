@@ -1,5 +1,4 @@
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, Modal, Space, Upload, message } from 'antd';
+import { Modal, Space, message } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import useCreateCourseContent from '../../../hooks/course-content/useCreateCourseContent';

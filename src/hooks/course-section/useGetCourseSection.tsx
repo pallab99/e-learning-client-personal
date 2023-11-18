@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import CourseSectionApi from "../../api/CourseSectionApi";
+import { useEffect, useState } from 'react';
+import CourseSectionApi from '../../api/CourseSectionApi';
 
 const useGetCourseSection = (courseId: string, recallApi?: number) => {
   const [data, setData] = useState<object>({});

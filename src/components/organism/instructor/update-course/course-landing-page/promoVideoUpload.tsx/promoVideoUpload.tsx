@@ -8,6 +8,7 @@ import useGetCourseById from '../../../../../../hooks/course/useGetCourseById';
 import ParagraphAtom from '../../../../../atoms/paragraph/paragraph.atom';
 import CenteredBtnOrganism from '../../../../../molecules/centered-btn/centered-btn.molecules';
 import './promoVideo.scss';
+import CourseContentSkeleton from '../../../../../atoms/course-content skeleton/courseContentSkeleton';
 // import "./createCourse.scss";
 
 const UploadPromoVideo = ({ courseId }: any) => {
@@ -72,72 +73,76 @@ const UploadPromoVideo = ({ courseId }: any) => {
   return (
     <div className="create-course-wrapper">
       <div className="create-course-form mb-40 mt-40">
-        <Card headStyle={{ fontSize: '24px' }} title="Upload promo video">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Space
-              direction="vertical"
-              size="middle"
-              style={{ display: 'flex' }}
-            >
-              <div className="input-group">
-                <ParagraphAtom text="Select a appropriate thumbnail for this course" />
-                <Controller
-                  name="promoVideo"
-                  control={control}
-                  render={({ field }) => (
-                    <Upload
-                      listType="picture"
-                      beforeUpload={(file) => beforeUpload(file)}
-                      onRemove={() => {
-                        setFile(null);
-                      }}
-                      maxCount={1}
-                      style={{ width: '100%' }}
-                      {...field}
-                    >
-                      <Button
+        {loading ? (
+          <CourseContentSkeleton></CourseContentSkeleton>
+        ) : (
+          <Card headStyle={{ fontSize: '24px' }} title="Upload promo video">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Space
+                direction="vertical"
+                size="middle"
+                style={{ display: 'flex' }}
+              >
+                <div className="input-group">
+                  <ParagraphAtom text="Select a appropriate thumbnail for this course" />
+                  <Controller
+                    name="promoVideo"
+                    control={control}
+                    render={({ field }) => (
+                      <Upload
+                        listType="picture"
+                        beforeUpload={(file) => beforeUpload(file)}
+                        onRemove={() => {
+                          setFile(null);
+                        }}
+                        maxCount={1}
                         style={{ width: '100%' }}
-                        icon={<UploadOutlined />}
+                        {...field}
                       >
-                        Upload (Max: 1)
-                      </Button>
-                      <ParagraphAtom
-                        text="Click or drag the thumbnail to this area to upload"
-                        className="ant-upload-text"
-                      ></ParagraphAtom>
-                    </Upload>
+                        <Button
+                          style={{ width: '100%' }}
+                          icon={<UploadOutlined />}
+                        >
+                          Upload (Max: 1)
+                        </Button>
+                        <ParagraphAtom
+                          text="Click or drag the thumbnail to this area to upload"
+                          className="ant-upload-text"
+                        ></ParagraphAtom>
+                      </Upload>
+                    )}
+                  />
+                  {data?.data?.demoVideo && (
+                    <div className="player-wrapper mt-20" ref={videoRef}>
+                      <ReactPlayer
+                        url={data?.data?.demoVideo}
+                        controls
+                        className={playerClass}
+                      />
+                    </div>
                   )}
+                  <ParagraphAtom
+                    type="secondary"
+                    text="Select a thumbnail which will grab the learners attention"
+                    className="mt-20 text-15"
+                  />
+                  {uploadProgress && btnLoading && (
+                    <Progress percent={uploadProgress}></Progress>
+                  )}
+                </div>
+                <CenteredBtnOrganism
+                  justify="center"
+                  text="Upload video"
+                  type="primary"
+                  htmlType="submit"
+                  size="large"
+                  loading={btnLoading}
+                  disabled={file ? false : true}
                 />
-                {data?.data?.demoVideo && (
-                  <div className="player-wrapper mt-20" ref={videoRef}>
-                    <ReactPlayer
-                      url={data?.data?.demoVideo}
-                      controls
-                      className={playerClass}
-                    />
-                  </div>
-                )}
-                <ParagraphAtom
-                  type="secondary"
-                  text="Select a thumbnail which will grab the learners attention"
-                  className="mt-20 text-15"
-                />
-                {uploadProgress && btnLoading && (
-                  <Progress percent={uploadProgress}></Progress>
-                )}
-              </div>
-              <CenteredBtnOrganism
-                justify="center"
-                text="Upload video"
-                type="primary"
-                htmlType="submit"
-                size="large"
-                loading={btnLoading}
-                disabled={file ? false : true}
-              />
-            </Space>
-          </form>
-        </Card>
+              </Space>
+            </form>
+          </Card>
+        )}
       </div>
     </div>
   );
