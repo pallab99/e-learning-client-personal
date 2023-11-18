@@ -24,7 +24,7 @@ const AddReviewModal = ({ openModal, closeModal }: any) => {
     <div className="addReviewModal">
       <Modal open={openModal} onCancel={closeModal} footer={null}>
         <form onSubmit={handleSubmit(onSubmit)} className=" mt-40">
-          <HeadingAtom text="Rate this course" level={2} />
+          <HeadingAtom text="Rate this course" level={3} />
           <div className="input-group justify-center mb-30">
             <Controller
               name="rating"
