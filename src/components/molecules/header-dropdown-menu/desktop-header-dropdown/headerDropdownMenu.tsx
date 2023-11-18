@@ -1,37 +1,59 @@
-import { UserOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Avatar, Dropdown } from "antd";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import { UserOutlined } from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import { Avatar, Dropdown, message } from 'antd';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
+import AuthApi from '../../../../api/AuthApi';
+import { useAppDispatch } from '../../../../redux/store';
+import { logOut } from '../../../../redux/slices/authSlice';
 
-const items: MenuProps["items"] = [
-  {
-    label: (
-      <Link to={"/profile/basic-information"}>
-        <ParagraphAtom text="profile"></ParagraphAtom>
-      </Link>
-    ),
-    key: "0",
-  },
-  {
-    label: (
-      <ParagraphAtom
-        text="cart"
-        className="text-18 cursor-pointer"
-      ></ParagraphAtom>
-    ),
-    key: "1",
-  },
-  {
-    type: "divider",
-  },
-  {
-    label: "3rd menu item",
-    key: "3",
-  },
-];
 const DesktopHeaderDropdownMenuMolecules = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const logout = async () => {
+    try {
+      const res = await AuthApi.logOut();
+      message.success(res?.data.message);
+      dispatch(logOut());
+      navigate('/log-in');
+    } catch (error: any) {
+      message.error(error.response.message);
+    }
+  };
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <Link to={'/profile/basic-information'}>
+          <ParagraphAtom text="profile"></ParagraphAtom>
+        </Link>
+      ),
+      key: '0',
+    },
+    {
+      label: (
+        <ParagraphAtom
+          text="cart"
+          className="text-18 cursor-pointer"
+        ></ParagraphAtom>
+      ),
+      key: '1',
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: (
+        <ParagraphAtom
+          text="Logout"
+          className="text-18 cursor-pointer"
+          type="danger"
+          handleOnClick={logout}
+        ></ParagraphAtom>
+      ),
+      key: '3',
+    },
+  ];
   const [visible, setVisible] = useState(false);
 
   const handleVisibleChange = (flag: boolean) => {
@@ -43,7 +65,7 @@ const DesktopHeaderDropdownMenuMolecules = () => {
       menu={{ items }}
       open={visible}
       onOpenChange={handleVisibleChange}
-      trigger={["hover"]}
+      trigger={['hover']}
     >
       <Avatar size={30} icon={<UserOutlined />} className="cursor-pointer" />
     </Dropdown>

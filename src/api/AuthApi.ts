@@ -1,14 +1,14 @@
-import { ILogin } from "../types/loginData";
-import Api from "./apiConfigs";
+import { ILogin } from '../types/loginData';
+import Api from './apiConfigs';
 
 class AuthApi {
   endPoints = {
-    signIn: "/auth/sign-in",
-    signUp: "/auth/sign-up",
-    verifyAccount: "/auth/verify-account",
-    logOut: "/auth/logOut",
-    resetPasswordRequest: "/auth/sendEmailForResetPassword",
-    resetPassword: "/auth/reset-password",
+    signIn: '/auth/sign-in',
+    signUp: '/auth/sign-up',
+    verifyAccount: '/auth/verify-account',
+    logOut: '/auth/logOut',
+    resetPasswordRequest: '/auth/sendEmailForResetPassword',
+    resetPassword: '/auth/reset-password',
   };
   async signIn(data: ILogin) {
     return await Api?.http?.post(this.endPoints.signIn, data);

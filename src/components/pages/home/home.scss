@@ -1,32 +1,24 @@
-.home-page-div {
+  // .pageWrapper {
+  //   color: red;
+  // }
+
+.Banner {
   max-width: 1300px;
   margin: 0 auto;
 }
-.course-card-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-gap: 10px;
-  .ant-card-body {
-    padding: 0;
-  }
-  .ant-card {
-    box-shadow: 0;
-  }
-}
-.course-card-wrapper img {
+
+.Banner img {
   width: 100%;
-  height: 50%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
+  object-position: initial;
 }
-.card-overlay {
-  display: none;
-  position: absolute;
-}
-.single-card {
-  position: relative;
-}
-.single-card:hover {
-  .card-overlay {
-    display: block;
+
+@media only screen and (max-width: 1100px) {
+  .Banner {
+    padding-right: 0rem;
+    padding-left: 0rem;
+    margin-right: 2.5rem;
+    margin-left: 2.5rem;
   }
 }

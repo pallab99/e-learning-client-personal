@@ -17,15 +17,7 @@ export const authSlice = createSlice({
       state.userData = action.payload;
     },
     logOut: (state) => {
-      state.userData = {
-        id: '',
-        email: '',
-        name: '',
-        phoneNumber: '',
-        rank: 0,
-        accessToken: '',
-        refreshToken: '',
-      };
+      state.userData = {} as IUserLoginData;
     },
     recallUserApi: (state) => {
       state.cnt += 1;

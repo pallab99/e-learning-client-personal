@@ -40,6 +40,15 @@ const AllRoutes = () => {
         />
 
         <Route
+          path="/"
+          element={
+            <HeaderFooterLayout>
+              <HomePage />
+            </HeaderFooterLayout>
+          }
+        />
+
+        <Route
           path="/log-in"
           element={
             <HeaderFooterLayout>
