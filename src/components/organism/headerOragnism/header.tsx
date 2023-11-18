@@ -46,10 +46,10 @@ const HeaderOrganism = () => {
           </Link>
           <ParagraphAtom text="Categories" className="text-18 cursor-pointer" />
           <HeaderSearchBarMolecules />
-          <ParagraphAtom
+          {/* <ParagraphAtom
             text="udemy Business"
             className="text-18 cursor-pointer"
-          />
+          /> */}
 
           <ParagraphAtom text="Instructor" className="text-18 cursor-pointer" />
           <ParagraphAtom
