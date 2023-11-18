@@ -16,6 +16,7 @@ import ProfilePicturePage from '../components/pages/profile/profilePicture';
 import SignInPage from '../components/pages/signIn/signIn.pages';
 import SignUPPage from '../components/pages/signUp/signIp.pages';
 import UnauthorizedPage from '../components/pages/unauthorized/unauthorized';
+import CourseDetailsPage from '../components/pages/course-details/courseDetailsPage';
 // import { lazy } from 'react';
 // const ProfilePage=lazy("../components/pages/profile/profile")
 const AllRoutes = () => {
@@ -38,16 +39,14 @@ const AllRoutes = () => {
             </HeaderFooterLayout>
           }
         />
-
         <Route
-          path="/"
+          path="/course/:courseId"
           element={
             <HeaderFooterLayout>
-              <HomePage />
+              <CourseDetailsPage />
             </HeaderFooterLayout>
           }
         />
-
         <Route
           path="/log-in"
           element={

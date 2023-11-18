@@ -1,15 +1,15 @@
-import { Image } from "antd";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import useGetCartByUser from "../../../hooks/cart/useGetUserCart";
-import IconAtom from "../../atoms/icon/icon.atom";
-import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
-import CartDrawerMolecules from "../../molecules/cart-drawer/cartDrawerMolecules";
-import DesktopHeaderDropdownMenuMolecules from "../../molecules/header-dropdown-menu/desktop-header-dropdown/headerDropdownMenu";
-import MobileHeaderDropdownMenuMolecules from "../../molecules/header-dropdown-menu/mobile-header-dropdown/headerDropdownMenu";
-import HeaderSearchBarMolecules from "../../molecules/header-search-bar/headerSearchBar";
-import WishlistDrawerMolecules from "../../molecules/wishlist-drawer/wishlistDrawerMolecules";
-import "./header.scss";
+import { Image } from 'antd';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import useGetCartByUser from '../../../hooks/cart/useGetUserCart';
+import IconAtom from '../../atoms/icon/icon.atom';
+import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
+import CartDrawerMolecules from '../../molecules/cart-drawer/cartDrawerMolecules';
+import DesktopHeaderDropdownMenuMolecules from '../../molecules/header-dropdown-menu/desktop-header-dropdown/headerDropdownMenu';
+import MobileHeaderDropdownMenuMolecules from '../../molecules/header-dropdown-menu/mobile-header-dropdown/headerDropdownMenu';
+import HeaderSearchBarMolecules from '../../molecules/header-search-bar/headerSearchBar';
+import WishlistDrawerMolecules from '../../molecules/wishlist-drawer/wishlistDrawerMolecules';
+import './header.scss';
 
 const HeaderOrganism = () => {
   const [recallApi, setRecallApi] = useState(false);
@@ -35,7 +35,7 @@ const HeaderOrganism = () => {
     <>
       <div className="desktop-header-div">
         <div className="desktop-header-wrapper">
-          <Link to={"/"}>
+          <Link to={'/'}>
             <Image
               height={60}
               width={80}
@@ -46,6 +46,11 @@ const HeaderOrganism = () => {
           </Link>
           <ParagraphAtom text="Categories" className="text-18 cursor-pointer" />
           <HeaderSearchBarMolecules />
+          <ParagraphAtom
+            text="udemy Business"
+            className="text-18 cursor-pointer"
+          />
+
           <ParagraphAtom text="Instructor" className="text-18 cursor-pointer" />
           <ParagraphAtom
             text="My Learning"
@@ -59,9 +64,9 @@ const HeaderOrganism = () => {
           <WishlistDrawerMolecules
             open={openWishlistDrawer}
             onClose={handleCloseWishlistDrawer}
-            key={"right"}
+            key={'right'}
             isMobile={isMobile}
-            placement={isMobile ? "bottom" : "right"}
+            placement={isMobile ? 'bottom' : 'right'}
             setRecallApi={setRecallApi}
             cartLoading={loading}
           />
@@ -79,9 +84,9 @@ const HeaderOrganism = () => {
           <CartDrawerMolecules
             open={openCartDrawer}
             onClose={handleCloseCartDrawer}
-            key={"right"}
+            key={'right'}
             isMobile={isMobile}
-            placement={isMobile ? "bottom" : "right"}
+            placement={isMobile ? 'bottom' : 'right'}
             cartData={data}
             setRecallApi={setRecallApi}
             cartLoading={loading}
@@ -91,7 +96,7 @@ const HeaderOrganism = () => {
       </div>
       <div className="mobile-header-div">
         <div className="mobile-header-wrapper">
-          <Link to={"/"}>
+          <Link to={'/'}>
             <Image
               height={60}
               width={80}

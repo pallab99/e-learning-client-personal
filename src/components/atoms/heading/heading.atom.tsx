@@ -8,6 +8,7 @@ interface HeadingAtomProps {
   type?: BaseType;
   className?: string;
   ellipsis?: boolean;
+  style?: any;
 }
 const HeadingAtom = ({
   text,
@@ -15,9 +16,16 @@ const HeadingAtom = ({
   type,
   className,
   ellipsis,
+  style,
 }: HeadingAtomProps) => {
   return (
-    <Title level={level} type={type} className={className} ellipsis={ellipsis}>
+    <Title
+      level={level}
+      type={type}
+      className={className}
+      ellipsis={ellipsis}
+      style={style}
+    >
       {text}
     </Title>
   );

@@ -1,0 +1,35 @@
+.course_details_what_you_will_learn_main_container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  .anticon {
+    align-items: flex-start !important;
+  }
+}
+.course_details_what_you_will_learn_container_two_column_layout {
+  display: flex;
+  //   flex-flow: wrap;
+  gap: 2rem;
+}
+.course_details_what_you_will_learn_container_column1_content_list {
+  display: flex;
+  gap: 1rem;
+}
+.course_details_what_you_will_learn_container_column2_content_list {
+  display: flex;
+  gap: 1rem;
+}
+@media only screen and (max-width: 660px) {
+  .course_details_what_you_will_learn_container_two_column_layout {
+    flex-direction: column;
+    gap: 0rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .course_details_what_you_will_learn_container_two_column_layout {
+    flex-direction: column;
+    gap: 0rem;
+  }
+}
