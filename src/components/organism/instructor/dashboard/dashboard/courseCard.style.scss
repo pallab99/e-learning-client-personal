@@ -1,12 +1,17 @@
 .course-card {
-  .ant-card .ant-card-bordered {
-    display: flex;
-    width: 100% !important;
-    background-color: red;
-  }
+  // .ant-card .ant-card-bordered {
+  //   display: flex;
+  //   width: 100% !important;
+  //   background-color: red;
+  // }
   .ant-card-body {
     padding: 0px;
   }
+}
+.course-card-div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8rem;
 }
 .card-left {
   display: flex;
@@ -25,7 +30,7 @@
   //   justify-content: center;
   align-items: center;
   gap: 6%;
-  flex-basis: 69%;
+  // flex-basis: 69%;
   padding: 0px 1rem;
 }
 .overlay {
@@ -47,8 +52,19 @@
     left: 40rem;
   }
 }
+@media only screen and (max-width: 768px) {
+  .course-card-div {
+    gap: 1rem;
+  }
+  .card-left {
+    flex-basis: 40%;
+  }
+}
 @media only screen and (max-width: 600px) {
   .card-right {
     display: none;
+  }
+  .card-left {
+    flex-basis: 100%;
   }
 }

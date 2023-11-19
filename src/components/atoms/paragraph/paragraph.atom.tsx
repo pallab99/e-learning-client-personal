@@ -1,7 +1,7 @@
-import { Typography } from "antd";
-import { BaseType } from "antd/es/typography/Base";
+import { Typography } from 'antd';
+import { BaseType } from 'antd/es/typography/Base';
 // import './heading.style.scss';
-import React from "react";
+import React from 'react';
 const { Paragraph } = Typography;
 interface ParagraphAtomProps {
   text?: string;

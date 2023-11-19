@@ -1,12 +1,12 @@
-import { Card, Image, Progress } from "antd";
-import { Link } from "react-router-dom";
-import FlexAtom from "../../../../atoms/flex/flex.atom";
-import HeadingAtom from "../../../../atoms/heading/heading.atom";
-import "./courseCard.style.scss";
+import { Card, Image, Progress } from 'antd';
+import { Link } from 'react-router-dom';
+import FlexAtom from '../../../../atoms/flex/flex.atom';
+import HeadingAtom from '../../../../atoms/heading/heading.atom';
+import './courseCard.style.scss';
+import { useMediaQuery } from 'react-responsive';
 
 const CourseCardOrganism = ({ data }: any) => {
-  // console.log(data[3].thumbnail);
-
+  const isMobile = useMediaQuery({ query: '(max-width: 668px)' });
   return (
     <>
       {data?.map((ele: any) => (
@@ -16,8 +16,8 @@ const CourseCardOrganism = ({ data }: any) => {
           class="mt-20 cursor-pointer card-hover"
           key={ele._id}
         >
-          <Card className="course-card" style={{ width: "100%" }}>
-            <FlexAtom gap="large" align="center">
+          <Card className="course-card" style={{ width: '100%' }}>
+            <div className="course-card-div">
               <div className="card-left">
                 <Image
                   src={ele?.thumbnail}
@@ -34,18 +34,13 @@ const CourseCardOrganism = ({ data }: any) => {
               <Link to={`/instructor/course/update/${ele?._id}`}>
                 <div className="card-right">
                   <HeadingAtom
-                    text="Finish your course"
+                    text={ele.sub_title}
                     level={5}
                     className="full-width"
                   ></HeadingAtom>
-                  <Progress
-                    percent={40}
-                    showInfo={false}
-                    strokeColor="#8710d8"
-                  ></Progress>
                 </div>
               </Link>
-            </FlexAtom>
+            </div>
           </Card>
         </FlexAtom>
       ))}
