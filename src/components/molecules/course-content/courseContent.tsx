@@ -1,4 +1,5 @@
-import { Modal, Space, message } from 'antd';
+//@ts-nocheck
+import { Button, Modal, Space, Upload, message } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import useCreateCourseContent from '../../../hooks/course-content/useCreateCourseContent';
@@ -10,6 +11,12 @@ import { InputField } from '../input-field-controller/inputFieldController';
 import UploadMolecules from '../upload/uploadMolecules';
 import { ReactMediaRecorder } from 'react-media-recorder-2';
 import ReactPlayer from 'react-player';
+import AlertAtom from '../../atoms/alert/alertAtom';
+import TextInputAtom from '../../atoms/text-input/textInput.atom';
+import { zodResolver } from '@hookform/resolvers/zod';
+import CourseContentSchema from '../../../schema/course/courseContent';
+import { UploadOutlined } from '@ant-design/icons';
+import ButtonAtom from '../../atoms/button/button.attom';
 const VideoPreview = ({ stream }: { stream: MediaStream | null }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
@@ -54,28 +61,33 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
     setValue,
   } = useForm({
     mode: 'onChange',
+    resolver: zodResolver(CourseContentSchema),
   });
   const { loading, createCourseContent } = useCreateCourseContent();
   const [contentType, setContentType] = useState('');
   const [recordFile, setRecordedFile] = useState();
-
+  const [fileList, setFileList] = useState([]);
+  const [file, setFile] = useState(null);
   const onSubmit = async (contentData: any) => {
-    console.log('recorded', recordFile);
+    console.log('recorded', file);
 
     const formData = new FormData();
     formData.append('title', contentData?.title);
-    // formData.append('file_to_upload', contentData?.content?.file);
-    formData.append('file_to_upload', recordFile);
-    for (const value of formData.values()) {
-      console.log('video', value);
+    if (contentType === 'file') {
+      console.log('file');
+      formData.append('file_to_upload', file);
+    } else {
+      formData.append('file_to_upload', recordFile);
+    }
+    // formData.append()
+    for (const pair of formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1]);
     }
     // await createCourseContent(courseId, contentData?.sectionId, formData);
     // if (!loading) {
     //   onClose();
     // }
   };
-  const [fileList, setFileList] = useState([]);
-  const [file, setFile] = useState(null);
 
   const beforeUpload = (file: File) => {
     const allowedTypes = [
@@ -114,12 +126,26 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
     <Modal open={open} onCancel={onClose} footer={null}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-          <InputField
-            name="title"
-            control={control}
-            text="* Enter the content title"
-          ></InputField>
-
+          <div className="input-group">
+            <ParagraphAtom text="Enter the course title" />
+            <Controller
+              name="title"
+              control={control}
+              render={({ field }) => (
+                <TextInputAtom
+                  placeholder={'Enter the course title'}
+                  fieldValues={field}
+                />
+              )}
+            />
+            {errors?.title && (
+              <AlertAtom
+                message={errors?.title?.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
+          </div>
           <div className="input-group">
             <ParagraphAtom text="* Select the content type" />
             <SelectFieldCustom
@@ -139,11 +165,27 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
                 name="content"
                 control={control}
                 render={({ field }) => (
-                  <UploadMolecules
-                    setFile={setFile}
-                    beforeUpload={beforeUpload}
-                    field={field}
-                  />
+                  <Upload
+                    listType="picture"
+                    beforeUpload={(file) => {
+                      setFile(file);
+                      return beforeUpload(file);
+                    }}
+                    onRemove={() => {
+                      setFile(null);
+                    }}
+                    maxCount={1}
+                    style={{ width: '100%' }}
+                    {...field}
+                  >
+                    <Button
+                      style={{ width: '100%' }}
+                      icon={<UploadOutlined />}
+                      size="large"
+                    >
+                      Upload (Max: 1)
+                    </Button>
+                  </Upload>
                 )}
               />
             </div>
@@ -163,29 +205,27 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
                   stopRecording,
                   mediaBlobUrl,
                 }) => {
-                  console.log(previewStream);
                   return (
-                    <div>
-                      <p>{status}</p>
-                      <button
-                        type="button"
-                        onClick={() => {
+                    <div className="mt-10 mb-20">
+                      <ParagraphAtom text={status}></ParagraphAtom>
+                      <ButtonAtom
+                        text="Start Recording"
+                        type="default"
+                        handleButtonClick={() => {
                           startRecording();
                           setEnable(true);
                         }}
-                      >
-                        Start Recording
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
+                      />
+                      <ButtonAtom
+                        text="Stop Recording"
+                        type="default"
+                        handleButtonClick={() => {
                           stopRecording();
                           setEnable(false);
                           uploadVideo(mediaBlobUrl);
                         }}
-                      >
-                        Stop Recording
-                      </button>
+                        className="mb-20"
+                      />
 
                       {!enable && (
                         <ReactPlayer
@@ -216,6 +256,13 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
                 />
               )}
             />
+            {errors?.sectionId?.message && (
+              <AlertAtom
+                message={errors?.sectionId?.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
           </div>
           <CenteredBtnOrganism
             justify="center"

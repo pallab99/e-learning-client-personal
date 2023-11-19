@@ -10,6 +10,11 @@ import { SelectField } from '../../../atoms/select-filed/selectField';
 import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
 import { InputField } from '../../input-field-controller/inputFieldController';
 import UploadMolecules from '../../upload/uploadMolecules';
+import { zodResolver } from '@hookform/resolvers/zod';
+import CourseContentSchema from '../../../../schema/course/courseContent';
+import AlertAtom from '../../../atoms/alert/alertAtom';
+import TextInputAtom from '../../../atoms/text-input/textInput.atom';
+import createAssignmentSchema from '../../../../schema/course/createAssignment';
 
 interface ICourseContentModalProps {
   courseId?: string | undefined;
@@ -17,6 +22,7 @@ interface ICourseContentModalProps {
   open: boolean;
   sectionData: any;
   onClose: any;
+  recallApi?: any;
 }
 
 const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
@@ -25,6 +31,7 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
   open,
   onClose,
   sectionData,
+  recallApi,
 }) => {
   const {
     handleSubmit,
@@ -34,6 +41,17 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
     setValue,
   } = useForm({
     mode: 'onChange',
+    defaultValues: {
+      title: '',
+      description: '',
+      instructions: '',
+      point: '',
+      sectionId: '',
+      content: {
+        file: null,
+      },
+    },
+    resolver: zodResolver(createAssignmentSchema),
   });
   const { loading, createAssignment } = useCreateCourseAssignment();
   const onSubmit = async (contentData: any) => {
@@ -48,6 +66,7 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
     await createAssignment(courseId, contentData.sectionId, formData);
     if (!loading) {
       onClose();
+      recallApi(Math.random());
     }
   };
   const [fileList, setFileList] = useState([]);
@@ -80,26 +99,91 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
     <Modal open={open} onCancel={onClose} footer={null}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-          <InputField
-            name="title"
-            control={control}
-            text="* Enter the assignment title"
-          />
-          <InputField
-            name="description"
-            control={control}
-            text="* Enter the assignment description"
-          />
-          <InputField
-            name="instructions"
-            control={control}
-            text="* Enter the assignment instructions"
-          />
-          <InputField
-            name="point"
-            control={control}
-            text="* Enter the assignment point"
-          />
+          <div className="input-group mb-20">
+            <ParagraphAtom text={'Enter the Assignment title'} />
+            <Controller
+              name="title"
+              control={control}
+              render={({ field }) => (
+                <TextInputAtom
+                  placeholder="Enter the Assignment title"
+                  size="large"
+                  fieldValues={field}
+                />
+              )}
+            />
+            {errors?.title?.message && (
+              <AlertAtom
+                message={errors?.title?.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
+          </div>
+          <div className="input-group mb-20">
+            <ParagraphAtom text={'Enter the Assignment description'} />
+            <Controller
+              name={'description'}
+              control={control}
+              render={({ field }) => (
+                <TextInputAtom
+                  placeholder="Enter the Assignment description"
+                  size="large"
+                  fieldValues={field}
+                />
+              )}
+            />
+            {errors?.description && (
+              <AlertAtom
+                message={errors.description.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
+          </div>
+
+          <div className="input-group mb-20">
+            <ParagraphAtom text={'Enter the Assignment instructions'} />
+            <Controller
+              name={'instructions'}
+              control={control}
+              render={({ field }) => (
+                <TextInputAtom
+                  placeholder="Enter the Assignment instructions"
+                  size="large"
+                  fieldValues={field}
+                />
+              )}
+            />
+            {errors?.instructions && (
+              <AlertAtom
+                message={errors.instructions.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
+          </div>
+          <div className="input-group mb-20">
+            <ParagraphAtom text={'Enter the Assignment point'} />
+            <Controller
+              name={'point'}
+              control={control}
+              render={({ field }) => (
+                <TextInputAtom
+                  placeholder="Enter the Assignment point"
+                  size="large"
+                  fieldValues={field}
+                />
+              )}
+            />
+            {errors?.point && (
+              <AlertAtom
+                message={errors.point.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
+          </div>
 
           <div className="input-group">
             <ParagraphAtom text="Select a appropriate lesson for this section" />
@@ -107,12 +191,27 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
               name="content"
               control={control}
               render={({ field }) => (
-                <UploadMolecules
-                  setFile={setFile}
-                  beforeUpload={beforeUpload}
-                  field={field}
-                  // heading="Choose the appropriate file"
-                />
+                <Upload
+                  listType="picture"
+                  beforeUpload={(file) => {
+                    setFile(file);
+                    return beforeUpload(file);
+                  }}
+                  onRemove={() => {
+                    setFile(null);
+                  }}
+                  maxCount={1}
+                  style={{ width: '100%' }}
+                  {...field}
+                >
+                  <Button
+                    style={{ width: '100%' }}
+                    icon={<UploadOutlined />}
+                    size="large"
+                  >
+                    Upload (Max: 1)
+                  </Button>
+                </Upload>
               )}
             />
           </div>
@@ -125,12 +224,19 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
               render={({ field }) => (
                 <SelectField
                   values={sectionData}
-                  placeholder={'Select the section'}
+                  placeholder="Select the section"
                   fieldValues={field}
                   size="large"
                 />
               )}
             />
+            {errors?.sectionId && (
+              <AlertAtom
+                message={errors.sectionId.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
           </div>
 
           <CenteredBtnOrganism
@@ -140,7 +246,7 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
             htmlType="submit"
             size="large"
             style={{ width: '100%' }}
-            // loading={loading}
+            loading={loading}
           />
         </Space>
       </form>

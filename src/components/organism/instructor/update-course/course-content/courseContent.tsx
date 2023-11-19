@@ -13,8 +13,8 @@ import CreateQuizModal from '../../../../molecules/course-content/create-quiz/cr
 import CourseContentSkeleton from '../../../../atoms/course-content skeleton/courseContentSkeleton';
 const CourseContent = () => {
   const { courseId } = useParams();
-
-  const { data, loading } = useGetCourseSection(courseId);
+  const [recallApi, setRecallApi] = useState(0);
+  const { data, loading } = useGetCourseSection(courseId as string, recallApi);
 
   const items = [
     {
@@ -161,6 +161,7 @@ const CourseContent = () => {
           onClose={handleCloseAssignmentModal}
           sectionData={sectionData}
           courseId={courseId}
+          recallApi={setRecallApi}
         ></CreateAssignmentMolecules>
 
         <CreateQuizModal
