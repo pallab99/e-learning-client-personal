@@ -7,10 +7,26 @@
     margin-bottom: 0rem;
   }
 }
+// .QNA_user_details {
+//   display: flex;
+//   align-items: center;
+//   gap: 1rem;
+// }
 .QNA_user_details {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.QNA_user_details::after {
+  content: '';
+  position: absolute;
+  border-left: 2px solid #000; /* Change this to your desired line style */
+  top: 50%;
+  left: 16px; /* Adjust this value to position the line correctly */
+  height: calc(100% - 20px); /* Adjust this value based on your layout */
+  z-index: -1;
 }
 .reply-card::before {
   content: '';
@@ -46,5 +62,11 @@
 .reply-card {
   position: relative;
   top: 10px;
-  margin-left: 20px;
+  margin-left: clamp(1rem, 2vh, 2rem);
+}
+
+.reply_box {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
 }

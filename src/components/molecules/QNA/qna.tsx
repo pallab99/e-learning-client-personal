@@ -5,8 +5,8 @@ import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
 import './QNA.scss';
 import HeaderOrganism from '../../organism/headerOragnism/header';
 import HeadingAtom from '../../atoms/heading/heading.atom';
-const { Text } = Typography;
-
+import ButtonAtom from '../../atoms/button/button.attom';
+import { SendOutlined } from '@ant-design/icons';
 const QnAModal = () => {
   const [newQnA, setNewQnA] = useState('');
   const [reply, setReply] = useState('');
@@ -14,9 +14,11 @@ const QnAModal = () => {
   const handleAddQnA = () => {
     // Add your logic to add a new Q&A here
   };
-
+  const [messageId, setMessageId] = useState('');
+  const [showReplyBox, setShowReplyBox] = useState(false);
   const handleReply = (messageId: any) => {
-    // Add your logic to reply to a Q&A here
+    setMessageId(messageId);
+    setShowReplyBox(true);
   };
   const [data, setData] = useState(null);
 
@@ -61,14 +63,13 @@ const QnAModal = () => {
               text={message.message}
               className="text-18 mb-10"
             ></ParagraphAtom>
-            <Input
-              value={reply}
-              onChange={(e) => setReply(e.target.value)}
-              placeholder="Reply to this Q&A"
+
+            <ButtonAtom
+              type="link"
+              text="reply"
+              handleButtonClick={() => handleReply(message._id)}
             />
-            <Button type="link" onClick={() => handleReply(message._id)}>
-              Reply
-            </Button>
+
             {message.reply.map((reply: any, index: any) => (
               <Card
                 key={index}
@@ -90,6 +91,16 @@ const QnAModal = () => {
                 ></ParagraphAtom>
               </Card>
             ))}
+            {showReplyBox && messageId === message?._id && (
+              <div className="reply_box mt-20">
+                <Input
+                  value={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                  placeholder="Reply to this Q&A"
+                />
+                <ButtonAtom icon={<SendOutlined />}></ButtonAtom>
+              </div>
+            )}
           </Card>
         ))}
     </div>
