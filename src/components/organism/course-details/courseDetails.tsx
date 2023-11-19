@@ -6,6 +6,7 @@ import CourseContent from '../../molecules/course-details/course-content/courseC
 import Requirements from '../../molecules/course-details/requirements/requirements';
 import CourseReview from '../../molecules/course-review/courseReview';
 import QnAModal from '../../molecules/QNA/qna';
+import Quiz from '../../molecules/quiz-submision/quizSubmission';
 const CourseDetailsOrganism = () => {
   return (
     <>
@@ -14,7 +15,8 @@ const CourseDetailsOrganism = () => {
       <CourseContent />
       <Requirements />
       <CourseReview />
-      <QnAModal></QnAModal>
+      <QnAModal />
+      <Quiz />
     </>
   );
 };

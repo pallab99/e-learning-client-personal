@@ -1,0 +1,14 @@
+.quiz_submission_container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  .ant-typography {
+    margin-bottom: 0rem !important;
+  }
+}
+.question_div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
