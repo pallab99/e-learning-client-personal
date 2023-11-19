@@ -1,4 +1,4 @@
-import { Card, Space, Upload, message } from 'antd';
+import { Card, Space, Tooltip, Upload, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,12 @@ import InstructorDashboardSideBarOrganism from '../dashboard/sidebar/sidebar.org
 import './createCourse.scss';
 import JoditEditor from 'jodit-react';
 import ButtonAtom from '../../../atoms/button/button.attom';
-
+import { zodResolver } from '@hookform/resolvers/zod';
+import CourseSchema from '../../../../schema/course/courseSchema';
+import AlertAtom from '../../../atoms/alert/alertAtom';
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import TextEditor from '../../../molecules/text-editor/textEditor';
+import useGetAllCategory from '../../../../hooks/category/useGetAllCategory';
 const CreateCourseOrganism = () => {
   const {
     handleSubmit,
@@ -20,6 +25,7 @@ const CreateCourseOrganism = () => {
     watch,
   } = useForm({
     mode: 'onChange',
+    resolver: zodResolver(CourseSchema),
   });
   const {
     fields: benefitFields,
@@ -38,7 +44,15 @@ const CreateCourseOrganism = () => {
     name: 'prerequisites',
   });
   const navigate = useNavigate();
-
+  const { category } = useGetAllCategory();
+  const categoryValues =
+    category &&
+    category?.map((cate: any) => {
+      return {
+        label: cate?.title,
+        value: cate?._id,
+      };
+    });
   const onSubmit = async (data: any) => {
     console.log(data);
     try {
@@ -73,6 +87,13 @@ const CreateCourseOrganism = () => {
                     />
                   )}
                 />
+                {errors?.title?.message && (
+                  <AlertAtom
+                    message={errors?.title?.message}
+                    type="error"
+                    className="mt-10"
+                  />
+                )}
                 <ParagraphAtom
                   type="secondary"
                   text="Your title should be a mix of attention-grabbing, informative, and optimized for search"
@@ -80,20 +101,62 @@ const CreateCourseOrganism = () => {
                 />
               </div>
               <div className="input-group">
+                <ParagraphAtom text="Enter the course sub title" />
+                <Controller
+                  name="sub_title"
+                  control={control}
+                  render={({ field }) => (
+                    <TextInputAtom
+                      placeholder={'Enter the course sub title'}
+                      fieldValues={field}
+                    />
+                  )}
+                />
+                {errors?.sub_title?.message && (
+                  <AlertAtom
+                    message={errors?.sub_title?.message}
+                    type="error"
+                    className="mt-10"
+                  />
+                )}
+                <ParagraphAtom
+                  type="secondary"
+                  text="Your sub_title should be a mix of attention-grabbing, informative, and optimized for search"
+                  className="mt-20 text-15"
+                />
+              </div>
+              <div className="input-group">
                 <ParagraphAtom text="Enter the course description" />
-
                 <Controller
                   name="description"
                   control={control}
                   render={({ field }) => (
-                    <JoditEditor {...field} config={{ readonly: false }} />
+                    <TextEditor
+                      // value={data?.data?.description}
+                      // onChange={(content: any) => setDescription(content)}
+                      field={field}
+                    />
                   )}
                 />
+                {errors?.description?.message && (
+                  <AlertAtom
+                    message={errors?.description?.message}
+                    type="error"
+                    className="mt-10"
+                  />
+                )}
                 <ParagraphAtom
                   type="secondary"
                   text="Description should have minimum 200 words."
                   className="mt-20 text-15"
                 />
+                {errors?.title?.message && (
+                  <AlertAtom
+                    message={errors?.title?.message}
+                    type="error"
+                    className="mt-10"
+                  />
+                )}
               </div>
               <div className="select-div">
                 <div className="input-group">
@@ -105,13 +168,17 @@ const CreateCourseOrganism = () => {
                       <SelectField
                         placeholder={'Select your category'}
                         fieldValues={field}
-                        values={[
-                          { label: 'hello', value: 'a' },
-                          { label: 'hello', value: 'a' },
-                        ]}
+                        values={categoryValues}
                       />
                     )}
                   />
+                  {errors?.category?.message && (
+                    <AlertAtom
+                      message={errors?.category?.message}
+                      type="error"
+                      className="mt-10"
+                    />
+                  )}
                   <ParagraphAtom
                     type="secondary"
                     text="Select the category of the course."
@@ -119,7 +186,7 @@ const CreateCourseOrganism = () => {
                   />
                 </div>
                 <div className="input-group">
-                  <ParagraphAtom text="Select the level of this course" />
+                  <ParagraphAtom text="Level of this course" />
                   <Controller
                     name="level"
                     control={control}
@@ -135,6 +202,13 @@ const CreateCourseOrganism = () => {
                       />
                     )}
                   />
+                  {errors?.level?.message && (
+                    <AlertAtom
+                      message={errors?.level?.message}
+                      type="error"
+                      className="mt-10"
+                    />
+                  )}
                   <ParagraphAtom
                     type="secondary"
                     text="Select the appropriate level of this course"
@@ -145,54 +219,91 @@ const CreateCourseOrganism = () => {
 
               <div className="input-group">
                 <ParagraphAtom text="Enter the benefits of this course" />
-                {benefitFields.map((item, index) => (
-                  <div key={item.id}>
-                    <Controller
-                      name={`benefits[${index}]`}
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          fieldValues={field}
-                          placeholder={'Enter a benefit of this course'}
+
+                {benefitFields?.map((field, index) => (
+                  <>
+                    <div className="input_btn_combination" key={field.id}>
+                      <Controller
+                        name={`benefits[${index}]`}
+                        control={control}
+                        render={({ field }) => (
+                          <TextInputAtom
+                            fieldValues={field}
+                            placeholder={'Enter a benefit of this course'}
+                          />
+                        )}
+                      />
+                      <Tooltip placement="top" title="Remove benefit">
+                        <ButtonAtom
+                          icon={<MinusOutlined />}
+                          dangerBtn
+                          handleButtonClick={() => removeBenefit(index)}
+                          className="mt-10 mb-10"
                         />
-                      )}
-                    />
-                    <ButtonAtom
-                      text="Remove"
-                      handleButtonClick={() => removeBenefit(index)}
-                      className="mt-10"
-                    />
-                  </div>
+                      </Tooltip>
+                    </div>
+                  </>
                 ))}
+                {errors?.benefits?.message && (
+                  <AlertAtom
+                    message={errors?.benefits?.message}
+                    type="error"
+                    className="mt-10"
+                  />
+                )}
                 <ButtonAtom
-                  text="Add Benefit"
+                  icon={<PlusOutlined />}
                   handleButtonClick={() => appendBenefit('')}
-                  className="mt-10"
+                  className="mt-10 mb-10"
+                />
+                <ParagraphAtom
+                  type="secondary"
+                  text="Write some outcome of this course"
+                  className="mt-20 text-15"
                 />
               </div>
               <div className="input-group">
-                <ParagraphAtom text="Enter the prerequisites for this course" />
-                {prerequisiteFields.map((item, index) => (
-                  <div key={item.id}>
-                    <Controller
-                      name={`prerequisites[${index}]`}
-                      control={control}
-                      render={({ field }) => (
-                        <TextInputAtom
-                          fieldValues={field}
-                          placeholder={'Enter a prerequisite of this course'}
-                        />
-                      )}
-                    />
-                    <ButtonAtom
-                      text="Remove"
-                      handleButtonClick={() => removePrerequisite(index)}
-                    />
-                  </div>
+                <ParagraphAtom text="Enter the prerequisite for this course" />
+                {prerequisiteFields?.map((field, index) => (
+                  <>
+                    <div className="input_btn_combination" key={field.id}>
+                      <Controller
+                        name={`prerequisites[${index}]`}
+                        control={control}
+                        render={({ field }) => (
+                          <TextInputAtom
+                            fieldValues={field}
+                            placeholder={'Enter a prerequisite of this course'}
+                          />
+                        )}
+                      />
+
+                      <ButtonAtom
+                        icon={<MinusOutlined />}
+                        dangerBtn
+                        className="mt-10 mb-10"
+                        handleButtonClick={() => removePrerequisite(index)}
+                      />
+                    </div>
+                  </>
                 ))}
+                {errors?.prerequisites?.message && (
+                  <AlertAtom
+                    message={errors?.prerequisites?.message}
+                    type="error"
+                    className="mt-10"
+                  />
+                )}
+
                 <ButtonAtom
-                  text="Add Prerequisite"
+                  icon={<PlusOutlined />}
+                  className="mt-10 mb-10"
                   handleButtonClick={() => appendPrerequisite('')}
+                />
+                <ParagraphAtom
+                  type="secondary"
+                  text="Give some information about what the learner should before getting started this course"
+                  className="mt-20 text-15"
                 />
               </div>
               <CenteredBtnOrganism

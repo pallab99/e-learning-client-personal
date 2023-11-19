@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Modal, Space, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -6,17 +7,22 @@ import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
 import TextInputAtom from '../../atoms/text-input/textInput.atom';
 import CenteredBtnOrganism from '../centered-btn/centered-btn.molecules';
 import './courseSection.scss';
+import CourseSectionSchema from '../../../schema/course/courseSection';
+import AlertAtom from '../../atoms/alert/alertAtom';
+import { zodResolver } from '@hookform/resolvers/zod';
 interface ICourseSectionModalProps {
   courseId: string | undefined;
   data?: string;
   open: boolean;
   onClose: any;
+  recallApi?: any;
 }
 const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
   courseId,
   data,
   open,
   onClose,
+  recallApi,
 }) => {
   const {
     handleSubmit,
@@ -26,9 +32,9 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
     setValue,
   } = useForm({
     mode: 'onChange',
+    resolver: zodResolver(CourseSectionSchema),
   });
   const [loading, setLoading] = useState(false);
-  console.log(data);
 
   const onSubmit = async (formData: any) => {
     try {
@@ -47,6 +53,10 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
       }
       message.success(res?.data?.message);
       setLoading(false);
+      if (!loading) {
+        recallApi(Math.random());
+        onClose();
+      }
     } catch (error) {
       message.error(error?.response?.message);
       setLoading(false);
@@ -73,6 +83,13 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
                 />
               )}
             />
+            {errors?.title?.message && (
+              <AlertAtom
+                message={errors?.title?.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
             <ParagraphAtom
               type="secondary"
               text="Your title should be a mix of attention-grabbing, informative, and optimized for search"

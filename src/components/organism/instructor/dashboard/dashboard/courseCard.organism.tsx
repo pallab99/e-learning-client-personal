@@ -31,15 +31,15 @@ const CourseCardOrganism = ({ data }: any) => {
                   ellipsis={true}
                 ></HeadingAtom>
               </div>
-              <Link to={`/instructor/course/update/${ele?._id}`}>
-                <div className="card-right">
+              <div className="card-right">
+                <Link to={`/instructor/course/update/${ele?._id}`}>
                   <HeadingAtom
                     text={ele.sub_title}
                     level={5}
                     className="full-width"
                   ></HeadingAtom>
-                </div>
-              </Link>
+                </Link>
+              </div>
             </div>
           </Card>
         </FlexAtom>
