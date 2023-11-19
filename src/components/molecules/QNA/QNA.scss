@@ -1,0 +1,50 @@
+.course_QNA_Container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  .ant-typography {
+    margin-bottom: 0rem;
+  }
+}
+.QNA_user_details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.reply-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 2px;
+  background: #8710d8;
+}
+
+.qna-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 20px;
+  border-right: 2px solid #8710d8;
+}
+// .qna-card::before {
+//   content: '';
+//   position: absolute;
+//   bottom: 0;
+//   left: 50%;
+//   width: 2px;
+//   height: 100%;
+//   border-left: 2px solid #000;
+// }
+.qna-card {
+  position: relative;
+}
+
+.reply-card {
+  position: relative;
+  top: 10px;
+  margin-left: 20px;
+}

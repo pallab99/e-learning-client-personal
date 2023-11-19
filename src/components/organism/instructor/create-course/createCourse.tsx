@@ -1,7 +1,6 @@
-
 import { Card, Space, Upload, message } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import CourseApi from '../../../../api/CourseApi';
 import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
@@ -10,7 +9,8 @@ import TextInputAtom from '../../../atoms/text-input/textInput.atom';
 import CenteredBtnOrganism from '../../../molecules/centered-btn/centered-btn.molecules';
 import InstructorDashboardSideBarOrganism from '../dashboard/sidebar/sidebar.organism';
 import './createCourse.scss';
-const { Dragger } = Upload;
+import JoditEditor from 'jodit-react';
+import ButtonAtom from '../../../atoms/button/button.attom';
 
 const CreateCourseOrganism = () => {
   const {
@@ -21,15 +21,30 @@ const CreateCourseOrganism = () => {
   } = useForm({
     mode: 'onChange',
   });
-
-  const navigate=useNavigate()
+  const {
+    fields: benefitFields,
+    append: appendBenefit,
+    remove: removeBenefit,
+  } = useFieldArray({
+    control,
+    name: 'benefits',
+  });
+  const {
+    fields: prerequisiteFields,
+    append: appendPrerequisite,
+    remove: removePrerequisite,
+  } = useFieldArray({
+    control,
+    name: 'prerequisites',
+  });
+  const navigate = useNavigate();
 
   const onSubmit = async (data: any) => {
     console.log(data);
     try {
       const res = await CourseApi.createCourse(data);
-      message.success(res?.data?.message)
-      navigate("/instructor/courses")
+      message.success(res?.data?.message);
+      navigate('/instructor/courses');
     } catch (error: any) {
       message.error(error?.response?.message);
     }
@@ -71,12 +86,7 @@ const CreateCourseOrganism = () => {
                   name="description"
                   control={control}
                   render={({ field }) => (
-                    <TextArea
-                      {...field}
-                      rows={3}
-                      placeholder="Enter the course description"
-                      maxLength={1000}
-                    />
+                    <JoditEditor {...field} config={{ readonly: false }} />
                   )}
                 />
                 <ParagraphAtom
@@ -86,28 +96,6 @@ const CreateCourseOrganism = () => {
                 />
               </div>
               <div className="select-div">
-                <div className="input-group">
-                  <ParagraphAtom text="Select tags" />
-                  <Controller
-                    name="tags"
-                    control={control}
-                    render={({ field }) => (
-                      <SelectField
-                        placeholder={'Select Tags'}
-                        fieldValues={field}
-                        values={[
-                          { label: 'hello', value: 'a' },
-                          { label: 'hello', value: 'a' },
-                        ]}
-                      />
-                    )}
-                  />
-                  <ParagraphAtom
-                    type="secondary"
-                    text="Select the Instructors"
-                    className="mt-20 text-15"
-                  />
-                </div>
                 <div className="input-group">
                   <ParagraphAtom text="Select your category" />
                   <Controller
@@ -157,105 +145,56 @@ const CreateCourseOrganism = () => {
 
               <div className="input-group">
                 <ParagraphAtom text="Enter the benefits of this course" />
-                <Controller
-                  name="benefits"
-                  control={control}
-                  render={({ field }) => (
-                    <TextInputAtom
-                      placeholder={'Enter the benefits of this course'}
-                      fieldValues={field}
+                {benefitFields.map((item, index) => (
+                  <div key={item.id}>
+                    <Controller
+                      name={`benefits[${index}]`}
+                      control={control}
+                      render={({ field }) => (
+                        <TextInputAtom
+                          fieldValues={field}
+                          placeholder={'Enter a benefit of this course'}
+                        />
+                      )}
                     />
-                  )}
-                />
-                <ParagraphAtom
-                  type="secondary"
-                  text="Write some outcome of this course"
-                  className="mt-20 text-15"
+                    <ButtonAtom
+                      text="Remove"
+                      handleButtonClick={() => removeBenefit(index)}
+                      className="mt-10"
+                    />
+                  </div>
+                ))}
+                <ButtonAtom
+                  text="Add Benefit"
+                  handleButtonClick={() => appendBenefit('')}
+                  className="mt-10"
                 />
               </div>
               <div className="input-group">
-                <ParagraphAtom text="Enter the prerequiste for this course" />
-                <Controller
-                  name="prerequisites"
-                  control={control}
-                  render={({ field }) => (
-                    <TextInputAtom
-                      placeholder={'Enter the prerequiste for this course'}
-                      fieldValues={field}
+                <ParagraphAtom text="Enter the prerequisites for this course" />
+                {prerequisiteFields.map((item, index) => (
+                  <div key={item.id}>
+                    <Controller
+                      name={`prerequisites[${index}]`}
+                      control={control}
+                      render={({ field }) => (
+                        <TextInputAtom
+                          fieldValues={field}
+                          placeholder={'Enter a prerequisite of this course'}
+                        />
+                      )}
                     />
-                  )}
-                />
-                <ParagraphAtom
-                  type="secondary"
-                  text="Give some information about what the learner should before getting started this course"
-                  className="mt-20 text-15"
-                />
-              </div>
-
-              {/* <div className="input-group">
-                <ParagraphAtom text="Select a appropriate thumbnail for this course" />
-                <Controller
-                  name="thumbnail"
-                  control={control}
-                  render={({ field }) => (
-                    <Dragger
-                      {...field}
-                      listType="picture"
-                      beforeUpload={() => {
-                        return false;
-                      }}
-                    >
-                      <p className="ant-upload-drag-icon">
-                        <img
-                          src="https://s.udemycdn.com/course/750x422/placeholder.jpg"
-                          alt=""
-                        />
-                      </p>
-                      <ParagraphAtom
-                        text="Click or drag the thumbnail to this area to upload"
-                        className="ant-upload-text"
-                      ></ParagraphAtom>
-                    </Dragger>
-                  )}
-                />
-                <ParagraphAtom
-                  type="secondary"
-                  text="Select a thumbnail which will grab the learners attention"
-                  className="mt-20 text-15"
+                    <ButtonAtom
+                      text="Remove"
+                      handleButtonClick={() => removePrerequisite(index)}
+                    />
+                  </div>
+                ))}
+                <ButtonAtom
+                  text="Add Prerequisite"
+                  handleButtonClick={() => appendPrerequisite('')}
                 />
               </div>
-              <div className="input-group">
-                <ParagraphAtom text="Select a appropriate demo video for this course" />
-                <Controller
-                  name="demovideo"
-                  control={control}
-                  render={({ field }) => (
-                    <Dragger
-                      {...field}
-                      listType="picture"
-                      beforeUpload={() => {
-                        return false;
-                      }}
-                    >
-                      <p className="ant-upload-drag-icon">
-                        <img
-                          src="https://s.udemycdn.com/course/750x422/placeholder.jpg"
-                          alt=""
-                        />
-                      </p>
-                      <ParagraphAtom
-                        text=" Click or drag the demo video file to this area to upload"
-                        className="ant-upload-text"
-                      />
-                    </Dragger>
-                  )}
-                />
-                <ParagraphAtom
-                  type="secondary"
-                  text="Select a demo video which will grab the learners attention"
-                  className="mt-20 text-15"
-                />
-              </div> */}
               <CenteredBtnOrganism
                 justify="center"
                 text="Create Course"

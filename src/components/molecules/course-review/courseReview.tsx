@@ -280,6 +280,7 @@ const CourseReview = () => {
       <AddReviewModal
         openModal={openModal}
         closeModal={handleCloseModal}
+        key={openModal}
       ></AddReviewModal>
     </div>
   );
