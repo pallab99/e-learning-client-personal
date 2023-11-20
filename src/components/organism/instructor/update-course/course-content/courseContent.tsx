@@ -121,8 +121,6 @@ const CourseContent = () => {
                 <div className="quiz_card_div_action_btn">
                   <EditOutlined
                     onClick={() => {
-                      // openCreateQuizModal();
-                      // setQuizData(question);
                       handleOpenEditQuizModal();
                       setAllQuizData(section?.quiz);
                     }}
