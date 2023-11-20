@@ -1,5 +1,5 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import {
   FLUSH,
   PAUSE,
@@ -10,20 +10,22 @@ import {
   REHYDRATE,
   persistReducer,
   persistStore,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-import { AppDispatch, RootState } from '../types/redux';
-import authSlice from './slices/authSlice';
-import fileUploadProgressSlice from './slices/fileUploadProgressSlice';
+import { AppDispatch, RootState } from "../types/redux";
+import authSlice from "./slices/authSlice";
+import cartSlice from "./slices/cartSlice";
+import fileUploadProgressSlice from "./slices/fileUploadProgressSlice";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['auth'],
+  whitelist: ["auth"],
 };
 const rootReducer = combineReducers({
   auth: authSlice,
+  cart: cartSlice,
   uploadProgress: fileUploadProgressSlice,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);

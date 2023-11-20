@@ -1,22 +1,20 @@
 //@ts-nocheck
-import { Button, Modal, Space, Upload, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import useCreateCourseContent from '../../../hooks/course-content/useCreateCourseContent';
-import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
-import { SelectFieldCustom } from '../../atoms/select-field-custom/selectFieldCustom';
-import { SelectField } from '../../atoms/select-filed/selectField';
-import CenteredBtnOrganism from '../centered-btn/centered-btn.molecules';
-import { InputField } from '../input-field-controller/inputFieldController';
-import UploadMolecules from '../upload/uploadMolecules';
-import { ReactMediaRecorder } from 'react-media-recorder-2';
-import ReactPlayer from 'react-player';
-import AlertAtom from '../../atoms/alert/alertAtom';
-import TextInputAtom from '../../atoms/text-input/textInput.atom';
-import { zodResolver } from '@hookform/resolvers/zod';
-import CourseContentSchema from '../../../schema/course/courseContent';
-import { UploadOutlined } from '@ant-design/icons';
-import ButtonAtom from '../../atoms/button/button.attom';
+import { UploadOutlined } from "@ant-design/icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Modal, Space, Upload, message } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { ReactMediaRecorder } from "react-media-recorder-2";
+import ReactPlayer from "react-player";
+import useCreateCourseContent from "../../../hooks/course-content/useCreateCourseContent";
+import CourseContentSchema from "../../../schema/course/courseContent";
+import AlertAtom from "../../atoms/alert/alertAtom";
+import ButtonAtom from "../../atoms/button/button.attom";
+import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+import { SelectFieldCustom } from "../../atoms/select-field-custom/selectFieldCustom";
+import { SelectField } from "../../atoms/select-filed/selectField";
+import TextInputAtom from "../../atoms/text-input/textInput.atom";
+import CenteredBtnOrganism from "../centered-btn/centered-btn.molecules";
 const VideoPreview = ({ stream }: { stream: MediaStream | null }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
@@ -60,28 +58,28 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
     watch,
     setValue,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(CourseContentSchema),
   });
   const { loading, createCourseContent } = useCreateCourseContent();
-  const [contentType, setContentType] = useState('');
+  const [contentType, setContentType] = useState("");
   const [recordFile, setRecordedFile] = useState();
   const [fileList, setFileList] = useState([]);
   const [file, setFile] = useState(null);
   const onSubmit = async (contentData: any) => {
-    console.log('recorded', file);
+    console.log("recorded", file);
 
     const formData = new FormData();
-    formData.append('title', contentData?.title);
-    if (contentType === 'file') {
-      console.log('file');
-      formData.append('file_to_upload', file);
+    formData.append("title", contentData?.title);
+    if (contentType === "file") {
+      console.log("file");
+      formData.append("file_to_upload", file);
     } else {
-      formData.append('file_to_upload', recordFile);
+      formData.append("file_to_upload", recordFile);
     }
     // formData.append()
     for (const pair of formData.entries()) {
-      console.log(pair[0] + ', ' + pair[1]);
+      console.log(pair[0] + ", " + pair[1]);
     }
     // await createCourseContent(courseId, contentData?.sectionId, formData);
     // if (!loading) {
@@ -91,21 +89,21 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
 
   const beforeUpload = (file: File) => {
     const allowedTypes = [
-      'image/jpeg',
-      'image/png',
-      'application/pdf',
-      'text/plain',
-      'video/mp4',
+      "image/jpeg",
+      "image/png",
+      "application/pdf",
+      "text/plain",
+      "video/mp4",
     ];
     const isTypeAllowed = allowedTypes.includes(file.type);
     const isLt100M = file.size / 1024 / 1024 < 100;
 
     if (!isTypeAllowed) {
       message.error(
-        'You can only upload images, PDFs, text documents, or videos!'
+        "You can only upload images, PDFs, text documents, or videos!"
       );
     } else if (!isLt100M) {
-      message.error('File must be smaller than 100MB!');
+      message.error("File must be smaller than 100MB!");
     } else {
       setFile(file);
     }
@@ -115,7 +113,7 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
   const uploadVideo = async (mediaBlobUrl: any) => {
     const response = await fetch(mediaBlobUrl);
     const blob = await response.blob();
-    const file = new File([blob], 'video.webm', { type: 'video/webm' });
+    const file = new File([blob], "video.webm", { type: "video/webm" });
     setRecordedFile(file);
     // const formData = new FormData();
     // formData.append('title', contentData?.title);
@@ -125,7 +123,7 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
   return (
     <Modal open={open} onCancel={onClose} footer={null}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
           <div className="input-group">
             <ParagraphAtom text="Enter the course title" />
             <Controller
@@ -133,7 +131,7 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
               control={control}
               render={({ field }) => (
                 <TextInputAtom
-                  placeholder={'Enter the course title'}
+                  placeholder={"Enter the course title"}
                   fieldValues={field}
                 />
               )}
@@ -151,14 +149,21 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
             <SelectFieldCustom
               placeholder="Select content type"
               values={[
-                { label: 'File', value: 'file' },
-                { label: 'Record', value: 'record' },
+                { label: "File", value: "file" },
+                { label: "Record", value: "record" },
               ]}
               handleOnchange={(value: string) => setContentType(value)}
               size="large"
             />
           </div>
-          {contentType === 'file' && (
+          {!contentType && (
+            <AlertAtom
+              message={"Select the content type"}
+              className="mt-10"
+              type="error"
+            ></AlertAtom>
+          )}
+          {contentType === "file" && (
             <div className="input-group">
               <ParagraphAtom text="Select a appropriate lesson for this section" />
               <Controller
@@ -175,11 +180,11 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
                       setFile(null);
                     }}
                     maxCount={1}
-                    style={{ width: '100%' }}
+                    style={{ width: "100%" }}
                     {...field}
                   >
                     <Button
-                      style={{ width: '100%' }}
+                      style={{ width: "100%" }}
                       icon={<UploadOutlined />}
                       size="large"
                     >
@@ -190,12 +195,12 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
               />
             </div>
           )}
-          {contentType === 'record' && (
+          {contentType === "record" && (
             <div>
               <ReactMediaRecorder
                 video
                 blobPropertyBag={{
-                  type: 'video/webm',
+                  type: "video/webm",
                 }}
                 askPermissionOnMount={true}
                 render={({
@@ -250,7 +255,7 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
               render={({ field }) => (
                 <SelectField
                   values={sectionData}
-                  placeholder={'Select the section'}
+                  placeholder={"Select the section"}
                   fieldValues={field}
                   size="large"
                 />
@@ -266,11 +271,11 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
           </div>
           <CenteredBtnOrganism
             justify="center"
-            text={'create'}
+            text={"create"}
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             loading={loading}
           />
         </Space>

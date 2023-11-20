@@ -1,6 +1,6 @@
-import { ConfigProvider } from 'antd';
-import AllRoutes from './routes/routes';
-import { useEffect, useState } from 'react';
+import { ConfigProvider } from "antd";
+import { useEffect, useState } from "react";
+import AllRoutes from "./routes/routes";
 
 function App() {
   // const colorOptions = [
@@ -25,9 +25,9 @@ function App() {
   //   localStorage.setItem('colorPrimary', value);
   //   setColorPrimary(value);
   // };
-  const [colorPrimary, setColorPrimary] = useState('#8710d8');
+  const [colorPrimary, setColorPrimary] = useState("#8710d8");
   useEffect(() => {
-    setColorPrimary(localStorage.getItem('colorPrimary') || '#8710d8');
+    setColorPrimary(localStorage.getItem("colorPrimary") || "#8710d8");
   }, [colorPrimary]);
   return (
     <ConfigProvider

@@ -4,7 +4,7 @@ class CartApi {
   endPoints = {
     cartByUser: "/cart/details",
     removeCourseFromCart: "/cart/update",
-    // rejectSubscription: "/subscription/reject-subscription",
+    addToCart: "/cart/create",
   };
   async getCartDataByUser() {
     return await Api?.http?.get(this.endPoints.cartByUser);
@@ -13,6 +13,9 @@ class CartApi {
     return await Api.http?.patch(this.endPoints.removeCourseFromCart, {
       courseId,
     });
+  }
+  async addToCart(courseId: string | undefined) {
+    return await Api.http?.post(this.endPoints.addToCart, { courseId });
   }
 }
 

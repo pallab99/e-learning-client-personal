@@ -2,9 +2,11 @@ import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Avatar, Dropdown } from "antd";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../../../redux/store";
 import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
 
 const MobileHeaderDropdownMenuMolecules = ({ handleOpenCartDrawer }: any) => {
+  const student = useAppSelector((state) => state.auth.userData.rank);
   const items: MenuProps["items"] = [
     {
       label: <Link to={"/profile/basic-information"}>Profile</Link>,

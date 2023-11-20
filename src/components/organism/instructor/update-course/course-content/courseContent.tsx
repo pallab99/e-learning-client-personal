@@ -1,16 +1,17 @@
-import { Card, Collapse, Dropdown, MenuProps, Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
-import ReactPlayer from 'react-player';
-import { Link, useParams } from 'react-router-dom';
-import useGetCourseSection from '../../../../../hooks/course-section/useGetCourseSection';
-import ButtonAtom from '../../../../atoms/button/button.attom';
-import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
-import CourseContentMolecules from '../../../../molecules/course-content/courseContent';
-import CreateAssignmentMolecules from '../../../../molecules/course-content/create-assignment/createAssignment';
-import './courseContent.scss';
-import CreateQuizModal from '../../../../molecules/course-content/create-quiz/createQuiz';
-import CourseContentSkeleton from '../../../../atoms/course-content skeleton/courseContentSkeleton';
+import { Card, Collapse, Dropdown, MenuProps, Modal } from "antd";
+import React, { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
+import { Link, useParams } from "react-router-dom";
+import useGetCourseSection from "../../../../../hooks/course-section/useGetCourseSection";
+import ButtonAtom from "../../../../atoms/button/button.attom";
+import CourseContentSkeleton from "../../../../atoms/course-content skeleton/courseContentSkeleton";
+import HeadingAtom from "../../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
+import CourseContentMolecules from "../../../../molecules/course-content/courseContent";
+import CreateAssignmentMolecules from "../../../../molecules/course-content/create-assignment/createAssignment";
+import CreateQuizModal from "../../../../molecules/course-content/create-quiz/createQuiz";
+import Quiz from "../../../../molecules/quiz-submision/quizSubmission";
+import "./courseContent.scss";
 const CourseContent = () => {
   const { courseId } = useParams();
   const [recallApi, setRecallApi] = useState(0);
@@ -18,20 +19,20 @@ const CourseContent = () => {
 
   const items = [
     {
-      key: '1',
-      label: 'Create Content',
+      key: "1",
+      label: "Create Content",
     },
     {
-      key: '2',
-      label: 'Create Assignment',
+      key: "2",
+      label: "Create Assignment",
     },
     {
-      key: '3',
-      label: 'Create Quiz',
+      key: "3",
+      label: "Create Quiz",
     },
   ];
 
-  const [videoUrl, setVideoUrl] = React.useState('');
+  const [videoUrl, setVideoUrl] = React.useState("");
   const [isVideoModalVisible, setIsVideoModalVisible] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const handleOpenVideoModal = (url: string) => {
@@ -44,10 +45,29 @@ const CourseContent = () => {
     setIsVideoModalVisible(false);
     setIsPlaying(false);
   };
-  const [videoPlayerClassName, setVideoPlayerClassName] = useState('');
+  const [videoPlayerClassName, setVideoPlayerClassName] = useState("");
   useEffect(() => {
-    setVideoPlayerClassName('react-player');
+    setVideoPlayerClassName("react-player");
   }, [isVideoModalVisible]);
+  const [openAssignmentModal, setOpenAssignmentModal] = React.useState(false);
+  const [openQuizModal, setOpenQuizModal] = React.useState(false);
+
+  const handleOpenAssignmentModal = () => {
+    setOpenAssignmentModal(true);
+  };
+  const handleCloseAssignmentModal = () => {
+    setOpenAssignmentModal(false);
+  };
+
+  const handleOpenQuizModal = () => {
+    setOpenQuizModal(true);
+  };
+  const [quizData, setQuizData] = useState("");
+  const [allQuizData, setAllQuizData] = useState({});
+  const handleCloseQuizModal = () => {
+    setOpenQuizModal(false);
+    setQuizData("");
+  };
 
   const accordionItems = data?.data?.map((section: any) => {
     return {
@@ -86,6 +106,19 @@ const CourseContent = () => {
               <p>File URL: {section.assignment.assignmentFileURL}</p>
             </Card>
           )}
+          <div className="mt-20">
+            {section?.quiz && (
+              <div className="course_content_quiz_divv">
+                <Quiz
+                  instructor={true}
+                  quizData={section?.quiz}
+                  openCreateQuizModal={handleOpenQuizModal}
+                  setQuizData={setQuizData}
+                  setAllQuizData={setAllQuizData}
+                ></Quiz>
+              </div>
+            )}
+          </div>
         </div>
       ),
     };
@@ -98,22 +131,6 @@ const CourseContent = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-  const [openAssignmentModal, setOpenAssignmentModal] = React.useState(false);
-  const [openQuizModal, setOpenQuizModal] = React.useState(false);
-
-  const handleOpenAssignmentModal = () => {
-    setOpenAssignmentModal(true);
-  };
-  const handleCloseAssignmentModal = () => {
-    setOpenAssignmentModal(false);
-  };
-
-  const handleOpenQuizModal = () => {
-    setOpenQuizModal(true);
-  };
-  const handleCloseQuizModal = () => {
-    setOpenQuizModal(false);
-  };
 
   const sectionData = data?.data?.map((ele: any) => {
     return {
@@ -122,12 +139,12 @@ const CourseContent = () => {
     };
   });
 
-  const onMenuClick: MenuProps['onClick'] = (e) => {
-    if (e.key === '1') {
+  const onMenuClick: MenuProps["onClick"] = (e) => {
+    if (e.key === "1") {
       handleOpenModal();
-    } else if (e.key === '2') {
+    } else if (e.key === "2") {
       handleOpenAssignmentModal();
-    } else if (e.key === '3') {
+    } else if (e.key === "3") {
       handleOpenQuizModal();
     }
   };
@@ -169,6 +186,9 @@ const CourseContent = () => {
           onClose={handleCloseQuizModal}
           sectionData={sectionData}
           courseId={courseId}
+          recallApi={setRecallApi}
+          quizData={quizData}
+          allQuizData={allQuizData}
         ></CreateQuizModal>
         <Modal
           open={isVideoModalVisible}

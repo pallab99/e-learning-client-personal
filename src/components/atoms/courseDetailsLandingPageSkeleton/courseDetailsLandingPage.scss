@@ -1,0 +1,36 @@
+.course_details_landing_page_skeleton_div {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  //   display: flex;
+  //   gap: 2rem;
+}
+.course_details_landing_page_skeleton_wrapper {
+  display: flex;
+  gap: 2rem;
+}
+.course_details_landing_page_skeleton_div_right-div {
+  //   width: 100%;
+  flex-basis: 60%;
+}
+.course_details_landing_page_skeleton_div_left-div {
+  //   width: 100%;
+  flex-basis: 39%;
+  .ant-skeleton-image {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .ant-skeleton.ant-skeleton-element {
+    width: 100%;
+    height: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .course_details_landing_page_skeleton_wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 2rem;
+  }
+}

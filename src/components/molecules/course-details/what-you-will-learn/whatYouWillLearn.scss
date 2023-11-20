@@ -15,10 +15,12 @@
 .course_details_what_you_will_learn_container_column1_content_list {
   display: flex;
   gap: 1rem;
+  flex-basis: 49%;
 }
 .course_details_what_you_will_learn_container_column2_content_list {
   display: flex;
   gap: 1rem;
+  flex-basis: 49%;
 }
 @media only screen and (max-width: 660px) {
   .course_details_what_you_will_learn_container_two_column_layout {

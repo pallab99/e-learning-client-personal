@@ -1,17 +1,16 @@
-import { Button, Input, Modal, Space } from 'antd';
-import React, { useState } from 'react';
-import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
-import { Controller, useForm } from 'react-hook-form';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import { InputField } from '../../input-field-controller/inputFieldController';
-import { SelectField } from '../../../atoms/select-filed/selectField';
-import HeaderOrganism from '../../../organism/headerOragnism/header';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import TextInputAtom from '../../../atoms/text-input/textInput.atom';
-import AlertAtom from '../../../atoms/alert/alertAtom';
-import QuizFormSchema from '../../../../schema/course/quizSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Modal, Space, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import QuizApi from "../../../../api/QuizApi";
+import QuizFormSchema from "../../../../schema/course/quizSchema";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import { SelectField } from "../../../atoms/select-filed/selectField";
+import TextInputAtom from "../../../atoms/text-input/textInput.atom";
+import CenteredBtnOrganism from "../../centered-btn/centered-btn.molecules";
 
 interface ICreateQuizModalProps {
   courseId?: string | undefined;
@@ -19,6 +18,8 @@ interface ICreateQuizModalProps {
   open: boolean;
   sectionData: any;
   onClose: any;
+  recallApi?: any;
+  quizData?: any;
 }
 const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
   courseId,
@@ -26,6 +27,9 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
   data,
   open,
   onClose,
+  recallApi,
+  quizData,
+  allQuizData,
 }) => {
   const {
     handleSubmit,
@@ -34,28 +38,106 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
     watch,
     setValue,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(QuizFormSchema),
   });
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
+  console.log("quizData", quizData);
+  console.log("allQuizData", allQuizData);
 
   const addQuestion = () => {
     setNumberOfQuestions(numberOfQuestions + 1);
   };
+  useEffect(() => {
+    setValue("courseSection", quizData?.courseSection);
+    setValue("title", quizData?.title);
+    if (quizData) {
+      // quizData.questions.forEach((question, questionIndex) => {
+      //   setValue(`questions[${questionIndex}].question`, question.question);
+      //   setValue(
+      //     `questions[${questionIndex}].correctAnswer`,
+      //     question.correctAnswer
+      //   );
+      //   setValue(
+      //     `questions[${questionIndex}].point`,
+      //     question?.point?.toString()
+      //   );
+      //   if (question.options) {
+      //     question.options.forEach((option, optionIndex) => {
+      //       setValue(
+      //         `questions[${questionIndex}].options[${optionIndex}]`,
+      //         option?.toString()
+      //       );
+      //     });
+      //   }
+      // });
+      setValue(`questions[0].question`, quizData.question);
+      setValue("title", "Pallab");
+
+      quizData?.options.forEach((option, optionIndex) => {
+        setValue(`questions[0].options[${optionIndex}]`, option?.toString());
+      });
+      setValue(`questions[0].point`, String(quizData?.point));
+      setValue(`questions[0].correctAnswer`, String(quizData?.correctAnswer));
+    }
+  }, [quizData, setValue]);
+  const [loading, setLoading] = useState(false);
   const onSubmit = async (formData: any) => {
-    console.log('form data', formData);
+    console.log("form data", formData);
+    const data = {
+      ...allQuizData,
+      formData,
+    };
+    console.log("new data", data);
+
+    try {
+      setLoading(true);
+      const res = await QuizApi.createQuiz(formData);
+      message.success(res?.data?.message);
+      setLoading(false);
+      if (!loading) {
+        recallApi(Math.random());
+        onClose();
+      }
+    } catch (error: any) {
+      message.error(error.response.message);
+      setLoading(false);
+    }
   };
 
   return (
     <Modal open={open} onCancel={onClose} footer={null}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-          <HeadingAtom text="Create a new quiz" level={3} />
-
+        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+          <HeadingAtom
+            text={quizData ? "Update the existing quiz" : "Create a new quiz"}
+            level={3}
+          />
+          <div className="input-group mb-20">
+            <ParagraphAtom text={"Enter the Quiz title"} />
+            <Controller
+              name="title"
+              control={control}
+              render={({ field }) => (
+                <TextInputAtom
+                  placeholder="Enter the Quiz title"
+                  size="large"
+                  fieldValues={field}
+                />
+              )}
+            />
+            {errors?.title?.message && (
+              <AlertAtom
+                message={errors?.title?.message}
+                type="error"
+                className="mt-10"
+              />
+            )}
+          </div>
           {[...Array(numberOfQuestions)].map((_, index) => (
             <div key={index}>
               <div className="input-group mb-20">
-                <ParagraphAtom text={'Enter the question'} />
+                <ParagraphAtom text={"Enter the question"} />
                 <Controller
                   name={`questions[${index}].question`}
                   control={control}
@@ -111,10 +193,10 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
                 render={({ field }) => (
                   <SelectField
                     values={[
-                      { label: 'Option 1', value: '1' },
-                      { label: 'Option 2', value: '2' },
-                      { label: 'Option 3', value: '3' },
-                      { label: 'Option 4', value: '4' },
+                      { label: "Option 1", value: "1" },
+                      { label: "Option 2", value: "2" },
+                      { label: "Option 3", value: "3" },
+                      { label: "Option 4", value: "4" },
                     ]}
                     fieldValues={field}
                     size="large"
@@ -158,7 +240,7 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
           <div className="input-group">
             <ParagraphAtom text="* Select the section. Max 1 assignment under a section" />
             <Controller
-              name="sectionId"
+              name="courseSection"
               control={control}
               render={({ field }) => (
                 <SelectField
@@ -169,26 +251,27 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
                 />
               )}
             />
-            {errors?.sectionId && (
+            {errors?.courseSection && (
               <AlertAtom
-                message={errors.sectionId.message}
+                message={errors.courseSection.message}
                 type="error"
                 className="mt-10"
               />
             )}
           </div>
           <ButtonAtom
-            text={'Add Another question'}
+            text={"Add Another question"}
             size="large"
             handleButtonClick={addQuestion}
           />
           <CenteredBtnOrganism
             justify="center"
-            text={'create'}
+            text={"create"}
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
+            loading={loading}
           />
         </Space>
       </form>

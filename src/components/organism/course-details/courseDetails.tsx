@@ -1,22 +1,43 @@
-import './courseDetails.scss';
+import "./courseDetails.scss";
 
-import CourseDetailsLandingPage from '../../molecules/course-details/course-details-landing-page/courseDetailsLandingPage';
-import WhatYouWillLearn from '../../molecules/course-details/what-you-will-learn/whatYouWillLearn';
-import CourseContent from '../../molecules/course-details/course-content/courseContent';
-import Requirements from '../../molecules/course-details/requirements/requirements';
-import CourseReview from '../../molecules/course-review/courseReview';
-import QnAModal from '../../molecules/QNA/qna';
-import Quiz from '../../molecules/quiz-submision/quizSubmission';
+import { useParams } from "react-router-dom";
+import useGetCourseById from "../../../hooks/course/useGetCourseById";
+import CourseDetailsLandingPageSkeleton from "../../atoms/courseDetailsLandingPageSkeleton/courseDetailsLandingPageSkeleton";
+import WhatYouWillLearnSkeleton from "../../atoms/whatYouWillLearnSkeleton/whatYouWillLearnSkeleton";
+import QnAModal from "../../molecules/QNA/qna";
+import CourseContent from "../../molecules/course-details/course-content/courseContent";
+import CourseDetailsLandingPage from "../../molecules/course-details/course-details-landing-page/courseDetailsLandingPage";
+import Requirements from "../../molecules/course-details/requirements/requirements";
+import WhatYouWillLearn from "../../molecules/course-details/what-you-will-learn/whatYouWillLearn";
+import CourseReview from "../../molecules/course-review/courseReview";
 const CourseDetailsOrganism = () => {
+  const { courseId } = useParams();
+  const { data, loading } = useGetCourseById(courseId as string);
+
   return (
     <>
-      <CourseDetailsLandingPage />
-      <WhatYouWillLearn />
+      {loading ? (
+        <CourseDetailsLandingPageSkeleton />
+      ) : (
+        <CourseDetailsLandingPage courseBasicInfo={data} loading={loading} />
+      )}
+      {loading ? (
+        <WhatYouWillLearnSkeleton />
+      ) : (
+        <WhatYouWillLearn
+          whatWillYouLearnData={data?.data?.benefits}
+          loading={loading}
+        />
+      )}
       <CourseContent />
-      <Requirements />
+      {loading ? (
+        <WhatYouWillLearn />
+      ) : (
+        <Requirements prerequisitesData={data?.data?.prerequisites} />
+      )}
       <CourseReview />
       <QnAModal />
-      <Quiz />
+      {/* <Quiz /> */}
     </>
   );
 };
