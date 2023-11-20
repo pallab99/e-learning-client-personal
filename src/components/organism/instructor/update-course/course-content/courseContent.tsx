@@ -1,17 +1,19 @@
-import { Card, Collapse, Dropdown, MenuProps, Modal } from "antd";
-import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
-import { Link, useParams } from "react-router-dom";
-import useGetCourseSection from "../../../../../hooks/course-section/useGetCourseSection";
-import ButtonAtom from "../../../../atoms/button/button.attom";
-import CourseContentSkeleton from "../../../../atoms/course-content skeleton/courseContentSkeleton";
-import HeadingAtom from "../../../../atoms/heading/heading.atom";
-import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
-import CourseContentMolecules from "../../../../molecules/course-content/courseContent";
-import CreateAssignmentMolecules from "../../../../molecules/course-content/create-assignment/createAssignment";
-import CreateQuizModal from "../../../../molecules/course-content/create-quiz/createQuiz";
-import Quiz from "../../../../molecules/quiz-submision/quizSubmission";
-import "./courseContent.scss";
+import { Card, Collapse, Dropdown, MenuProps, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
+import ReactPlayer from 'react-player';
+import { Link, useParams } from 'react-router-dom';
+import useGetCourseSection from '../../../../../hooks/course-section/useGetCourseSection';
+import ButtonAtom from '../../../../atoms/button/button.attom';
+import CourseContentSkeleton from '../../../../atoms/course-content skeleton/courseContentSkeleton';
+import HeadingAtom from '../../../../atoms/heading/heading.atom';
+import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
+import CourseContentMolecules from '../../../../molecules/course-content/courseContent';
+import CreateAssignmentMolecules from '../../../../molecules/course-content/create-assignment/createAssignment';
+import CreateQuizModal from '../../../../molecules/course-content/create-quiz/createQuiz';
+import Quiz from '../../../../molecules/quiz-submision/quizSubmission';
+import './courseContent.scss';
+import { EditOutlined } from '@ant-design/icons';
+import UpdateQuizModal from '../../../../molecules/course-content/update-quiz/updateQuiz';
 const CourseContent = () => {
   const { courseId } = useParams();
   const [recallApi, setRecallApi] = useState(0);
@@ -19,20 +21,20 @@ const CourseContent = () => {
 
   const items = [
     {
-      key: "1",
-      label: "Create Content",
+      key: '1',
+      label: 'Create Content',
     },
     {
-      key: "2",
-      label: "Create Assignment",
+      key: '2',
+      label: 'Create Assignment',
     },
     {
-      key: "3",
-      label: "Create Quiz",
+      key: '3',
+      label: 'Create Quiz',
     },
   ];
 
-  const [videoUrl, setVideoUrl] = React.useState("");
+  const [videoUrl, setVideoUrl] = React.useState('');
   const [isVideoModalVisible, setIsVideoModalVisible] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const handleOpenVideoModal = (url: string) => {
@@ -45,13 +47,13 @@ const CourseContent = () => {
     setIsVideoModalVisible(false);
     setIsPlaying(false);
   };
-  const [videoPlayerClassName, setVideoPlayerClassName] = useState("");
+  const [videoPlayerClassName, setVideoPlayerClassName] = useState('');
   useEffect(() => {
-    setVideoPlayerClassName("react-player");
+    setVideoPlayerClassName('react-player');
   }, [isVideoModalVisible]);
   const [openAssignmentModal, setOpenAssignmentModal] = React.useState(false);
   const [openQuizModal, setOpenQuizModal] = React.useState(false);
-
+  const [openEditQuizModal, setOpenEditQuizModal] = useState(false);
   const handleOpenAssignmentModal = () => {
     setOpenAssignmentModal(true);
   };
@@ -62,13 +64,20 @@ const CourseContent = () => {
   const handleOpenQuizModal = () => {
     setOpenQuizModal(true);
   };
-  const [quizData, setQuizData] = useState("");
+  const [quizData, setQuizData] = useState('');
   const [allQuizData, setAllQuizData] = useState({});
   const handleCloseQuizModal = () => {
     setOpenQuizModal(false);
-    setQuizData("");
+    setQuizData('');
   };
 
+  // const handleOpenUpdateQuizModal()
+  const handleOpenEditQuizModal = () => {
+    setOpenEditQuizModal(true);
+  };
+  const handleCloseEditQuizModal = () => {
+    setOpenEditQuizModal(false);
+  };
   const accordionItems = data?.data?.map((section: any) => {
     return {
       key: section._id,
@@ -108,15 +117,29 @@ const CourseContent = () => {
           )}
           <div className="mt-20">
             {section?.quiz && (
-              <div className="course_content_quiz_divv">
-                <Quiz
-                  instructor={true}
-                  quizData={section?.quiz}
-                  openCreateQuizModal={handleOpenQuizModal}
-                  setQuizData={setQuizData}
-                  setAllQuizData={setAllQuizData}
-                ></Quiz>
-              </div>
+              <>
+                <div className="quiz_card_div_action_btn">
+                  <EditOutlined
+                    onClick={() => {
+                      // openCreateQuizModal();
+                      // setQuizData(question);
+                      handleOpenEditQuizModal();
+                      setAllQuizData(section?.quiz);
+                    }}
+                  ></EditOutlined>
+                  {/* <Switch></Switch> */}
+                </div>
+
+                <div className="course_content_quiz_divv">
+                  <Quiz
+                    instructor={true}
+                    quizData={section?.quiz}
+                    openCreateQuizModal={handleOpenQuizModal}
+                    setQuizData={setQuizData}
+                    setAllQuizData={setAllQuizData}
+                  ></Quiz>
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -139,12 +162,12 @@ const CourseContent = () => {
     };
   });
 
-  const onMenuClick: MenuProps["onClick"] = (e) => {
-    if (e.key === "1") {
+  const onMenuClick: MenuProps['onClick'] = (e) => {
+    if (e.key === '1') {
       handleOpenModal();
-    } else if (e.key === "2") {
+    } else if (e.key === '2') {
       handleOpenAssignmentModal();
-    } else if (e.key === "3") {
+    } else if (e.key === '3') {
       handleOpenQuizModal();
     }
   };
@@ -188,8 +211,17 @@ const CourseContent = () => {
           courseId={courseId}
           recallApi={setRecallApi}
           quizData={quizData}
-          allQuizData={allQuizData}
+          // allQuizData={allQuizData}
         ></CreateQuizModal>
+        <UpdateQuizModal
+          open={openEditQuizModal}
+          onClose={handleCloseEditQuizModal}
+          sectionData={sectionData}
+          courseId={courseId}
+          recallApi={setRecallApi}
+          quizData={quizData}
+          allQuizData={allQuizData}
+        ></UpdateQuizModal>
         <Modal
           open={isVideoModalVisible}
           onCancel={() => {

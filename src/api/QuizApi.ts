@@ -1,9 +1,9 @@
-import Api from "./apiConfigs";
+import Api from './apiConfigs';
 
 class QuizApi {
   endPoints = {
-    createQuiz: "/quiz/create/",
-    updateQuiz: "/quiz/update/",
+    createQuiz: '/quiz/create/',
+    updateQuiz: '/quiz/update/',
   };
   async createQuiz(data: any) {
     return await Api?.http?.post(this.endPoints.createQuiz, data);
