@@ -12,16 +12,39 @@ import ButtonAtom from '../../../atoms/button/button.attom';
 import HeadingAtom from '../../../atoms/heading/heading.atom';
 import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
 import './courseDetailsLandingPage.scss';
+import useGetCourseAvailableInWishlistByUser from '../../../../hooks/wishlist/useGetCourseAvailableInWishlist';
+import WishlistApi from '../../../../api/WishlistApi';
+import { recallWishListApi } from '../../../../redux/slices/wishListSlice';
 const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   console.log('courseBasicInfo', courseBasicInfo?.data);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const { courseId } = useParams();
+  const { courseAvailableInUserWishlist, error } =
+    useGetCourseAvailableInWishlistByUser(courseId as string);
+  console.log('courseAvailableInUserWishlist', courseAvailableInUserWishlist);
+  const student = useAppSelector((state) => state.auth.userData.rank);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+  const handleAddToWishList = async () => {
+    try {
+      setWishlistLoading(true);
+      let res;
+      if (courseAvailableInUserWishlist) {
+        res = await WishlistApi.removeCourseFromWishlist(courseId as string);
+      } else {
+        res = await WishlistApi.addCourseToTheWishlist(courseId as string);
+      }
+      dispatch(recallWishListApi());
+      message.success(res?.data?.message);
+      setWishlistLoading(false);
+    } catch (error: any) {
+      message.error(error?.response?.message);
+      setWishlistLoading(false);
+    }
+  };
   const handleAddToCart = async () => {
     try {
-      console.log('courseId', courseId);
-
       setLoading(true);
       const res = await CartApi.addToCart(courseId);
       message.success(res?.data?.message);
@@ -88,10 +111,16 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
                 ></ButtonAtom>
                 <ButtonAtom
                   icon={<HeartOutlined />}
-                  type="default"
+                  type={
+                    courseAvailableInUserWishlist && !error
+                      ? 'primary'
+                      : 'default'
+                  }
                   size="large"
                   className="heart-icon"
                   style={{ width: '4rem' }}
+                  handleButtonClick={handleAddToWishList}
+                  loading={wishlistLoading}
                 ></ButtonAtom>
               </div>
             )}

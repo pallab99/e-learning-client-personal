@@ -1,13 +1,13 @@
 //@ts-nocheck
-import { Card, Drawer, Empty, Image, Rate } from "antd";
-import React, { useState } from "react";
-import useGetWishlistByUser from "../../../hooks/wishlist/useGetUserWishlist";
-import useRemoveCourseFromWishlist from "../../../hooks/wishlist/useRemoveCourseFromWishlist";
-import ButtonAtom from "../../atoms/button/button.attom";
-import HeadingAtom from "../../atoms/heading/heading.atom";
-import InstructorCourseListSkeletonAtom from "../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton";
-import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
-import "./wishlistDrawer.scss";
+import { Card, Drawer, Empty, Image, Rate } from 'antd';
+import React, { useState } from 'react';
+import useGetWishlistByUser from '../../../hooks/wishlist/useGetUserWishlist';
+import useRemoveCourseFromWishlist from '../../../hooks/wishlist/useRemoveCourseFromWishlist';
+import ButtonAtom from '../../atoms/button/button.attom';
+import HeadingAtom from '../../atoms/heading/heading.atom';
+import InstructorCourseListSkeletonAtom from '../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
+import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
+import './wishlistDrawer.scss';
 interface IWishlistDrawerMolecules {
   open?: boolean;
   setOpen?: any;
@@ -49,7 +49,7 @@ const WishlistDrawerMolecules: React.FC<IWishlistDrawerMolecules> = ({
         onClose={onClose}
         key={placement}
         placement={placement}
-        width={!isMobile ? "600px" : "300px"}
+        width={!isMobile ? '600px' : '300px'}
       >
         {wishlistData?.courses?.length && (
           <HeadingAtom
@@ -68,7 +68,7 @@ const WishlistDrawerMolecules: React.FC<IWishlistDrawerMolecules> = ({
             return (
               <Card
                 className="course-card mt-20"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 key={ele._id}
               >
                 <div className="cart-left-div mt-20 mb-20">
@@ -92,20 +92,21 @@ const WishlistDrawerMolecules: React.FC<IWishlistDrawerMolecules> = ({
                       ></ParagraphAtom>
                       <Rate
                         value={4.5}
-                        style={{ fontSize: "15px" }}
+                        style={{ fontSize: '15px' }}
                         disabled
                       ></Rate>
+                      <div className="cart-card-right">
+                        <ButtonAtom
+                          text="remove"
+                          type="link"
+                          dangerBtn={true}
+                          handleButtonClick={() =>
+                            handleRemoveCourseFromWishlist(ele?._id)
+                          }
+                          loading={removeWishlistLoading}
+                        ></ButtonAtom>
+                      </div>
                     </div>
-                  </div>
-                  <div className="cart-card-right">
-                    <ButtonAtom
-                      text="remove"
-                      type="link"
-                      handleButtonClick={() =>
-                        handleRemoveCourseFromWishlist(ele?._id)
-                      }
-                      loading={removeWishlistLoading}
-                    ></ButtonAtom>
                   </div>
                 </div>
               </Card>

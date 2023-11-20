@@ -3,26 +3,24 @@ import WishlistApi from '../../api/WishlistApi';
 import { useAppSelector } from '../../redux/store';
 import { STUDENT } from '../../constant/userType';
 
-const useGetWishlistByUser = (open: any, recallApi: any) => {
-  const [wishlistData, setWishlistData] = useState<Array<any>>([]);
+const useGetCourseAvailableInWishlistByUser = (courseId: string) => {
+  const [courseAvailableInUserWishlist, setCourseAvailableInUserWishlist] =
+    useState<any>(false);
   const [wishlistLoading, setWishListLoading] = useState(false);
   const [error, setError] = useState(null);
   const isStudent = useAppSelector((state) => state.auth.userData.rank);
   const callWishListApi = useAppSelector((state) => state.wishlist.cnt);
-
   useEffect(() => {
-    if (open) {
-      if (isStudent === STUDENT) {
-        getWishlistByUser();
-      }
+    if (isStudent === STUDENT && courseId) {
+      courseAvailableInWishlist(courseId);
     }
-  }, [isStudent, open, recallApi, callWishListApi]);
+  }, [isStudent, courseId, callWishListApi]);
 
-  const getWishlistByUser = async () => {
+  const courseAvailableInWishlist = async (courseId: string) => {
     try {
       setWishListLoading(true);
-      const response = await WishlistApi.getWishlistDataByUser();
-      setWishlistData(response?.data?.data);
+      const response = await WishlistApi.courseAvailableInWishlist(courseId);
+      setCourseAvailableInUserWishlist(response?.data?.success);
       setWishListLoading(false);
       setError(null);
     } catch (error: any) {
@@ -33,7 +31,7 @@ const useGetWishlistByUser = (open: any, recallApi: any) => {
     }
   };
 
-  return { wishlistData, wishlistLoading, error };
+  return { courseAvailableInUserWishlist, wishlistLoading, error };
 };
 
-export default useGetWishlistByUser;
+export default useGetCourseAvailableInWishlistByUser;

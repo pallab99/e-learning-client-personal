@@ -14,7 +14,7 @@ import CourseDescription from '../../molecules/course-description/courseDescript
 const CourseDetailsOrganism = () => {
   const { courseId } = useParams();
   const { data, loading } = useGetCourseById(courseId as string);
-
+  // const {}=useGetCourse
   return (
     <>
       {loading ? (
