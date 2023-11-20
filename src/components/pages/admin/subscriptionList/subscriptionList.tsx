@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import useGetAllSubscriptionListByAdmin from '../../../../hooks/subscriptionList/getAllSubscriptionList';
 import AllSubscriptionTableOrganism from '../../../organism/admin/subscriptionList/subscriptionList';
+import AdminDashboardSideBarOrganism from '../../../organism/admin/sidebar/sidebar.organism';
 
 const AllSubscriptionListPage = () => {
   const [selectValue, setSelectValue] = useState({});
@@ -18,13 +19,17 @@ const AllSubscriptionListPage = () => {
   });
 
   return (
-    <AllSubscriptionTableOrganism
-      data={tableData}
-      loading={loading}
-      setRecallApi={setRecallApi}
-      recallApi={recallApi}
-      // setSelectValue={setSelectValue}
-    />
+    <div className="all-student-page">
+      <AdminDashboardSideBarOrganism />
+      <div className="admin_right_side_div">
+        <AllSubscriptionTableOrganism
+          data={tableData}
+          loading={loading}
+          setRecallApi={setRecallApi}
+          recallApi={recallApi}
+        />
+      </div>
+    </div>
   );
 };
 

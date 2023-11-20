@@ -201,7 +201,7 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
         <Table
           columns={columns}
           dataSource={data}
-          scroll={{ x: 1300 }}
+          scroll={{ x: 1000 }}
           pagination={{
             pageSize: 5,
             total: data?.length,

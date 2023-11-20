@@ -1,0 +1,56 @@
+import {
+  MessageOutlined,
+  PieChartOutlined,
+  SignalFilled,
+  UserAddOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import type { MenuProps } from 'antd';
+import React, { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { Link } from 'react-router-dom';
+import DesktopSideBar from './desktopSidebar';
+import MobileSideBar from './mobileSidebar';
+import './sidebar.style.scss';
+type MenuItem = Required<MenuProps>['items'][number];
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  path: string,
+  icon?: React.ReactNode,
+  children?: MenuItem[],
+  type?: 'group'
+): MenuItem {
+  return {
+    key,
+    icon,
+    children,
+    label: <Link to={path}>{label}</Link>,
+    type,
+  } as MenuItem;
+}
+
+const items: MenuItem[] = [
+  getItem('Courses', '1', '/admin/course/published', <PieChartOutlined />),
+  getItem('Users', 'sub1', '/communication', <MessageOutlined />, [
+    getItem('Students', '2', '/admin/user/student', <UserAddOutlined />),
+    getItem('Instructors', '3', '/admin/user/instructor', <UserOutlined />),
+  ]),
+  getItem('Subscription', 'sub2', '/admin/subscription/all', <SignalFilled />),
+];
+
+const AdminDashboardSideBarOrganism: React.FC = () => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-device-width: 1224px)',
+  });
+
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' });
+  return (
+    <div>
+      {isDesktopOrLaptop && <DesktopSideBar items={items} />}
+      {isTabletOrMobile && <MobileSideBar items={items} />}
+    </div>
+  );
+};
+
+export default AdminDashboardSideBarOrganism;

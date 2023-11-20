@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import useGetAllCourseByAdmin from '../../../../../hooks/course/getAllCourseAdmin';
 import AllPublishedCourseTableOrganism from '../../../../organism/admin/course/published/publishedCourse';
+import AdminDashboardSideBarOrganism from '../../../../organism/admin/sidebar/sidebar.organism';
 
 const AllPublishedCoursePage = () => {
   const [selectValue, setSelectValue] = useState({});
@@ -22,13 +23,18 @@ const AllPublishedCoursePage = () => {
   });
 
   return (
-    <AllPublishedCourseTableOrganism
-      loading={loading}
-      data={tableData}
-      setSelectValue={setSelectValue}
-      recallApi={recallApi}
-      setRecallApi={setRecallApi}
-    />
+    <div className="all-student-page">
+      <AdminDashboardSideBarOrganism />
+      <div className="admin_right_side_div">
+        <AllPublishedCourseTableOrganism
+          loading={loading}
+          data={tableData}
+          setSelectValue={setSelectValue}
+          recallApi={recallApi}
+          setRecallApi={setRecallApi}
+        />
+      </div>
+    </div>
   );
 };
 

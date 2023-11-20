@@ -2,6 +2,7 @@ import { Image } from 'antd';
 import useGetAllStudent from '../../../../../hooks/user/useGetAllStudent';
 import AllStudentTableOrganism from '../../../../organism/admin/user/student/students';
 import './student.scss';
+import AdminDashboardSideBarOrganism from '../../../../organism/admin/sidebar/sidebar.organism';
 
 const AllStudentPage = () => {
   const { data, loading } = useGetAllStudent();
@@ -21,7 +22,10 @@ const AllStudentPage = () => {
 
   return (
     <div className="all-student-page">
-      <AllStudentTableOrganism data={tableData} loading={loading} />
+      <AdminDashboardSideBarOrganism />
+      <div className="admin_right_side_div">
+        <AllStudentTableOrganism data={tableData} loading={loading} />
+      </div>
     </div>
   );
 };

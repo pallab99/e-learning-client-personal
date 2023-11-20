@@ -42,16 +42,15 @@ const CourseSection = () => {
   const [switchLoading, setSwitchLoading] = useState(false);
   // const[courseSectionId,setCourseSectionId]=useState()
   const handleSectionVisibility = async (
-    courseSectionId: string,
-    checked: boolean
+    checked: boolean,
+    courseSectionId: string
   ) => {
-    console.log(checked);
     try {
       setSwitchLoading(true);
-      let type = 'enable';
+      let type = 'disable';
       if (checked === true) {
         console.log('checked');
-        type = 'disable';
+        type = 'enable';
       }
       const res = await CourseSectionApi.changeCourseSectionVisibility(
         courseId,
@@ -118,7 +117,7 @@ const CourseSection = () => {
                           defaultChecked={!!ele?.isVisible}
                           size="small"
                           onChange={(checked) =>
-                            handleSectionVisibility(ele?._id, checked)
+                            handleSectionVisibility(checked, ele?._id)
                           }
                           loading={switchLoading}
                           key={ele?._id}

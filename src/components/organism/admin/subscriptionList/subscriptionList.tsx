@@ -240,7 +240,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
         <div className="card-header-flex">
           <div className="table-header-div">
             <HeadingAtom
-              text="All published course list"
+              text="All subscription request list"
               level={3}
               className="mb-30"
             />
