@@ -64,7 +64,7 @@ const UpdateCourseOrganism = () => {
       setValue('title', data?.data?.title);
       setValue('sub_title', data?.data?.sub_title);
       setValue('description', data?.data?.description);
-      setValue('category', data?.data?.category);
+      setValue('category', data?.data?.category?.title);
       setValue('level', data?.data?.level);
       setValue('benefits', data?.data?.benefits);
       setValue('prerequisites', data?.data?.prerequisites);

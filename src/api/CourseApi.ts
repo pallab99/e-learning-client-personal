@@ -1,22 +1,44 @@
-import Api from "./apiConfigs";
+import Api from './apiConfigs';
 
 class CourseApi {
   endPoints = {
-    getAllCourse: "/course/all",
-    courseByInstructor: "/course/all/instructor",
-    coursePublishRequest: "/course/publish-request",
-    createCourse: "/course/create",
-    uploadPromoVideo: "/course/upload/demoVideo/6554f0c725b550d271b1e012",
-    getCourseById: "/course/getCourseById/",
-    updateCourseById: "/course/update/",
+    getAllCourse: '/course/all',
+    courseByInstructor: '/course/all/instructor',
+    coursePublishRequest: '/course/publish-request',
+    createCourse: '/course/create',
+    uploadPromoVideo: '/course/upload/demoVideo/6554f0c725b550d271b1e012',
+    getCourseById: '/course/getCourseById/',
+    updateCourseById: '/course/update/',
   };
 
-  async getAllCourse() {
-    return await Api?.http?.get(this.endPoints.getAllCourse);
+  async getAllCourse(
+    filterOption: string,
+    sortCourseByStudents: string,
+    sortCourseByRating: string,
+    filterCourseByCategory: string[] | [],
+    page: any = 1,
+    limit: any = 5
+  ) {
+    console.log('api call');
+
+    let url: string = `${this.endPoints.getAllCourse}?page=${page}&limit=${limit}`;
+    if (filterOption) {
+      url = url + `?filterLevel=${filterOption}`;
+    }
+    if (sortCourseByStudents) {
+      url = url + `&sortValue=${sortCourseByStudents}`;
+    }
+    if (sortCourseByRating) {
+      url = url + `&sortValue=${sortCourseByRating}`;
+    }
+    if (filterCourseByCategory.length > 0) {
+      url = url + `&filterCategory=${filterCourseByCategory}`;
+    }
+    return await Api?.http?.get(url);
   }
-  async getCourseByInstructor(searchTerm: string = "") {
+  async getCourseByInstructor(searchTerm: string = '') {
     const url =
-      this.endPoints.courseByInstructor + "?searchTerm" + "=" + searchTerm;
+      this.endPoints.courseByInstructor + '?searchTerm' + '=' + searchTerm;
     return await Api?.http?.get(url);
   }
   async getAllCourseAdmin(selectFieldData: any) {

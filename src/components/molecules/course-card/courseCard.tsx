@@ -1,9 +1,17 @@
-import { Card, Pagination, Rate, Typography } from "antd";
-import { FaChartSimple } from "react-icons/fa6";
-import useGetAllCourse from "../../../hooks/course/useGetAllCourse";
-import ButtonAtom from "../../atoms/button/button.attom";
-import SortSelect from "../sort-select/sortSelect";
-import "./courseCard.scss";
+import { Card, Pagination, Rate, Typography } from 'antd';
+import { FaChartSimple } from 'react-icons/fa6';
+import useGetAllCourse from '../../../hooks/course/useGetAllCourse';
+import ButtonAtom from '../../atoms/button/button.attom';
+import SortSelect from '../sort-select/sortSelect';
+import './courseCard.scss';
+import {
+  filterByCategory,
+  filterByLevel,
+  sortByRating,
+  sortByStudents,
+} from '../../../signals/course';
+// import { useAppDispatch, useAppSelector } from '../../../redux/store';
+// import { filterByLevel } from '../../../redux/slices/courseSlice';
 const { Paragraph } = Typography;
 
 const CourseCardMolecules = () => {
@@ -11,61 +19,89 @@ const CourseCardMolecules = () => {
   console.log(data);
   const selectOption = [
     {
-      value: "rating_asc",
-      label: "Rating(ASC)",
+      value: 'rating',
+      label: 'Rating',
     },
     {
-      value: "rating_desc",
-      label: "Rating(DESC)",
-    },
-    {
-      value: "students_asc",
-      label: "No Of Student(ASC)",
-    },
-    {
-      value: "students_desc",
-      label: "No Of Student(DESC)",
+      value: 'student',
+      label: 'Student',
     },
   ];
   const categoryOption = [
     {
-      value: "web development",
-      label: "Web Development",
+      value: 'web devlopment',
+      label: 'Web Development',
     },
     {
-      value: "softskill",
-      label: "softskill",
+      value: 'softskill',
+      label: 'softskill',
     },
     {
-      value: "mobile devlopment",
-      label: "mobile devlopment",
+      value: 'mobile devlopment',
+      label: 'mobile devlopment',
     },
     {
-      value: "reactjs",
-      label: "reactjs",
+      value: 'reactjs',
+      label: 'reactjs',
     },
   ];
   const levelOption = [
     {
-      value: "begineer",
-      label: "Begineer",
+      value: 'beginner',
+      label: 'Beginner',
     },
     {
-      value: "intermediate",
-      label: "intermediate",
+      value: 'intermediate',
+      label: 'intermediate',
     },
     {
-      value: "advance",
-      label: "advance",
+      value: 'advance',
+      label: 'advance',
     },
   ];
+
+  const handleFilterByCategory = (value: any) => {
+    console.log('category', value);
+    if (Array.isArray(value)) {
+      filterByCategory.value = value;
+    } else {
+      filterByCategory.value = [value];
+    }
+  };
+  const handleFilterLevel = (value: any) => {
+    filterByLevel.value = value;
+  };
+  const handelSortBy = (value: any) => {
+    if (value === 'rating') {
+      sortByRating.value = value;
+    } else if (value === 'student') {
+      sortByStudents.value = value;
+    }
+  };
+
+  console.log('filterByCategory', filterByCategory);
+
   return (
     <div className="CardContainer cursor-pointer">
       <h2>All Courses</h2>
       <div className="select-field-course">
-        <SortSelect options={categoryOption} placeholder="Select Category" />
-        <SortSelect options={levelOption} placeholder="Select the level" />
-        <SortSelect options={selectOption} placeholder="Sort the course" />
+        <SortSelect
+          options={categoryOption}
+          placeholder="Select Category"
+          mode="multiple"
+          style={{ width: '300px' }}
+          onChange={handleFilterByCategory}
+        />
+        <SortSelect
+          options={levelOption}
+          placeholder="Select the level"
+          onChange={handleFilterLevel}
+        />
+        <SortSelect
+          options={selectOption}
+          placeholder="Sort the course"
+          onChange={handelSortBy}
+        />
       </div>
       <div className="CardContent">
         {data?.data?.courses?.map((course, index) => (
@@ -78,10 +114,10 @@ const CourseCardMolecules = () => {
                 height="135"
                 loading="lazy"
                 style={{
-                  overflow: "hidden",
-                  width: "90%",
-                  height: "300px",
-                  objectFit: "cover",
+                  overflow: 'hidden',
+                  width: '90%',
+                  height: '300px',
+                  objectFit: 'cover',
                 }}
               />
               <div className="lowerCard mb-20">
@@ -95,14 +131,14 @@ const CourseCardMolecules = () => {
                   <span className="reviews">{`(123,00)`}</span>
                 </div>
                 <p className="Price mt-5 text-18">
-                  <FaChartSimple />{" "}
+                  <FaChartSimple />{' '}
                   <span className="cross">{course.level}</span>
                 </p>
                 <p className="Hover">
                   <ButtonAtom
                     text="Add To Cart"
                     type="primary"
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                   ></ButtonAtom>
                   {/* <HeartOutlined style={{ fontSize: '30px' }}></HeartOutlined> */}
                 </p>
