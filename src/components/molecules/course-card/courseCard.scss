@@ -44,6 +44,7 @@
 
 .Cards img {
   // border: 1px solid #d1d7dc;
+  height: 150px !important;
 }
 
 .lowerCard {
@@ -63,12 +64,12 @@
   text-overflow: ellipsis;
   overflow: hidden;
 
-  @supports (-webkit-line-clamp: 2) {
+  @supports (-webkit-line-clamp: 1) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: initial;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
   }
 }
@@ -143,7 +144,7 @@
   cursor: pointer;
   display: inline-block;
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
-    'Helvetica Neue', sans-serif;
+    "Helvetica Neue", sans-serif;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
@@ -182,6 +183,12 @@
   display: flex;
   justify-content: flex-start;
 }
+.select-field-course {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
 @media only screen and (max-width: 1400px) {
   .CardContent {
     grid-template-columns: repeat(4, 1fr);
@@ -217,5 +224,9 @@
   .CardContainer {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+  }
+  .select-field-course {
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 }

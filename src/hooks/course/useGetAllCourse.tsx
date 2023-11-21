@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CourseApi from "../../api/CourseApi";
 import { useAppSelector } from "../../redux/store";
 
-const useGetAllCourseByInstructor = () => {
+const useGetAllCourse = () => {
   const [data, setData] = useState<object>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -10,13 +10,13 @@ const useGetAllCourseByInstructor = () => {
     (state) => state.instructor.searchTerm
   );
   useEffect(() => {
-    getAllCourse(courseSearchTerm);
-  }, [courseSearchTerm]);
+    getAllCourse();
+  }, []);
 
-  const getAllCourse = async (courseSearchTerm: string) => {
+  const getAllCourse = async () => {
     try {
       setLoading(true);
-      const response = await CourseApi.getCourseByInstructor(courseSearchTerm);
+      const response = await CourseApi.getAllCourse();
       setData(response?.data);
       setLoading(false);
     } catch (error: any) {
@@ -30,4 +30,4 @@ const useGetAllCourseByInstructor = () => {
   return { data, loading, error };
 };
 
-export default useGetAllCourseByInstructor;
+export default useGetAllCourse;

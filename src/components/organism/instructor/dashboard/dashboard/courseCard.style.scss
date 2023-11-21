@@ -10,7 +10,7 @@
 }
 .course-card-div {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   // gap: 8rem;
 }
 .card-left {
@@ -18,7 +18,8 @@
   //   justify-content: center;
   align-items: center;
   gap: 6%;
-  flex-basis: 30%;
+  // flex-basis: 30%;
+  width: 100%;
 }
 .card-left img {
   width: 35%;

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import WishlistApi from '../../api/WishlistApi';
-import { useAppSelector } from '../../redux/store';
-import { STUDENT } from '../../constant/userType';
+import { useEffect, useState } from "react";
+import WishlistApi from "../../api/WishlistApi";
+import { STUDENT } from "../../constant/userType";
+import { useAppSelector } from "../../redux/store";
 
 const useGetCourseAvailableInWishlistByUser = (courseId: string) => {
   const [courseAvailableInUserWishlist, setCourseAvailableInUserWishlist] =
@@ -20,7 +20,11 @@ const useGetCourseAvailableInWishlistByUser = (courseId: string) => {
     try {
       setWishListLoading(true);
       const response = await WishlistApi.courseAvailableInWishlist(courseId);
-      setCourseAvailableInUserWishlist(response?.data?.success);
+      if (response?.data?.data) {
+        setCourseAvailableInUserWishlist(true);
+      } else {
+        setCourseAvailableInUserWishlist(false);
+      }
       setWishListLoading(false);
       setError(null);
     } catch (error: any) {

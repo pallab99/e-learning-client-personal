@@ -1,9 +1,10 @@
-import useGetAllCourseByInstructor from '../../../../hooks/course/useGetCourseByInstructor';
-import InstructorCourseListSkeletonAtom from '../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
-import CourseCardOrganism from '../../../organism/instructor/dashboard/dashboard/courseCard.organism';
-import CreateCourseHeaderOrganism from '../../../organism/instructor/dashboard/dashboard/createCourse.organism';
-import InstructorDashboardSideBarOrganism from '../../../organism/instructor/dashboard/sidebar/sidebar.organism';
-import './dashboard.style.scss';
+import { Empty } from "antd";
+import useGetAllCourseByInstructor from "../../../../hooks/course/useGetCourseByInstructor";
+import InstructorCourseListSkeletonAtom from "../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton";
+import CourseCardOrganism from "../../../organism/instructor/dashboard/dashboard/courseCard.organism";
+import CreateCourseHeaderOrganism from "../../../organism/instructor/dashboard/dashboard/createCourse.organism";
+import InstructorDashboardSideBarOrganism from "../../../organism/instructor/dashboard/sidebar/sidebar.organism";
+import "./dashboard.style.scss";
 const InstructorDashboardPage = () => {
   const { data, loading } = useGetAllCourseByInstructor();
 
@@ -17,7 +18,13 @@ const InstructorDashboardPage = () => {
             return <InstructorCourseListSkeletonAtom key={ele} />;
           })
         ) : (
-          <CourseCardOrganism data={(data as any)?.data} />
+          <>
+            {data?.data?.length <= 0 ? (
+              <Empty className="mt-40" />
+            ) : (
+              <CourseCardOrganism data={(data as any)?.data} />
+            )}
+          </>
         )}
       </div>
     </div>

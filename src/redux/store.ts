@@ -1,5 +1,5 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import {
   FLUSH,
   PAUSE,
@@ -10,25 +10,27 @@ import {
   REHYDRATE,
   persistReducer,
   persistStore,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-import { AppDispatch, RootState } from '../types/redux';
-import authSlice from './slices/authSlice';
-import cartSlice from './slices/cartSlice';
-import fileUploadProgressSlice from './slices/fileUploadProgressSlice';
-import wishListSlice from './slices/wishListSlice';
+import { AppDispatch, RootState } from "../types/redux";
+import authSlice from "./slices/authSlice";
+import cartSlice from "./slices/cartSlice";
+import fileUploadProgressSlice from "./slices/fileUploadProgressSlice";
+import instructorSearch from "./slices/instructorSearch";
+import wishListSlice from "./slices/wishListSlice";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['auth'],
+  whitelist: ["auth"],
 };
 const rootReducer = combineReducers({
   auth: authSlice,
   cart: cartSlice,
   wishlist: wishListSlice,
   uploadProgress: fileUploadProgressSlice,
+  instructor: instructorSearch,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

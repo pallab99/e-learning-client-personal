@@ -1,25 +1,48 @@
-import React from 'react';
-import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import FlexAtom from '../../../../atoms/flex/flex.atom';
-import ButtonAtom from '../../../../atoms/button/button.attom';
-import SearchBoxAtom from '../../../../atoms/searchBox/searchbox.atom';
-import './createCourseHeader.style.scss';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import ButtonAtom from "../../../../atoms/button/button.attom";
+import FlexAtom from "../../../../atoms/flex/flex.atom";
+import HeadingAtom from "../../../../atoms/heading/heading.atom";
+// import type { SearchProps } from "../Search";
+import { Input } from "antd";
+import { SearchProps } from "antd/es/input";
+import { debounce } from "lodash";
+import { useCallback } from "react";
+import { instructorCourseSearchTerm } from "../../../../../redux/slices/instructorSearch";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/store";
+import "./createCourseHeader.style.scss";
+const { Search } = Input;
 const CreateCourseHeader = () => {
-  // const onClick=()=>{
-  //   router
-  // }
+  const dispatch = useAppDispatch();
+  const courseSearchTerm = useAppSelector(
+    (state) => state.instructor.searchTerm
+  );
+
+  const debouncedSetSearchTerm = useCallback(
+    debounce(
+      (value: string) => dispatch(instructorCourseSearchTerm(value)),
+      1000
+    ),
+    [dispatch]
+  );
+
+  const onSearch: SearchProps["onSearch"] = (value) => {
+    debouncedSetSearchTerm(value.target.value);
+  };
+
+  console.log("search", courseSearchTerm);
+
   return (
     <>
       <HeadingAtom text="Courses" level={2}></HeadingAtom>
       <FlexAtom justify="space-between">
         <div className="course-search-div">
-          <SearchBoxAtom
-            placeholder="Search for courses"
-            size="large"
-            allowClear={true}
+          <Search
             className="course-search-box"
-          ></SearchBoxAtom>
+            onChange={onSearch}
+            size="large"
+            allowClear
+            placeholder="Search Your course"
+          />
         </div>
         <Link to="/instructor/course/create">
           <ButtonAtom text="New Course" type="primary" size="large" />

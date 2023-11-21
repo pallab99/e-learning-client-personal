@@ -1,16 +1,15 @@
-import { useParams } from 'react-router-dom';
-import ButtonAtom from '../../../../atoms/button/button.attom';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Card, Empty, Slider, Switch, Tooltip, message } from 'antd';
-import { useState } from 'react';
-import useGetCourseSection from '../../../../../hooks/course-section/useGetCourseSection';
-import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import InstructorCourseListSkeletonAtom from '../../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
-import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
-import CreateSectionModal from '../../../../molecules/create-section/createSection';
-import './courseSection.scss';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import CourseSectionApi from '../../../../../api/CourseSectionApi';
+import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { Card, Empty, Switch, Tooltip, message } from "antd";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import CourseSectionApi from "../../../../../api/CourseSectionApi";
+import useGetCourseSection from "../../../../../hooks/course-section/useGetCourseSection";
+import ButtonAtom from "../../../../atoms/button/button.attom";
+import HeadingAtom from "../../../../atoms/heading/heading.atom";
+import InstructorCourseListSkeletonAtom from "../../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton";
+import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
+import CreateSectionModal from "../../../../molecules/create-section/createSection";
+import "./courseSection.scss";
 const CourseSection = () => {
   const { courseId } = useParams();
   const [recallCourseSectionApi, setRecallCourseSectionApi] = useState(0);
@@ -24,14 +23,14 @@ const CourseSection = () => {
     setOpenModal(true);
   };
   const [sectionData, setSectionData] = useState({
-    id: '',
-    title: '',
+    id: "",
+    title: "",
   });
   const handleCloseModal = () => {
     setOpenModal(false);
     setSectionData({
-      id: '',
-      title: '',
+      id: "",
+      title: "",
     });
   };
 
@@ -47,10 +46,10 @@ const CourseSection = () => {
   ) => {
     try {
       setSwitchLoading(true);
-      let type = 'disable';
+      let type = "disable";
       if (checked === true) {
-        console.log('checked');
-        type = 'enable';
+        console.log("checked");
+        type = "enable";
       }
       const res = await CourseSectionApi.changeCourseSectionVisibility(
         courseId,
@@ -87,11 +86,11 @@ const CourseSection = () => {
           data?.data?.map((ele: any) => {
             return (
               <div className="mt-20 cursor-pointer card-hover" key={ele._id}>
-                <Card className="course-card" style={{ width: '100%' }}>
+                <Card className="course-card" style={{ width: "100%" }}>
                   <div className="section-card-div">
-                    <div className="card-left">
+                    <div className="section-card-left">
                       <HeadingAtom
-                        text={ele.title || 'jjjj'}
+                        text={ele.title || "jjjj"}
                         level={5}
                         ellipsis={true}
                       ></HeadingAtom>

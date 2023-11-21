@@ -35,7 +35,8 @@ const HeaderOrganism = () => {
   const isMobile = window.innerWidth <= 768;
   const student = useAppSelector((state) => state.auth.userData.rank);
   const userData = useAppSelector((state) => state.auth.userData);
-  console.log("cart error", error);
+  // const loggedIn=useAppSelector(state=>state?.auth?.userData)
+  console.log({ userData });
 
   return (
     <>
@@ -50,13 +51,15 @@ const HeaderOrganism = () => {
               className="cursor-pointer"
             ></Image>
           </Link>
-          <ParagraphAtom text="Categories" className="text-18 cursor-pointer" />
-          <HeaderSearchBarMolecules />
-          {/* <ParagraphAtom
-            text="udemy Business"
-            className="text-18 cursor-pointer"
-          /> */}
-
+          {/* {(!userData.accessToken || student === STUDENT) && (
+            <ParagraphAtom
+              text="Categories"
+              className="text-18 cursor-pointer"
+            />
+          )} */}
+          {(!userData.accessToken || student === STUDENT) && (
+            <HeaderSearchBarMolecules />
+          )}
           <ParagraphAtom text="Instructor" className="text-18 cursor-pointer" />
           {student === STUDENT && (
             <ParagraphAtom
@@ -71,11 +74,7 @@ const HeaderOrganism = () => {
               handleOnClick={handleOpenWishlistDrawer}
             ></IconAtom>
           )}
-          {!userData.accessToken && (
-            <Link to={"/sign-up"}>
-              <ButtonAtom size="large" text="Sign Up"></ButtonAtom>
-            </Link>
-          )}
+
           <WishlistDrawerMolecules
             open={openWishlistDrawer}
             onClose={handleCloseWishlistDrawer}
@@ -98,15 +97,22 @@ const HeaderOrganism = () => {
               ></ParagraphAtom>
             </div>
           )}
-          {!userData.accessToken && (
-            <Link to={"/log-in"}>
-              <ButtonAtom
-                type="primary"
-                size="large"
-                text="Log In"
-              ></ButtonAtom>
-            </Link>
-          )}
+          <div className="log-in-sign-up-btn">
+            {!userData.accessToken && (
+              <Link to={"/log-in"}>
+                <ButtonAtom
+                  type="primary"
+                  size="large"
+                  text="Log In"
+                ></ButtonAtom>
+              </Link>
+            )}
+            {!userData.accessToken && (
+              <Link to={"/sign-up"}>
+                <ButtonAtom size="large" text="Sign Up"></ButtonAtom>
+              </Link>
+            )}
+          </div>
           <CartDrawerMolecules
             open={openCartDrawer}
             onClose={handleCloseCartDrawer}

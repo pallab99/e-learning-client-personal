@@ -1,18 +1,17 @@
-import { SearchOutlined } from '@ant-design/icons';
-import type { InputRef } from 'antd';
-import { Card, Empty, Image, Input, Space, Table, message } from 'antd';
-import type { ColumnType, ColumnsType } from 'antd/es/table';
-import type { FilterConfirmProps } from 'antd/es/table/interface';
-import React, { useRef, useState } from 'react';
-import Highlighter from 'react-highlight-words';
-import ButtonAtom from '../../../../atoms/button/button.attom';
-import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
-import { SelectField } from '../../../../atoms/select-filed/selectField';
-import TableSkeletonAtom from '../../../../atoms/table-skeleton/tableSkeleton';
-import './publishedCourse.scss';
-import CourseApi from '../../../../../api/CourseApi';
-import { SelectFieldCustom } from '../../../../atoms/select-field-custom/selectFieldCustom';
+import { SearchOutlined } from "@ant-design/icons";
+import type { InputRef } from "antd";
+import { Card, Empty, Image, Input, Space, Table, message } from "antd";
+import type { ColumnType, ColumnsType } from "antd/es/table";
+import type { FilterConfirmProps } from "antd/es/table/interface";
+import React, { useRef, useState } from "react";
+import Highlighter from "react-highlight-words";
+import CourseApi from "../../../../../api/CourseApi";
+import ButtonAtom from "../../../../atoms/button/button.attom";
+import HeadingAtom from "../../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
+import { SelectFieldCustom } from "../../../../atoms/select-field-custom/selectFieldCustom";
+import TableSkeletonAtom from "../../../../atoms/table-skeleton/tableSkeleton";
+import "./publishedCourse.scss";
 interface DataType {
   _id: number;
   title: string;
@@ -41,10 +40,10 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
   recallApi,
   setRecallApi,
 }) => {
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
-  console.log('table data', data);
+  console.log("table data", data);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -58,7 +57,7 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
 
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
 
   const getColumnSearchProps = (
@@ -82,7 +81,7 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
           onPressEnter={() =>
             handleSearch(selectedKeys as string[], confirm, dataIndex)
           }
-          style={{ marginBottom: 8, display: 'block' }}
+          style={{ marginBottom: 8, display: "block" }}
         />
         <Space>
           <ButtonAtom
@@ -114,7 +113,7 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
@@ -129,10 +128,10 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ''}
+          textToHighlight={text ? text.toString() : ""}
         />
       ) : (
         text
@@ -144,7 +143,7 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
   const handleAccept = async (courseId: string) => {
     try {
       setAcceptBtnLoading(true);
-      const res = await CourseApi.coursePublishRequest(courseId, 'accept');
+      const res = await CourseApi.coursePublishRequest(courseId, "accept");
       message.success(res?.data?.message);
       setAcceptBtnLoading(false);
       setRecallApi(!recallApi);
@@ -157,7 +156,7 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
     try {
       setRejectBtnLoading(true);
 
-      const res = await CourseApi.coursePublishRequest(courseId, 'reject');
+      const res = await CourseApi.coursePublishRequest(courseId, "reject");
       message.success(res?.data?.message);
       setRejectBtnLoading(false);
     } catch (error: any) {
@@ -168,13 +167,13 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
   };
   const [renderBtn, setRenderBtn] = useState(false);
   const selectFieldOnchange = (e: any) => {
-    console.log('onCancel');
+    console.log("onCancel");
 
-    if (e === 'disable') {
+    if (e === "disable") {
       setSelectValue({ type: e });
     } else {
-      setSelectValue({ type: 'verified', value: String(e) });
-      if (e === 'true') {
+      setSelectValue({ type: "verified", value: String(e) });
+      if (e === "true") {
         setRenderBtn(false);
       } else {
         setRenderBtn(true);
@@ -183,88 +182,88 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
   };
   let columns: ColumnsType<DataType> = [
     {
-      title: 'Thumbnail',
-      dataIndex: 'thumbnail',
-      key: 'thumbnail',
-      width: '10%',
+      title: "Thumbnail",
+      dataIndex: "thumbnail",
+      key: "thumbnail",
+      width: "10%",
       render: (_: any, record: any) => {
         return (
           <Image
             width={100}
             height={80}
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: "cover" }}
             src={record.thumbnail}
           />
         );
       },
     },
     {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
-      width: '15%',
-      ...getColumnSearchProps('title'),
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      width: "15%",
+      ...getColumnSearchProps("title"),
       sorter: (a, b) => a.title.length - b.title.length,
-      sortDirections: ['descend', 'ascend'],
+      sortDirections: ["descend", "ascend"],
       render: (_: any, record: any) => {
         return <ParagraphAtom text={record.title} ellipsis={true} />;
       },
     },
+    // {
+    //   title: "Instructors",
+    //   dataIndex: "instructors",
+    //   key: "instructors",
+    //   width: "10%",
+    //   ...getColumnSearchProps("instructors"),
+    //   sorter: (a, b) => a.instructors.length - b.instructors.length,
+    //   sortDirections: ["descend", "ascend"],
+    //   render: (_: any, record: any) => {
+    //     return <ParagraphAtom text={record.instructors} ellipsis={true} />;
+    //   },
+    // },
     {
-      title: 'Instructors',
-      dataIndex: 'instructors',
-      key: 'instructors',
-      width: '10%',
-      ...getColumnSearchProps('instructors'),
-      sorter: (a, b) => a.instructors.length - b.instructors.length,
-      sortDirections: ['descend', 'ascend'],
-      render: (_: any, record: any) => {
-        return <ParagraphAtom text={record.instructors} ellipsis={true} />;
-      },
-    },
-    {
-      title: 'TotalStudent',
-      dataIndex: 'totalStudent',
-      key: 'totalStudent',
+      title: "TotalStudent",
+      dataIndex: "totalStudent",
+      key: "totalStudent",
       sorter: (a, b) => a.totalStudent - b.totalStudent,
-      sortDirections: ['descend', 'ascend'],
+      sortDirections: ["descend", "ascend"],
     },
+    // {
+    //   title: 'Category',
+    //   dataIndex: 'category',
+    //   key: 'category',
+    //   ...getColumnSearchProps('category'),
+    // },
     {
-      title: 'Category',
-      dataIndex: 'category',
-      key: 'category',
-      ...getColumnSearchProps('category'),
-    },
-    {
-      title: 'Level',
-      dataIndex: 'level',
-      key: 'level',
+      title: "Level",
+      dataIndex: "level",
+      key: "level",
       sorter: (a, b) => a.level.length - b.level.length,
-      ...getColumnSearchProps('level'),
-      sortDirections: ['descend', 'ascend'],
+      ...getColumnSearchProps("level"),
+      sortDirections: ["descend", "ascend"],
     },
-    {
-      title: 'TotalHours',
-      dataIndex: 'totalHours',
-      key: 'totalHours',
-      sorter: (a, b) => a.totalHours - b.totalHours,
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: 'NumberOfSection',
-      dataIndex: 'numberOfSection',
-      key: 'numberOfSection',
-      sorter: (a, b) => a.numberOfSection - b.numberOfSection,
-      sortDirections: ['descend', 'ascend'],
-    },
+    // {
+    //   title: "TotalHours",
+    //   dataIndex: "totalHours",
+    //   key: "totalHours",
+    //   sorter: (a, b) => a.totalHours - b.totalHours,
+    //   sortDirections: ["descend", "ascend"],
+    // },
+    // {
+    //   title: "NumberOfSection",
+    //   dataIndex: "numberOfSection",
+    //   key: "numberOfSection",
+    //   sorter: (a, b) => a.numberOfSection - b.numberOfSection,
+    //   sortDirections: ["descend", "ascend"],
+    // },
   ];
   if (renderBtn === true) {
     columns = [
       ...columns,
       {
-        title: 'action',
-        dataIndex: 'action',
-        key: 'action',
+        title: "action",
+        dataIndex: "action",
+        key: "action",
         render: (_: any, record: any) => {
           return (
             <div className="flex">
@@ -288,10 +287,10 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
     ];
   }
   const selectValue = [
-    { value: 'all', label: 'All' },
-    { value: 'true', label: 'Published' },
-    { value: 'false', label: 'pending' },
-    { value: 'disable', label: 'Disabled' },
+    { value: "all", label: "All" },
+    { value: "true", label: "Published" },
+    { value: "false", label: "pending" },
+    { value: "disable", label: "Disabled" },
   ];
 
   return (
@@ -299,11 +298,7 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
       <Card>
         <div className="card-header-flex">
           <div className="table-header-div">
-            <HeadingAtom
-              text="All published course list"
-              level={3}
-              className="mb-30"
-            />
+            <HeadingAtom text="Course list" level={3} className="mb-30" />
           </div>
           <div className="table-header-select">
             <SelectFieldCustom

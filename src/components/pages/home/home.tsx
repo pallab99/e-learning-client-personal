@@ -1,7 +1,7 @@
-import { Card } from 'antd';
-import Brand from '../../molecules/brand-card/brandCard';
-import './home.scss';
-import CourseCardMolecules from '../../molecules/course-card/courseCard';
+import Brand from "../../molecules/brand-card/brandCard";
+import CourseCardMolecules from "../../molecules/course-card/courseCard";
+import CourseRecommendation from "../../molecules/course-card/recomendation";
+import "./home.scss";
 
 const HomePage = () => {
   return (
@@ -18,6 +18,7 @@ const HomePage = () => {
         </div>
       </div>
       <Brand />
+      <CourseRecommendation />
       <CourseCardMolecules />
     </div>
   );

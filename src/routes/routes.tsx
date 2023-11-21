@@ -1,23 +1,24 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import NotFoundPage from '../components/pages/404/404.pages';
-import AllPublishedCoursePage from '../components/pages/admin/course/published/publishedCourse';
-import AllSubscriptionListPage from '../components/pages/admin/subscriptionList/subscriptionList';
-import AllAdminPage from '../components/pages/admin/user/admin/admin';
-import AllInstructorPage from '../components/pages/admin/user/instructor/instrctor';
-import AllStudentPage from '../components/pages/admin/user/student/students';
-import CourseDetailsPage from '../components/pages/course-details/courseDetailsPage';
-import ForgetPasswordPage from '../components/pages/forget-password/forgetPassword.pages';
-import HeaderFooterLayout from '../components/pages/header-footer-layout/headerFooterLayout';
-import HomePage from '../components/pages/home/home';
-import InstructorProtectedRoutePage from '../components/pages/instructorProtectedRoute/instructorProtectedRoute';
-import CreateCoursePage from '../components/pages/instructors/course/create-course/createCourse';
-import UpdateCoursePage from '../components/pages/instructors/course/update-course/updateCourse';
-import InstructorDashboardPage from '../components/pages/instructors/dashboard/dashboard.page';
-import ProfilePage from '../components/pages/profile/profile';
-import ProfilePicturePage from '../components/pages/profile/profilePicture';
-import SignInPage from '../components/pages/signIn/signIn.pages';
-import SignUPPage from '../components/pages/signUp/signIp.pages';
-import UnauthorizedPage from '../components/pages/unauthorized/unauthorized';
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import NotFoundPage from "../components/pages/404/404.pages";
+import AllPublishedCoursePage from "../components/pages/admin/course/published/publishedCourse";
+import AllSubscriptionListPage from "../components/pages/admin/subscriptionList/subscriptionList";
+import AllAdminPage from "../components/pages/admin/user/admin/admin";
+import AllInstructorPage from "../components/pages/admin/user/instructor/instrctor";
+import AllStudentPage from "../components/pages/admin/user/student/students";
+import CourseDetailsPage from "../components/pages/course-details/courseDetailsPage";
+import EmailVerifiedPage from "../components/pages/email-verified/emailVerifed";
+import ForgetPasswordPage from "../components/pages/forget-password/forgetPassword.pages";
+import HeaderFooterLayout from "../components/pages/header-footer-layout/headerFooterLayout";
+import HomePage from "../components/pages/home/home";
+import InstructorProtectedRoutePage from "../components/pages/instructorProtectedRoute/instructorProtectedRoute";
+import CreateCoursePage from "../components/pages/instructors/course/create-course/createCourse";
+import UpdateCoursePage from "../components/pages/instructors/course/update-course/updateCourse";
+import InstructorDashboardPage from "../components/pages/instructors/dashboard/dashboard.page";
+import ProfilePage from "../components/pages/profile/profile";
+import ProfilePicturePage from "../components/pages/profile/profilePicture";
+import SignInPage from "../components/pages/signIn/signIn.pages";
+import SignUPPage from "../components/pages/signUp/signIp.pages";
+import UnauthorizedPage from "../components/pages/unauthorized/unauthorized";
 // import { lazy } from 'react';
 // const ProfilePage=lazy("../components/pages/profile/profile")
 const AllRoutes = () => {
@@ -49,6 +50,14 @@ const AllRoutes = () => {
           }
         />
         <Route
+          path="/email-verified"
+          element={
+            <HeaderFooterLayout>
+              <EmailVerifiedPage />
+            </HeaderFooterLayout>
+          }
+        />
+        <Route
           path="/log-out"
           element={
             <HeaderFooterLayout>
@@ -66,7 +75,11 @@ const AllRoutes = () => {
         />
         <Route
           path="/forget-password/:resetToken/:userId"
-          element={<ForgetPasswordPage />}
+          element={
+            <HeaderFooterLayout>
+              <ForgetPasswordPage />
+            </HeaderFooterLayout>
+          }
         />
         <Route
           path="*"

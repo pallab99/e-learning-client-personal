@@ -1,6 +1,8 @@
 //@ts-nocheck
-import { Checkbox, Divider, Form, Select } from "antd";
-import { Link } from "react-router-dom";
+import { Divider, Form, Select, message } from "antd";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthApi from "../../../api/AuthApi";
 import { passwordValidator } from "../../../helper/passwordValidator";
 import HeadingAtom from "../../atoms/heading/heading.atom";
 import CenteredBtnOrganism from "../../molecules/centered-btn/centered-btn.molecules";
@@ -11,9 +13,23 @@ const { Option } = Select;
 
 const SignUpFormOrganism = () => {
   const [form] = Form.useForm();
-
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const onFinish = async (values: any) => {
     console.log(values);
+    try {
+      setLoading(true);
+      const res = await AuthApi.signUp(values);
+      console.log(res?.data);
+      message.success(res?.data?.message);
+      navigate("/log-in");
+      setLoading(false);
+    } catch (error: any) {
+      message.error(error?.response?.message);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -106,9 +122,9 @@ const SignUpFormOrganism = () => {
             </Select>
           </Form.Item>
 
-          <Form.Item name="notificationSetting" valuePropName="checked">
+          {/* <Form.Item name="notificationSetting" valuePropName="checked">
             <Checkbox size="large">Send me regular updates via email</Checkbox>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item>
             <CenteredBtnOrganism
               justify="center"
@@ -116,6 +132,7 @@ const SignUpFormOrganism = () => {
               type="primary"
               htmlType="submit"
               size="large"
+              loading={loading}
               // size="large"
             />
           </Form.Item>

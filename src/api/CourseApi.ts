@@ -10,8 +10,14 @@ class CourseApi {
     getCourseById: "/course/getCourseById/",
     updateCourseById: "/course/update/",
   };
-  async getCourseByInstructor() {
-    return await Api?.http?.get(this.endPoints.courseByInstructor);
+
+  async getAllCourse() {
+    return await Api?.http?.get(this.endPoints.getAllCourse);
+  }
+  async getCourseByInstructor(searchTerm: string = "") {
+    const url =
+      this.endPoints.courseByInstructor + "?searchTerm" + "=" + searchTerm;
+    return await Api?.http?.get(url);
   }
   async getAllCourseAdmin(selectFieldData: any) {
     let url = this.endPoints.getAllCourse;

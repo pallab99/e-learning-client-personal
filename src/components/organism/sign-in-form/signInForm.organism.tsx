@@ -1,24 +1,22 @@
-import { Divider, Form } from 'antd';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ADMIN, INSTRUCTOR } from '../../../constant/userType';
-import useForgetPassword from '../../../hooks/auth/useForgetPassword';
-import useLogin from '../../../hooks/auth/useLogin';
-import { useAppSelector } from '../../../redux/store';
-import { ILogin } from '../../../types/loginData';
-import ButtonAtom from '../../atoms/button/button.attom';
-import HeadingAtom from '../../atoms/heading/heading.atom';
-import CenteredBtnOrganism from '../../molecules/centered-btn/centered-btn.molecules';
-import InputBoxPasswordMolecules from '../../molecules/input-box-password/inputBoxPassword.molecules';
-import InputBoxMolecules from '../../molecules/input-box/inputBox.molecules';
-import ForgetPasswordModalOrganism from '../modal/modal.organism';
-import './signInForm.style.scss';
+import { Divider, Form } from "antd";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import useForgetPassword from "../../../hooks/auth/useForgetPassword";
+import useLogin from "../../../hooks/auth/useLogin";
+import { ILogin } from "../../../types/loginData";
+import ButtonAtom from "../../atoms/button/button.attom";
+import HeadingAtom from "../../atoms/heading/heading.atom";
+import CenteredBtnOrganism from "../../molecules/centered-btn/centered-btn.molecules";
+import InputBoxPasswordMolecules from "../../molecules/input-box-password/inputBoxPassword.molecules";
+import InputBoxMolecules from "../../molecules/input-box/inputBox.molecules";
+import ForgetPasswordModalOrganism from "../modal/modal.organism";
+import "./signInForm.style.scss";
 
 const SignInFormOrganism = () => {
   const [openModal, setOpenModal] = useState(false);
   const { loading, login } = useLogin();
   const { forgetPasswordLoading, forgetPassword } = useForgetPassword();
-
+  // const [forgetPasswordMessage,setForgetPasswordMessage]=useState("")
   const onFinish = async (values: ILogin) => {
     await login(values);
   };
@@ -27,6 +25,9 @@ const SignInFormOrganism = () => {
   };
   const handleForgetPassword = async (values: any) => {
     await forgetPassword(values);
+    if (!forgetPasswordLoading) {
+      setOpenModal(false);
+    }
   };
 
   return (
@@ -49,10 +50,10 @@ const SignInFormOrganism = () => {
             size="large"
             rules={[
               {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
+                type: "email",
+                message: "The input is not valid E-mail!",
               },
-              { required: true, message: 'Please input your email!' },
+              { required: true, message: "Please input your email!" },
             ]}
             placeholder="Please Enter your email"
           ></InputBoxMolecules>
@@ -62,7 +63,7 @@ const SignInFormOrganism = () => {
             name="password"
             placeholder="Please Enter your password"
             size="large"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: "Please input your password!" }]}
           ></InputBoxPasswordMolecules>
 
           <Form.Item>
@@ -77,7 +78,7 @@ const SignInFormOrganism = () => {
           </Form.Item>
         </Form>
         <p className="text-center">
-          or{' '}
+          or{" "}
           <span className="text-18">
             <ButtonAtom
               text="Forgot Password"
@@ -89,8 +90,8 @@ const SignInFormOrganism = () => {
         </p>
         <Divider></Divider>
         <p className="text-center">
-          Don't have an account?{' '}
-          <Link className="text-18" to={'/sign-up'}>
+          Don't have an account?{" "}
+          <Link className="text-18" to={"/sign-up"}>
             Sign up
           </Link>
         </p>

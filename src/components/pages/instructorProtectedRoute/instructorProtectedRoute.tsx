@@ -9,7 +9,7 @@ const InstructorProtectedRoutePage = () => {
   console.log("token", token);
   const instructor = useAppSelector((state) => state.auth.userData.rank);
   if (!token) {
-    return <Navigate to="/unauthorized" />;
+    return <Navigate to="/log-in" />;
   }
 
   return instructor === INSTRUCTOR ? (
