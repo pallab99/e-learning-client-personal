@@ -13,8 +13,9 @@ class CourseApi {
 
   async getAllCourse(
     filterOption: string,
-    sortCourseByStudents: string,
-    sortCourseByRating: string,
+    // sortCourseByStudents: string,
+    // sortCourseByRating: string,
+    sortValue: string,
     filterCourseByCategory: string[] | [],
     page: any = 1,
     limit: any = 5
@@ -23,14 +24,12 @@ class CourseApi {
 
     let url: string = `${this.endPoints.getAllCourse}?page=${page}&limit=${limit}`;
     if (filterOption) {
-      url = url + `?filterLevel=${filterOption}`;
+      url = url + `&filterLevel=${filterOption}`;
     }
-    if (sortCourseByStudents) {
-      url = url + `&sortValue=${sortCourseByStudents}`;
+    if (sortValue) {
+      url = url + `&sortValue=${sortValue}`;
     }
-    if (sortCourseByRating) {
-      url = url + `&sortValue=${sortCourseByRating}`;
-    }
+
     if (filterCourseByCategory.length > 0) {
       url = url + `&filterCategory=${filterCourseByCategory}`;
     }

@@ -4,8 +4,7 @@ import { useAppSelector } from '../../redux/store';
 import {
   filterByCategory,
   filterByLevel,
-  sortByRating,
-  sortByStudents,
+  sortValue,
 } from '../../signals/course';
 
 const useGetAllCourse = () => {
@@ -16,35 +15,22 @@ const useGetAllCourse = () => {
     (state) => state.instructor.searchTerm
   );
   const filterOption = filterByLevel.value;
-  const sortCourseByStudents = sortByStudents.value;
-  const sortCourseByRating = sortByRating.value;
+  const sortCourseValue = sortValue.value;
   const filterCourseByCategory = filterByCategory.value;
   useEffect(() => {
-    getAllCourse(
-      filterOption,
-      sortCourseByStudents,
-      sortCourseByRating,
-      filterCourseByCategory
-    );
-  }, [
-    filterOption,
-    sortCourseByStudents,
-    sortCourseByRating,
-    filterCourseByCategory,
-  ]);
+    getAllCourse(filterOption, filterCourseByCategory, sortCourseValue);
+  }, [filterOption, sortCourseValue, filterCourseByCategory]);
 
   const getAllCourse = async (
     filterOption: string,
-    sortCourseByStudents: string,
-    sortCourseByRating: string,
-    filterCourseByCategory: string[]
+    filterCourseByCategory: string[],
+    sortValue: string
   ) => {
     try {
       setLoading(true);
       const response = await CourseApi.getAllCourse(
         filterOption,
-        sortCourseByStudents,
-        sortCourseByRating,
+        sortValue,
         filterCourseByCategory
       );
       setData(response?.data);

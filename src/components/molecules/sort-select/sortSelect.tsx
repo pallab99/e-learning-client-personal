@@ -22,6 +22,7 @@ interface ISelectProps {
   onSearch?: any;
   mode?: any;
   style?: any;
+  handleOnClick?: any;
 }
 const SortSelect: React.FC<ISelectProps> = ({
   options,
@@ -30,6 +31,7 @@ const SortSelect: React.FC<ISelectProps> = ({
   onSearch,
   mode,
   style,
+  handleOnClick,
 }: any) => {
   return (
     <Select
@@ -45,6 +47,7 @@ const SortSelect: React.FC<ISelectProps> = ({
       allowClear
       maxTagCount="responsive"
       style={style}
+      onClick={handleOnClick}
     />
   );
 };
