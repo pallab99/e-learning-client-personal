@@ -1,15 +1,6 @@
 import { Select } from 'antd';
 import React from 'react';
 
-const onChange = (value: string) => {
-  console.log(`selected ${value}`);
-};
-
-const onSearch = (value: string) => {
-  console.log('search:', value);
-};
-
-// Filter `option.label` match the user type `input`
 const filterOption = (
   input: string,
   option?: { label: string; value: string }
@@ -23,6 +14,7 @@ interface ISelectProps {
   mode?: any;
   style?: any;
   handleOnClick?: any;
+  handleOnDeselect?: any;
 }
 const SortSelect: React.FC<ISelectProps> = ({
   options,
@@ -32,6 +24,7 @@ const SortSelect: React.FC<ISelectProps> = ({
   mode,
   style,
   handleOnClick,
+  handleOnDeselect,
 }: any) => {
   return (
     <Select
@@ -48,6 +41,7 @@ const SortSelect: React.FC<ISelectProps> = ({
       maxTagCount="responsive"
       style={style}
       onClick={handleOnClick}
+      onDeselect={handleOnDeselect}
     />
   );
 };

@@ -13,16 +13,16 @@ class CourseApi {
 
   async getAllCourse(
     filterOption: string,
-    // sortCourseByStudents: string,
-    // sortCourseByRating: string,
     sortValue: string,
     filterCourseByCategory: string[] | [],
+    courseSearchTerm: string,
     page: any = 1,
-    limit: any = 5
+    limit: any = 10
   ) {
-    console.log('api call');
-
     let url: string = `${this.endPoints.getAllCourse}?page=${page}&limit=${limit}`;
+    if (courseSearchTerm) {
+      url = url + `&search=${courseSearchTerm}`;
+    }
     if (filterOption) {
       url = url + `&filterLevel=${filterOption}`;
     }

@@ -5,6 +5,8 @@ interface ICourseState {
   category?: string[];
   level?: string;
   sort?: string;
+  page?: number;
+  limit?: number;
 }
 
 const initialState: ICourseState = {
@@ -12,6 +14,8 @@ const initialState: ICourseState = {
   category: [],
   level: '',
   sort: '',
+  page: 1,
+  limit: 10,
 };
 
 const courseSlice = createSlice({
@@ -21,9 +25,28 @@ const courseSlice = createSlice({
     filterByLevel: (state, action) => {
       state.level = action.payload;
     },
+    courseSortProperty: (state, action) => {
+      state.sort = action.payload;
+    },
+    courseSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
+    handleCoursePagination(state, action) {
+      state.page = action.payload.page;
+      state.limit = action.payload.pageSize;
+    },
+    handleCourseFilterByCategory(state, action) {
+      state.category = action.payload;
+    },
   },
 });
 
-export const { filterByLevel } = courseSlice.actions;
+export const {
+  filterByLevel,
+  courseSortProperty,
+  courseSearchTerm,
+  handleCoursePagination,
+  handleCourseFilterByCategory,
+} = courseSlice.actions;
 
 export default courseSlice.reducer;

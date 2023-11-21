@@ -1,0 +1,58 @@
+.course_card_skeleton_div {
+  margin-top: 2rem;
+  max-width: 90rem;
+  display: grid;
+  grid-auto-flow: row;
+  justify-content: space-between;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+  .ant-skeleton-element {
+    width: 250px !important;
+  }
+  .ant-skeleton-image {
+    width: 100% !important;
+    margin-bottom: 1rem;
+    height: 200px !important;
+  }
+}
+@media only screen and (max-width: 1400px) {
+  .course_card_skeleton_div {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .course_card_skeleton_div {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .course_card_skeleton_div {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .course_card_skeleton_div {
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .Cards {
+    max-width: 24rem;
+  }
+  .CardContainer {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .select-field-course {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
