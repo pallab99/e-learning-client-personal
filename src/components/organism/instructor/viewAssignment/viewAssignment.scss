@@ -1,0 +1,11 @@
+.responsive-table {
+  width: 90%;
+  overflow-x: auto;
+  margin-top: 2%;
+}
+
+@media screen and (max-width: 600px) {
+  .responsive-table {
+    overflow-x: hidden;
+  }
+}

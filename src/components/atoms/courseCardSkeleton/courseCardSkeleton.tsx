@@ -1,5 +1,5 @@
-import { Skeleton } from 'antd';
-import './courseCardSkeleton.scss';
+import { Skeleton } from "antd";
+import "./courseCardSkeleton.scss";
 const CourseCardSkeleton = () => {
   return (
     <div className="course_card_skeleton_div">

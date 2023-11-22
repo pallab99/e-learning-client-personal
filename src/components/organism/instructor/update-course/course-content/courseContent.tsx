@@ -11,9 +11,14 @@ import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
 import CourseContentMolecules from "../../../../molecules/course-content/courseContent";
 import CreateAssignmentMolecules from "../../../../molecules/course-content/create-assignment/createAssignment";
 import CreateQuizModal from "../../../../molecules/course-content/create-quiz/createQuiz";
+// import UpdateCourseContentMolecules from "../../../../molecules/course-content/update-course-content/updatCourseContentModal";
+import UpdateCourseContentMolecules from "../../../../molecules/course-content/update-course-content/updatCourseContentModal";
 import UpdateQuizModal from "../../../../molecules/course-content/update-quiz/updateQuiz";
 import Quiz from "../../../../molecules/quiz-submision/quizSubmission";
 import "./courseContent.scss";
+// import {EditOutlined} from "@ant-design/icons"
+import { pdfjs } from "react-pdf";
+
 const CourseContent = () => {
   const { courseId } = useParams();
   const [recallApi, setRecallApi] = useState(0);
@@ -78,6 +83,14 @@ const CourseContent = () => {
   const handleCloseEditQuizModal = () => {
     setOpenEditQuizModal(false);
   };
+  const [handleOpenEditContentModal, setHandleOpenEditContentModal] =
+    useState(false);
+  const [contentData, setContentData] = useState({});
+  useEffect(() => {
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+  }, []);
+  const pdfURL =
+    "https://cors-anywhere.herokuapp.com/https://mern-pallab-bucket.s3.eu-west-3.amazonaws.com/course/IntroductiontoreactJS/introductiontoC/introductiontoC/1700633564166-SRS_Sample_2.pdf";
   const accordionItems = data?.data?.map((section: any) => {
     return {
       key: section._id,
@@ -87,7 +100,17 @@ const CourseContent = () => {
           <h3>Section Content</h3>
           {section.sectionContent.map((content: any) => (
             <Card className="mt-20" key={content._id}>
-              <HeadingAtom level={5} text={content.contentTitle} />
+              <div className="section_content_title_di">
+                <HeadingAtom level={5} text={content.contentTitle} />
+                <EditOutlined
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setHandleOpenEditContentModal(true);
+                    setContentData(content);
+                  }}
+                />
+              </div>
+
               {content.contentLength > 0 ? (
                 <ButtonAtom
                   handleButtonClick={() =>
@@ -106,13 +129,32 @@ const CourseContent = () => {
               )}
             </Card>
           ))}
-          {section.assignment && (
+          {section?.assignment && (
             <Card className="mt-20">
-              <h3>Assignment</h3>
-              <h4>{section.assignment.title}</h4>
-              <p>Description: {section.assignment.description}</p>
-              <p>Instructions: {section.assignment.instructions}</p>
-              <p>File URL: {section.assignment.assignmentFileURL}</p>
+              <HeadingAtom text="Assignment" level={2}></HeadingAtom>
+              <HeadingAtom
+                level={3}
+                text={section?.assignment?.title}
+              ></HeadingAtom>
+              <ParagraphAtom
+                text={`Description: ${section?.assignment?.description}`}
+                className="text-18"
+              ></ParagraphAtom>
+              <ParagraphAtom
+                text={`Instructions: ${section?.assignment?.instructions}`}
+              ></ParagraphAtom>
+              <HeadingAtom
+                level={4}
+                text={`Assignment Point: ${section?.assignment?.point}`}
+              ></HeadingAtom>
+              <Link to={section?.assignment?.assignmentFileURL}>
+                View Assignment file
+              </Link>
+              {/* <div>
+                <Document file={pdfURL}>
+                  <Page pageNumber={1} />
+                </Document>
+              </div> */}
             </Card>
           )}
           <div className="mt-20">
@@ -195,7 +237,16 @@ const CourseContent = () => {
           onClose={handleCloseModal}
           sectionData={sectionData}
           courseId={courseId}
+          setRecallApi={setRecallApi}
         ></CourseContentMolecules>
+        <UpdateCourseContentMolecules
+          open={handleOpenEditContentModal}
+          onClose={() => setHandleOpenEditContentModal(false)}
+          sectionData={sectionData}
+          contentData={contentData}
+          courseId={courseId}
+          setRecallApi={setRecallApi}
+        ></UpdateCourseContentMolecules>
         <CreateAssignmentMolecules
           open={openAssignmentModal}
           onClose={handleCloseAssignmentModal}

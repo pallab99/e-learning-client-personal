@@ -1,14 +1,15 @@
-import type { CollapseProps } from 'antd';
-import { Card, Collapse, Modal, Skeleton } from 'antd';
-import React, { useState } from 'react';
-import ReactPlayer from 'react-player';
-import { Link, useParams } from 'react-router-dom';
-import useGetCourseSection from '../../../../hooks/course-section/useGetCourseSection';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import Quiz from '../../quiz-submision/quizSubmission';
-import './courseContent.scss';
+import type { CollapseProps } from "antd";
+import { Card, Collapse, Modal, Skeleton } from "antd";
+import React, { useState } from "react";
+import ReactPlayer from "react-player";
+import { Link, useParams } from "react-router-dom";
+import useGetCourseSection from "../../../../hooks/course-section/useGetCourseSection";
+import { useAppSelector } from "../../../../redux/store";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import Quiz from "../../quiz-submision/quizSubmission";
+import "./courseContent.scss";
 
 const text = `
   A dog is a type of domesticated animal.
@@ -16,9 +17,9 @@ const text = `
   it can be found as a welcome guest in many households across the world.
 `;
 
-const items: CollapseProps['items'] = [
+const items: CollapseProps["items"] = [
   {
-    key: '1',
+    key: "1",
     label: (
       <div className="accordion_panel_title">
         <HeadingAtom text="Front-End Web Development" level={5}></HeadingAtom>
@@ -28,7 +29,7 @@ const items: CollapseProps['items'] = [
     children: <p>{text}</p>,
   },
   {
-    key: '2',
+    key: "2",
     label: (
       <div className="accordion_panel_title">
         <HeadingAtom text="Backend Web Development" level={5}></HeadingAtom>
@@ -38,7 +39,7 @@ const items: CollapseProps['items'] = [
     children: <p>{text}</p>,
   },
   {
-    key: '3',
+    key: "3",
     label: (
       <div className="accordion_panel_title">
         <HeadingAtom text="Full-Stack Web Development" level={5}></HeadingAtom>
@@ -48,7 +49,7 @@ const items: CollapseProps['items'] = [
     children: <p>{text}</p>,
   },
   {
-    key: '4',
+    key: "4",
     label: (
       <div className="accordion_panel_title">
         <HeadingAtom text="Front-End Web Development" level={5}></HeadingAtom>
@@ -62,9 +63,9 @@ const items: CollapseProps['items'] = [
 const CourseContent = () => {
   const { courseId } = useParams();
   const { data, loading } = useGetCourseSection(courseId as string);
-  console.log('course content', data);
+  console.log("course content", data);
 
-  const [videoUrl, setVideoUrl] = React.useState('');
+  const [videoUrl, setVideoUrl] = React.useState("");
   const [isVideoModalVisible, setIsVideoModalVisible] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const handleOpenVideoModal = (url: string) => {
@@ -77,7 +78,10 @@ const CourseContent = () => {
     setIsVideoModalVisible(false);
     setIsPlaying(false);
   };
-  const [videoPlayerClassName, setVideoPlayerClassName] = useState('');
+  const [videoPlayerClassName, setVideoPlayerClassName] = useState("");
+  const userData = useAppSelector((state) => state.auth.userData);
+  console.log("userData", userData);
+
   const accordionItems = data?.data?.map((section: any) => {
     return {
       key: section._id,
@@ -96,9 +100,14 @@ const CourseContent = () => {
                   }
                   type="link"
                   text="Preview"
+                  disabled={content?.contentUrl ? false : true}
                 />
               ) : (
-                <Link to={content.contentUrl}>Preview</Link>
+                <>
+                  {content?.contentUrl ? (
+                    <Link to={content.contentUrl}>Preview</Link>
+                  ) : null}
+                </>
               )}
               {content?.contentLength > 0 && (
                 <ParagraphAtom
@@ -128,7 +137,7 @@ const CourseContent = () => {
       ),
     };
   });
-  console.log('accordion', accordionItems);
+  console.log("accordion", accordionItems);
 
   const [activeKeys, setActiveKeys] = React.useState([]);
   const controlCollapse = () => {
@@ -154,22 +163,22 @@ const CourseContent = () => {
             <ButtonAtom
               text={
                 activeKeys.length === items.length
-                  ? 'Collapse All Section'
-                  : 'Expand All Section'
+                  ? "Collapse All Section"
+                  : "Expand All Section"
               }
               type="link"
               size="large"
-              style={{ color: '#5624d0' }}
+              style={{ color: "#5624d0" }}
               handleButtonClick={controlCollapse}
             />
           </div>
           <div className="course-curriculum_content mt-20">
             <Collapse
-              defaultActiveKey={['1']}
+              defaultActiveKey={["1"]}
               items={accordionItems}
               activeKey={activeKeys}
               onChange={setActiveKeys}
-              style={{ backgroundColor: '#f6f9fa' }}
+              style={{ backgroundColor: "#f6f9fa" }}
             />
           </div>
           <Modal
@@ -187,7 +196,7 @@ const CourseContent = () => {
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               playing={isPlaying}
-              config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+              config={{ file: { attributes: { controlsList: "nodownload" } } }}
               onContextMenu={(e) => e.preventDefault()}
             />
           </Modal>

@@ -13,6 +13,8 @@ const DesktopHeaderDropdownMenuMolecules = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isStudent = useAppSelector((state) => state?.auth?.userData?.rank);
+  const userData = useAppSelector((state) => state?.auth?.userData);
+
   const logout = async () => {
     try {
       const res = await AuthApi.logOut();
@@ -65,14 +67,22 @@ const DesktopHeaderDropdownMenuMolecules = () => {
   };
 
   return (
-    <Dropdown
-      menu={{ items }}
-      open={visible}
-      onOpenChange={handleVisibleChange}
-      trigger={["hover"]}
-    >
-      <Avatar size={30} icon={<UserOutlined />} className="cursor-pointer" />
-    </Dropdown>
+    <>
+      {userData.accessToken && (
+        <Dropdown
+          menu={{ items }}
+          open={visible}
+          onOpenChange={handleVisibleChange}
+          trigger={["hover"]}
+        >
+          <Avatar
+            size={30}
+            icon={<UserOutlined />}
+            className="cursor-pointer"
+          />
+        </Dropdown>
+      )}
+    </>
   );
 };
 

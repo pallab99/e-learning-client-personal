@@ -11,6 +11,8 @@ import ForgetPasswordPage from "../components/pages/forget-password/forgetPasswo
 import HeaderFooterLayout from "../components/pages/header-footer-layout/headerFooterLayout";
 import HomePage from "../components/pages/home/home";
 import InstructorProtectedRoutePage from "../components/pages/instructorProtectedRoute/instructorProtectedRoute";
+import ViewAllAssignmentPage from "../components/pages/instructors/assignment/assignment";
+import AssignmentTable from "../components/pages/instructors/assignment/assignmentTable";
 import CreateCoursePage from "../components/pages/instructors/course/create-course/createCourse";
 import UpdateCoursePage from "../components/pages/instructors/course/update-course/updateCourse";
 import InstructorDashboardPage from "../components/pages/instructors/dashboard/dashboard.page";
@@ -144,6 +146,22 @@ const AllRoutes = () => {
             element={
               <HeaderFooterLayout>
                 <UpdateCoursePage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/instructor/assignments"
+            element={
+              <HeaderFooterLayout>
+                <ViewAllAssignmentPage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/instructor/assignments/:courseId"
+            element={
+              <HeaderFooterLayout>
+                <AssignmentTable />
               </HeaderFooterLayout>
             }
           />

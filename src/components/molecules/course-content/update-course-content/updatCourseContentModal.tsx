@@ -6,15 +6,24 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { ReactMediaRecorder } from "react-media-recorder-2";
 import ReactPlayer from "react-player";
-import useCreateCourseContent from "../../../hooks/course-content/useCreateCourseContent";
-import CourseContentSchema from "../../../schema/course/courseContent";
-import AlertAtom from "../../atoms/alert/alertAtom";
-import ButtonAtom from "../../atoms/button/button.attom";
-import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
-import { SelectFieldCustom } from "../../atoms/select-field-custom/selectFieldCustom";
-import { SelectField } from "../../atoms/select-filed/selectField";
-import TextInputAtom from "../../atoms/text-input/textInput.atom";
-import CenteredBtnOrganism from "../centered-btn/centered-btn.molecules";
+// import CourseContentSchema from "../../../schema/course/courseContent";
+import { Link } from "react-router-dom";
+import useUpdateCourseContent from "../../../../hooks/course-content/useUpdateCourseContent";
+import CourseContentSchema from "../../../../schema/course/courseContent";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import { SelectFieldCustom } from "../../../atoms/select-field-custom/selectFieldCustom";
+import { SelectField } from "../../../atoms/select-filed/selectField";
+import TextInputAtom from "../../../atoms/text-input/textInput.atom";
+import CenteredBtnOrganism from "../../centered-btn/centered-btn.molecules";
+// import AlertAtom from "../../atoms/alert/alertAtom";
+// import ButtonAtom from "../../atoms/button/button.attom";
+// import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+// import { SelectFieldCustom } from "../../atoms/select-field-custom/selectFieldCustom";
+// import { SelectField } from "../../atoms/select-filed/selectField";
+// import TextInputAtom from "../../atoms/text-input/textInput.atom";
+// import CenteredBtnOrganism from "../centered-btn/centered-btn.molecules";
 const VideoPreview = ({ stream }: { stream: MediaStream | null }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
@@ -43,15 +52,17 @@ interface ICourseContentModalProps {
   open: boolean;
   sectionData: any;
   onClose: any;
+  contentData?: any;
   setRecallApi?: any;
 }
-const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
+const UpdateCourseContentMolecules: React.FC<ICourseContentModalProps> = ({
   courseId,
   data,
   open,
   onClose,
   sectionData,
   setRecallApi,
+  contentData,
 }) => {
   const {
     handleSubmit,
@@ -63,27 +74,31 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
     mode: "onChange",
     resolver: zodResolver(CourseContentSchema),
   });
-  const { loading, createCourseContent } = useCreateCourseContent();
+  // const { loading, createCourseContent } = useCreateCourseContent();
+  const { loading, editCourseContent } = useUpdateCourseContent();
   const [contentType, setContentType] = useState("");
   const [recordFile, setRecordedFile] = useState();
   const [fileList, setFileList] = useState([]);
   const [file, setFile] = useState(null);
-  const onSubmit = async (contentData: any) => {
-    console.log("recorded", file);
+  const onSubmit = async (data: any) => {
+    console.log("content form", data);
+    console.log("File", file);
 
     const formData = new FormData();
-    formData.append("title", contentData?.title);
-    if (contentType === "file") {
-      console.log("file");
+
+    if (file) {
+      console.log("file upload");
+
+      formData.append("title", data?.title);
       formData.append("file_to_upload", file);
+      await editCourseContent(contentData?._id, formData);
     } else {
-      formData.append("file_to_upload", recordFile);
+      const newData = {
+        title: data.title,
+      };
+      await editCourseContent(contentData?._id, newData);
     }
-    // formData.append()
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-    await createCourseContent(courseId, contentData?.sectionId, formData);
+
     if (!loading) {
       onClose();
       setRecallApi(Math.random());
@@ -113,15 +128,15 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
     return false;
   };
   const [enable, setEnable] = useState(true);
-  const uploadVideo = async (mediaBlobUrl: any) => {
-    const response = await fetch(mediaBlobUrl);
-    const blob = await response.blob();
-    const file = new File([blob], "video.webm", { type: "video/webm" });
-    setRecordedFile(file);
-    // const formData = new FormData();
-    // formData.append('title', contentData?.title);
-    // formData.append('video', file);
-  };
+
+  console.log("Content data", contentData);
+  const [contentURL, setContentURl] = useState("");
+  useEffect(() => {
+    if (contentData) {
+      setValue("title", contentData?.contentTitle);
+      setContentURl(contentData?.contentUrl);
+    }
+  }, [setValue, contentData]);
 
   return (
     <Modal open={open} onCancel={onClose} footer={null}>
@@ -147,6 +162,11 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
               />
             )}
           </div>
+          {contentURL && (
+            <div className="input-group">
+              <Link to={contentURL}>Preview</Link>
+            </div>
+          )}
           <div className="input-group">
             <ParagraphAtom text="* Select the content type" />
             <SelectFieldCustom
@@ -159,13 +179,13 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
               size="large"
             />
           </div>
-          {!contentType && (
+          {/* {!contentType && (
             <AlertAtom
               message={"Select the content type"}
               className="mt-10"
               type="error"
             ></AlertAtom>
-          )}
+          )} */}
           {contentType === "file" && (
             <div className="input-group">
               <ParagraphAtom text="Select a appropriate lesson for this section" />
@@ -250,6 +270,7 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
               />
             </div>
           )}
+
           <div className="input-group">
             <ParagraphAtom text="* Select the section" />
             <Controller
@@ -287,4 +308,4 @@ const CourseContentMolecules: React.FC<ICourseContentModalProps> = ({
   );
 };
 
-export default CourseContentMolecules;
+export default UpdateCourseContentMolecules;

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 interface ICourseState {
   searchTerm?: string;
@@ -10,16 +10,16 @@ interface ICourseState {
 }
 
 const initialState: ICourseState = {
-  searchTerm: '',
+  searchTerm: "",
   category: [],
-  level: '',
-  sort: '',
+  level: "",
+  sort: "",
   page: 1,
   limit: 10,
 };
 
 const courseSlice = createSlice({
-  name: 'course',
+  name: "course",
   initialState,
   reducers: {
     filterByLevel: (state, action) => {

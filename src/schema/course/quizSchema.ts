@@ -2,7 +2,7 @@ import { z } from "zod";
 const OptionSchema = z
   .string()
   .nonempty({ message: "Option cannot be empty" })
-  .min(5, { message: "option must be at least 5 characters long" })
+  // .min(5, { message: "option must be at least 5 characters long" })
   .max(1000, {
     message: "option cannot be greater than 1000 characters long",
   });
