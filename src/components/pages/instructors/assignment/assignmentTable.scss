@@ -1,5 +1,46 @@
-.instructor-dashboard-div-table {
-  max-width: 1100px;
-  margin: 0 2%;
-  //   margin-top: ;
+// .instructor-dashboard-div-table {
+//   max-width: 1100px;
+//   margin: 0 2%;
+//   //   margin-top: ;
+// }
+.assignment_bnt_action {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.submitted_assignment_card_div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.submitted_assignment_card_div_description {
+  display: flex;
+  gap: 1rem;
+  .ant-space-compact {
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  align-items: center;
+}
+.submitted_assignment_card_div_description_left_div {
+  flex-basis: 85%;
+}
+@media only screen and (max-width: 640px) {
+  .submitted_assignment_card_div {
+    flex-direction: column;
+  }
+  .submitted_assignment_card_div_description {
+    flex-direction: column;
+  }
+  .ant-space-compact {
+    justify-content: center !important;
+  }
+}
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) {
+  .submitted_assignment_card_div {
+    justify-content: center;
+  }
 }
