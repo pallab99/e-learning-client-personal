@@ -15,6 +15,7 @@ import {
   handleCourseFilterByCategory,
   handleCoursePagination,
 } from '../../../redux/slices/courseSlice';
+import { useNavigate } from 'react-router-dom';
 
 const CourseCardMolecules = () => {
   const { data, loading } = useGetAllCourse();
@@ -53,7 +54,10 @@ const CourseCardMolecules = () => {
     dispatch(handleCoursePagination(payload));
   };
   const perPageLimit = useAppSelector((state) => state.course.limit);
-
+  const navigate = useNavigate();
+  const handleCourseClick = (courseId: string) => {
+    navigate(`course/${courseId}`);
+  };
   return (
     <div className="CardContainer cursor-pointer">
       <h2>All Courses</h2>
@@ -86,7 +90,10 @@ const CourseCardMolecules = () => {
             <div className="CardContent">
               {data &&
                 data?.data?.courses?.map((course, index) => (
-                  <div className="Cards mt-20">
+                  <div
+                    className="Cards mt-20"
+                    onClick={() => handleCourseClick(course?._id)}
+                  >
                     <Card key={index}>
                       <img
                         src={course.thumbnail}

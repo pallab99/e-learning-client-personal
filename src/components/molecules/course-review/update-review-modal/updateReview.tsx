@@ -1,33 +1,45 @@
-import './addReview.scss';
+// import './addReview.scss';
 import { Modal, Rate, message } from 'antd';
 import { Controller, useForm } from 'react-hook-form';
 import TextArea from 'antd/es/input/TextArea';
-import './addReview.scss';
+// import './addReview.scss';
 import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
 import HeadingAtom from '../../../atoms/heading/heading.atom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import reviewSchema from '../../../../schema/review-rating/reviewSchema';
 import AlertAtom from '../../../atoms/alert/alertAtom';
 import reviewApi from '../../../../api/reviewApi';
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
-const AddReviewModal = ({ openModal, closeModal, setRecallApi }: any) => {
+import { useEffect, useState } from 'react';
+const UpdateReviewModal = ({
+  openModal,
+  closeModal,
+  reviewData,
+  setRecallApi,
+}: any) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     mode: 'onChange',
     resolver: zodResolver(reviewSchema),
   });
-  const { courseId } = useParams();
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (reviewData) {
+      setValue('rating', reviewData?.rating);
+      setValue('reviewMessage', reviewData?.reviewMessage);
+    }
+  }, [setValue, reviewData]);
   const onSubmit = async (data: any) => {
     try {
       setLoading(true);
-      const result = await reviewApi.addReview(courseId as string, data);
-      console.log(result);
+      const result = await reviewApi.updateReview(
+        reviewData?.reviewId as string,
+        data
+      );
       message.success(result?.data?.message);
       setLoading(false);
       if (!loading) {
@@ -35,8 +47,9 @@ const AddReviewModal = ({ openModal, closeModal, setRecallApi }: any) => {
         setRecallApi(Math.random());
       }
     } catch (error: any) {
-      message.error(error?.response?.message);
       setLoading(false);
+
+      message.error(error?.response?.message);
     }
   };
   return (
@@ -99,4 +112,4 @@ const AddReviewModal = ({ openModal, closeModal, setRecallApi }: any) => {
   );
 };
 
-export default AddReviewModal;
+export default UpdateReviewModal;
