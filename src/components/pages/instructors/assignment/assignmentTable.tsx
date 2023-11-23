@@ -34,7 +34,7 @@ const AssignmentTable = () => {
 
   const fetchSubmissions = async (assignmentId: string | undefined) => {
     try {
-      const response = await AssignmentApi.getAllSubmittedAssignment(
+      const response = await AssignmentApi.getAllSubmittedAssignmentOfASection(
         courseId,
         assignmentId
       );
@@ -45,8 +45,24 @@ const AssignmentTable = () => {
     }
   };
   const [grade, setGrade] = useState(0);
-  const handLeGiveAssignmentGrade = async (value: any) => {
+  const [assignmentId, setAssignmentId] = useState('');
+  const handleGrade = (value: any) => {
     setGrade(value);
+  };
+  const handLeGiveAssignmentGrade = async (
+    value: any,
+    submittedAssignmentId: string
+  ) => {
+    try {
+      const res = await AssignmentApi.giveAssessment(
+        assignmentId,
+        submittedAssignmentId,
+        value
+      );
+      message.success(res?.data?.message);
+    } catch (error: any) {
+      message.error(error?.response?.message);
+    }
   };
   return (
     <div className="instructor-dashboard-div-wrapper">
@@ -64,6 +80,7 @@ const AssignmentTable = () => {
                   type="link"
                   style={{ color: 'purple' }}
                   handleButtonClick={() => {
+                    setAssignmentId(ele?._id);
                     fetchSubmissions(ele?._id);
                     setOpnSubmissionModal(true);
                   }}
@@ -104,7 +121,7 @@ const AssignmentTable = () => {
                                 if (typeof value != 'number') {
                                   message.error('Please enter a valid number');
                                 } else {
-                                  handLeGiveAssignmentGrade(value);
+                                  handleGrade(value);
                                 }
                               }}
                             />
@@ -119,7 +136,12 @@ const AssignmentTable = () => {
                                 disabled
                               />
                             </Tooltip>
-                            <ButtonAtom text="Submit"></ButtonAtom>
+                            <ButtonAtom
+                              text="Submit"
+                              handleButtonClick={() => {
+                                handLeGiveAssignmentGrade(grade, ele?._id);
+                              }}
+                            ></ButtonAtom>
                           </Space.Compact>
                         </div>
                       </div>

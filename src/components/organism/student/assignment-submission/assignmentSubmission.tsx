@@ -45,7 +45,11 @@ const AssignmentSubmission = () => {
       children: (
         <Badge
           status={error && !error?.success ? 'error' : 'success'}
-          text={error && !error?.success ? 'Not Graded' : 'Graded'}
+          text={
+            error && !error?.success
+              ? 'Not Graded'
+              : submittedAssignmentData?.data?.grade
+          }
         />
       ),
     },
@@ -58,7 +62,7 @@ const AssignmentSubmission = () => {
     },
     {
       key: '4',
-      label: 'Points',
+      label: 'Total Points',
       children: <ParagraphAtom text={assignmentData?.data?.point} />,
     },
     {

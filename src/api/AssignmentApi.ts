@@ -6,8 +6,10 @@ class AssignmentApi {
     getAllAssignmentByCourse: '/assignment/all/course/',
     getSubmittedAssignment: '/assignment/submit/details/',
     getUserSubmittedAssignment: '/assignment/submit/user/',
+    getAllSubmittedAssignmentOfASection: '/assignment/submit/details/',
     getAssignment: '/assignment/details/course/section/assignment/',
     submitAssignment: '/assignment/submit/',
+    giveAssessment: '/assignment/assessment/create/',
   };
   async createAssignment(
     courseId: string | undefined,
@@ -29,6 +31,13 @@ class AssignmentApi {
     const url = `${this.endPoints.getUserSubmittedAssignment}${courseId}/${assignmentId}`;
     return await Api?.http?.get(url);
   }
+  async getAllSubmittedAssignmentOfASection(
+    courseId: string | undefined,
+    assignmentId: string | undefined
+  ) {
+    const url = `${this.endPoints.getAllSubmittedAssignmentOfASection}${courseId}/${assignmentId}`;
+    return await Api?.http?.get(url);
+  }
 
   async getAssignmentBySectionId(
     courseId: string | undefined,
@@ -46,6 +55,15 @@ class AssignmentApi {
   ) {
     const url = `${this.endPoints.submitAssignment}${courseId}/${sectionId}/${assignmentId}`;
     return await Api?.http?.post(url, data);
+  }
+
+  async giveAssessment(
+    assignmentId: string | undefined,
+    submittedAssignmentId: string | undefined,
+    grade: any
+  ) {
+    const url = `${this.endPoints.giveAssessment}${assignmentId}/${submittedAssignmentId}`;
+    return await Api?.http?.patch(url, { grade });
   }
 }
 
