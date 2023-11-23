@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
-import QuizApi from "../../api/QuizApi";
+import { useEffect, useState } from 'react';
+import QuizApi from '../../api/QuizApi';
 
 const useGetQuizById = (
   sectionId: string,
   quizId: string,
+  submittedQuiz: any,
   recallApi?: number
 ) => {
   const [data, setData] = useState<object>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
+  console.log(submittedQuiz);
 
   useEffect(() => {
     getQuizById(sectionId, quizId);

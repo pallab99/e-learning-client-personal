@@ -3,6 +3,37 @@
   margin: 0 auto;
   padding-left: 2%;
   padding-right: 2%;
+  .correct-answer .ant-radio-inner::after {
+    background-color: green;
+  }
+
+  .wrong-answer .ant-radio-inner::after {
+    background-color: red;
+  }
+  .correct-answer {
+    color: green;
+  }
+
+  .correct-answer .ant-radio-inner::after {
+    background-color: rgb(5, 195, 5);
+  }
+
+  .wrong-answer {
+    color: red;
+  }
+
+  .wrong-answer .ant-radio-inner::after {
+    background-color: red;
+  }
+  .correct-answer .ant-radio-inner,
+  .correct-answer .ant-radio-inner::after {
+    background-color: green;
+  }
+
+  .wrong-answer .ant-radio-inner,
+  .wrong-answer .ant-radio-inner::after {
+    background-color: red;
+  }
 }
 .quiz_submission_btn_div {
   display: flex;

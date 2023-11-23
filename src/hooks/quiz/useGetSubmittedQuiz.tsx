@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import QuizApi from "../../api/QuizApi";
+import { useEffect, useState } from 'react';
+import QuizApi from '../../api/QuizApi';
 
 const useGetSubmittedQuiz = (quizId: string, recallApi?: number) => {
   const [submittedQuiz, setSubmittedQuiz] = useState<object>({});
   const [SubmittedQuizLoading, setSubmittedQuizLoading] = useState(false);
   const [error, setError] = useState();
-
+  const [noSubmission, setNoSubmission] = useState(false);
   useEffect(() => {
     getSubmittedQuiz(quizId);
   }, [quizId, recallApi]);
@@ -14,7 +14,13 @@ const useGetSubmittedQuiz = (quizId: string, recallApi?: number) => {
     try {
       setSubmittedQuizLoading(true);
       const response = await QuizApi.getSubmittedQuiz(quizId);
-      setSubmittedQuiz(response?.data?.data);
+      if (response?.data?.length <= 0) {
+        console.log('no submission');
+        setNoSubmission(true);
+      } else {
+        setNoSubmission(false);
+        setSubmittedQuiz(response?.data?.data);
+      }
       setSubmittedQuizLoading(false);
     } catch (error: any) {
       setSubmittedQuizLoading(false);
@@ -24,7 +30,7 @@ const useGetSubmittedQuiz = (quizId: string, recallApi?: number) => {
     }
   };
 
-  return { submittedQuiz, SubmittedQuizLoading, error };
+  return { noSubmission, submittedQuiz, SubmittedQuizLoading, error };
 };
 
 export default useGetSubmittedQuiz;
