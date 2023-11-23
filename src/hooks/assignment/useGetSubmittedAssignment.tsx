@@ -11,6 +11,7 @@ const useGetSubmittedAssignment = (
   const [submittedAssignmentLoading, setSubmittedAssignmentLoading] =
     useState(false);
   const [error, setError] = useState();
+  const [noSubmission, setNoSubmission] = useState(false);
 
   useEffect(() => {
     getAssignmentById(courseId, assignmentId);
@@ -23,8 +24,10 @@ const useGetSubmittedAssignment = (
         courseId,
         assignmentId
       );
+      console.log(response?.data?.data);
       setSubmittedAssignmentData(response?.data);
       setSubmittedAssignmentLoading(false);
+      setError(null);
     } catch (error: any) {
       setSubmittedAssignmentLoading(false);
       setError(error);
@@ -33,7 +36,12 @@ const useGetSubmittedAssignment = (
     }
   };
 
-  return { submittedAssignmentData, submittedAssignmentLoading, error };
+  return {
+    submittedAssignmentData,
+    submittedAssignmentLoading,
+    error,
+    noSubmission,
+  };
 };
 
 export default useGetSubmittedAssignment;

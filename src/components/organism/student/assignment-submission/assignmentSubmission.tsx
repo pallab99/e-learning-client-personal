@@ -14,9 +14,11 @@ import useGetSubmittedAssignment from '../../../../hooks/assignment/useGetSubmit
 const AssignmentSubmission = () => {
   const { courseId, sectionId, assignmentId } = useParams();
   const [recallApi, setRecallApi] = useState(0);
-  const { submittedAssignmentData, submittedAssignmentLoading } =
+  const { submittedAssignmentData, noSubmission, error } =
     useGetSubmittedAssignment(courseId, assignmentId, recallApi);
-  console.log(submittedAssignmentData);
+  console.log(error);
+
+  console.log('submitted assignment', submittedAssignmentData);
 
   const { assignmentData, assignmentLoading } = useGetAssignmentById(
     courseId as string,
@@ -32,16 +34,8 @@ const AssignmentSubmission = () => {
       label: 'Submission Status',
       children: (
         <Badge
-          status={
-            submittedAssignmentData?.data?.data?.length <= 0
-              ? 'error'
-              : 'success'
-          }
-          text={
-            submittedAssignmentData?.data?.data?.length <= 0
-              ? 'Not Attempted'
-              : 'Submitted'
-          }
+          status={error && error && !error?.success ? 'error' : 'success'}
+          text={error && !error?.success ? 'Not Attempted' : 'Submitted'}
         />
       ),
     },
@@ -50,16 +44,8 @@ const AssignmentSubmission = () => {
       label: 'Grading Status',
       children: (
         <Badge
-          status={
-            submittedAssignmentData?.data?.data?.length <= 0
-              ? 'error'
-              : 'success'
-          }
-          text={
-            submittedAssignmentData?.data?.data?.length <= 0
-              ? 'Not Graded'
-              : 'Graded'
-          }
+          status={error && !error?.success ? 'error' : 'success'}
+          text={error && !error?.success ? 'Not Graded' : 'Graded'}
         />
       ),
     },
@@ -80,7 +66,7 @@ const AssignmentSubmission = () => {
       label: 'Your Submitted File',
       children: (
         <>
-          {submittedAssignmentData?.data?.data?.length <= 0 ? (
+          {error && !error?.success ? (
             <ParagraphAtom text="Not Yet Submitted" />
           ) : (
             <div className="iframe_container">
@@ -90,9 +76,7 @@ const AssignmentSubmission = () => {
                 className='class="responsive-iframe"'
                 src={
                   submittedAssignmentData &&
-                  submittedAssignmentData?.data &&
-                  submittedAssignmentData?.data?.data[0] &&
-                  submittedAssignmentData?.data?.data[0]?.assignmentFileURL
+                  submittedAssignmentData?.data?.assignmentFileURL
                 }
               ></iframe>
             </div>

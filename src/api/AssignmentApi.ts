@@ -5,6 +5,7 @@ class AssignmentApi {
     createAssignment: '/assignment/create/',
     getAllAssignmentByCourse: '/assignment/all/course/',
     getSubmittedAssignment: '/assignment/submit/details/',
+    getUserSubmittedAssignment: '/assignment/submit/user/',
     getAssignment: '/assignment/details/course/section/assignment/',
     submitAssignment: '/assignment/submit/',
   };
@@ -25,7 +26,7 @@ class AssignmentApi {
     courseId: string | undefined,
     assignmentId: string | undefined
   ) {
-    const url = `${this.endPoints.getSubmittedAssignment}${courseId}/${assignmentId}`;
+    const url = `${this.endPoints.getUserSubmittedAssignment}${courseId}/${assignmentId}`;
     return await Api?.http?.get(url);
   }
 
