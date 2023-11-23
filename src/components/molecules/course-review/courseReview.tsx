@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import './courseReview.scss';
+import { EllipsisOutlined } from "@ant-design/icons";
 import {
   Avatar,
   Button,
@@ -8,18 +7,19 @@ import {
   Popover,
   Rate,
   message,
-} from 'antd';
-import HeadingAtom from '../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
-import { EllipsisOutlined } from '@ant-design/icons';
-import ButtonAtom from '../../atoms/button/button.attom';
-import AddReviewModal from './add-review-modal/addReviewModal';
-import { useAppSelector } from '../../../redux/store';
-import useGetAllReviewByCourse from '../../../hooks/review-rating/useGetAllReviewByCourse';
-import { useParams } from 'react-router-dom';
-import UpdateReviewModal from './update-review-modal/updateReview';
-import reviewApi from '../../../api/reviewApi';
-import CourseCardSkeleton from '../../atoms/courseCardSkeleton/courseCardSkeleton';
+} from "antd";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import reviewApi from "../../../api/reviewApi";
+import useGetAllReviewByCourse from "../../../hooks/review-rating/useGetAllReviewByCourse";
+import { useAppSelector } from "../../../redux/store";
+import ButtonAtom from "../../atoms/button/button.attom";
+import CourseCardSkeleton from "../../atoms/courseCardSkeleton/courseCardSkeleton";
+import HeadingAtom from "../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+import AddReviewModal from "./add-review-modal/addReviewModal";
+import "./courseReview.scss";
+import UpdateReviewModal from "./update-review-modal/updateReview";
 const CourseReview = () => {
   const [openModal, setOpenModal] = React.useState(false);
   const handleOpenModal = () => {
@@ -80,11 +80,18 @@ const CourseReview = () => {
           <div>
             <div className="course_review_main_Container_header">
               <div className="course_review_header_rating">
-                <Rate style={{ color: '#b4690e' }} count={1} value={1}></Rate>
-                <HeadingAtom
-                  text={`${data?.data?.averageRating} course rating  *  ${data?.data?.data?.length} ratings`}
-                  level={4}
-                />
+                <Rate style={{ color: "#b4690e" }} count={1} value={1}></Rate>
+                {data?.data ? (
+                  <HeadingAtom
+                    text={`${data?.data?.averageRating} course rating  *  ${data?.data?.data?.length} ratings`}
+                    level={4}
+                  />
+                ) : (
+                  <HeadingAtom
+                    text={`0 course rating  *  0 ratings`}
+                    level={4}
+                  />
+                )}
               </div>
               {userData.accessToken && (
                 <ButtonAtom
@@ -106,7 +113,7 @@ const CourseReview = () => {
                       <div className="review_wrapper">
                         <div className="review-wrapper_div">
                           <div className="review_header">
-                            <Avatar size={'large'} src={review?.user?.dp} />
+                            <Avatar size={"large"} src={review?.user?.dp} />
                             <div className="user-name">
                               <HeadingAtom
                                 text={review?.user?.name}
@@ -116,7 +123,7 @@ const CourseReview = () => {
                                 <Rate
                                   value={review?.rating}
                                   disabled
-                                  style={{ color: '#b4690e', fontSize: '13px' }}
+                                  style={{ color: "#b4690e", fontSize: "13px" }}
                                 ></Rate>
                               </div>
                             </div>
@@ -155,7 +162,7 @@ const CourseReview = () => {
                             >
                               <EllipsisOutlined
                                 className="cursor-pointer"
-                                style={{ fontSize: '30px' }}
+                                style={{ fontSize: "30px" }}
                               />
                             </Popover>
                           )}

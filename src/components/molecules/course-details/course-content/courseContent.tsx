@@ -130,7 +130,12 @@ const CourseContent = () => {
           <div className="mt-20">
             <ParagraphAtom text={section?.quiz?.title}></ParagraphAtom>
             {section?.quiz && (
-              <Quiz instructor={false} quizData={section?.quiz}></Quiz>
+              <>
+                <Quiz instructor={false} quizData={section?.quiz}></Quiz>
+                <Link to={`/quiz/${section._id}/${section?.quiz?._id}`}>
+                  <ButtonAtom text="Take Participant"></ButtonAtom>
+                </Link>
+              </>
             )}
           </div>
         </div>

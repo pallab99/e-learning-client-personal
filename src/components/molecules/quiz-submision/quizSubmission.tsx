@@ -1,8 +1,7 @@
-import { EditOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Radio } from 'antd';
-import { Controller, useForm } from 'react-hook-form';
-import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
-import './quizSubmission.scss';
+import { Card, Form, Radio } from "antd";
+import { Controller, useForm } from "react-hook-form";
+import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+import "./quizSubmission.scss";
 const Quiz = ({
   quizData,
   instructor,
@@ -62,11 +61,11 @@ const Quiz = ({
               </Form.Item>
             ))}
         </div>
-        {!instructor && quizData?.questions?.length && (
+        {/* {!instructor && quizData?.questions?.length && (
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
-        )}
+        )} */}
       </Form>
     </div>
   );

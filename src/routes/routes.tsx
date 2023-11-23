@@ -20,6 +20,7 @@ import ProfilePage from "../components/pages/profile/profile";
 import ProfilePicturePage from "../components/pages/profile/profilePicture";
 import SignInPage from "../components/pages/signIn/signIn.pages";
 import SignUPPage from "../components/pages/signUp/signIp.pages";
+import QuizSubmissionForStudentPage from "../components/pages/student/quiz-submission-for-student/quizSubmissionForStudent";
 import UnauthorizedPage from "../components/pages/unauthorized/unauthorized";
 // import { lazy } from 'react';
 // const ProfilePage=lazy("../components/pages/profile/profile")
@@ -99,7 +100,14 @@ const AllRoutes = () => {
             </HeaderFooterLayout>
           }
         />
-
+        <Route
+          path="/quiz/:sectionId/:quizId"
+          element={
+            <HeaderFooterLayout>
+              <QuizSubmissionForStudentPage />
+            </HeaderFooterLayout>
+          }
+        />
         <Route element={<InstructorProtectedRoutePage />}>
           <Route
             path="/instructor/courses"

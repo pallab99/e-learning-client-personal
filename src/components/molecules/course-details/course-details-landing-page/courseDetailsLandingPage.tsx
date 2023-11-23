@@ -6,7 +6,7 @@ import { useMediaQuery } from "react-responsive";
 import { useParams } from "react-router-dom";
 import CartApi from "../../../../api/CartApi";
 import WishlistApi from "../../../../api/WishlistApi";
-import { STUDENT } from "../../../../constant/userType";
+import useGetStudentBoughtTheCourse from "../../../../hooks/course/useGetStudentBoughtTheCurse";
 import useGetCourseAvailableInWishlistByUser from "../../../../hooks/wishlist/useGetCourseAvailableInWishlist";
 import { recallCartApi } from "../../../../redux/slices/cartSlice";
 import { recallWishListApi } from "../../../../redux/slices/wishListSlice";
@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import ButtonAtom from "../../../atoms/button/button.attom";
 import HeadingAtom from "../../../atoms/heading/heading.atom";
 import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import QnAModal from "../../QNA/qna";
 import "./courseDetailsLandingPage.scss";
 const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
@@ -23,9 +24,11 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const { courseId } = useParams();
   const { courseAvailableInUserWishlist, error } =
     useGetCourseAvailableInWishlistByUser(courseId as string);
-  console.log({ courseAvailableInUserWishlist });
+  const { studentBoughtTheCourseData } = useGetStudentBoughtTheCourse(
+    courseId as string
+  );
+  console.log({ studentBoughtTheCourseData });
 
-  console.log("courseAvailableInUserWishlist", courseAvailableInUserWishlist);
   const userData = useAppSelector((state) => state.auth.userData);
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const handleAddToWishList = async () => {
@@ -59,6 +62,7 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
     }
   };
   const isStudent = useAppSelector((state) => state.auth.userData.rank);
+  const [openQNAModal, setOPENQNAModal] = useState(false);
   return (
     <main className="paid-course-landing-page__container ">
       <div className="dark-background">
@@ -102,31 +106,48 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
               config={{ file: { attributes: { controlsList: "nodownload" } } }}
               onContextMenu={(e) => e.preventDefault()}
             />
-            {!userData.accessToken ||
-              (isStudent === STUDENT && (
-                <div className="course-landing-page_sidebar-container_main_content_btn-group mt-20">
-                  <ButtonAtom
-                    text="Add To Cart"
-                    type="primary"
-                    size="large"
-                    style={{ width: "100%" }}
-                    handleButtonClick={handleAddToCart}
-                  ></ButtonAtom>
-                  <ButtonAtom
-                    icon={<HeartOutlined />}
-                    type={
-                      courseAvailableInUserWishlist && !error
-                        ? "primary"
-                        : "default"
-                    }
-                    size="large"
-                    className="heart-icon"
-                    style={{ width: "4rem" }}
-                    handleButtonClick={handleAddToWishList}
-                    loading={wishlistLoading}
-                  ></ButtonAtom>
-                </div>
-              ))}
+            {Object.keys(studentBoughtTheCourseData).length > 0 ? (
+              <div
+                style={{ paddingLeft: "2%", paddingRight: "2%", width: "100%" }}
+              >
+                <ButtonAtom
+                  text="Open QNA"
+                  type="primary"
+                  style={{ width: "100%" }}
+                  size="large"
+                  className="mt-20"
+                  handleButtonClick={() => setOPENQNAModal(true)}
+                ></ButtonAtom>
+                <QnAModal
+                  openModal={openQNAModal}
+                  closeModal={() => setOPENQNAModal(false)}
+                ></QnAModal>
+              </div>
+            ) : (
+              <div className="course-landing-page_sidebar-container_main_content_btn-group mt-20">
+                <ButtonAtom
+                  text="Add To Cart"
+                  type="primary"
+                  size="large"
+                  style={{ width: "100%" }}
+                  handleButtonClick={handleAddToCart}
+                ></ButtonAtom>
+                <ButtonAtom
+                  icon={<HeartOutlined />}
+                  type={
+                    courseAvailableInUserWishlist && !error
+                      ? "primary"
+                      : "default"
+                  }
+                  size="large"
+                  className="heart-icon"
+                  style={{ width: "4rem" }}
+                  handleButtonClick={handleAddToWishList}
+                  loading={wishlistLoading}
+                ></ButtonAtom>
+              </div>
+              // ))
+            )}
           </div>
         </div>
       </div>
