@@ -69,7 +69,7 @@ const QuizSubmission = () => {
             )}
             {submittedQuiz && submittedQuiz?.answers && (
               <AlertAtom
-                message={`You Have obtained ${submittedQuiz?.obtainedMarks} marks in this quiz`}
+                message={`You Have guessed ${submittedQuiz?.obtainedMarks} correct answer in this quiz`}
                 type="success"
                 className="mb-30  "
               />

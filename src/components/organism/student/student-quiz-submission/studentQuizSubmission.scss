@@ -34,6 +34,10 @@
   .wrong-answer .ant-radio-inner::after {
     background-color: red;
   }
+  .ant-alert-success {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 }
 .quiz_submission_btn_div {
   display: flex;
