@@ -21,7 +21,8 @@ const QuizSubmission = () => {
     quizId as string,
     recallApi
   );
-
+  console.log(submittedQuiz);
+  // const reversedAns=
   const { loading, data } = useGetQuizById(
     sectionId as string,
     quizId as string,
