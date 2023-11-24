@@ -1,12 +1,14 @@
-import Api from "./apiConfigs";
+import Api from './apiConfigs';
 
 class CartApi {
   endPoints = {
-    getAllQNAOfACourse: "/qna/all/details/",
-    addQNA: "/qna/create/question",
-    replyToQNA: "/qna/update/question/reply/",
-    updateQNA: "/qna/update/question/",
-    deleteQuestion: "/qna/delete/question/",
+    getAllQNAOfACourse: '/qna/all/details/',
+    addQNA: '/qna/create/question',
+    replyToQNA: '/qna/update/question/reply/',
+    updateQNA: '/qna/update/question/',
+    deleteQuestion: '/qna/delete/question/',
+    updateReply: '/qna/update/question/reply/',
+    deleteReply: '/qna/delete/question/reply/',
   };
   async getAllQNAOfACourse(courseId: string) {
     return await Api?.http?.get(
@@ -29,9 +31,32 @@ class CartApi {
       data
     );
   }
+
+  async updateReply(
+    courseId: string,
+    questionId: string,
+    replyId: string,
+    data: any
+  ) {
+    return await Api.http?.patch(
+      `${this.endPoints.updateReply}${courseId}/${questionId}/${replyId}`,
+      data
+    );
+  }
+
   async deleteQuestion(courseId: string, qnaId: string, questionId: string) {
     return await Api.http?.delete(
       `${this.endPoints.deleteQuestion}${courseId}/${qnaId}/${questionId}`
+    );
+  }
+  async deleteReply(
+    courseId: string,
+    qnaId: string,
+    questionId: string,
+    replyId: string
+  ) {
+    return await Api.http?.delete(
+      `${this.endPoints.deleteReply}${courseId}/${qnaId}/${questionId}/${replyId}`
     );
   }
 }

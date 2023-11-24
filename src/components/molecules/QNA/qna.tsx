@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { EllipsisOutlined, SendOutlined } from "@ant-design/icons";
+import { EllipsisOutlined, SendOutlined } from '@ant-design/icons';
 import {
   Avatar,
   Button,
@@ -10,20 +10,22 @@ import {
   Popconfirm,
   Popover,
   message,
-} from "antd";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import QNAApi from "../../../api/QNAApi";
-import useDeleteQuestion from "../../../hooks/QNA/useDeleteQuestion";
-import useGetAllQNAOfACourse from "../../../hooks/QNA/useGetAllQNA";
-import useUpdateQuestion from "../../../hooks/QNA/useUpdateQuestion";
-import { useAppSelector } from "../../../redux/store";
-import ButtonAtom from "../../atoms/button/button.attom";
-import EditProfileSkeleton from "../../atoms/edit-profile-skeleton/editProfileSkeleton";
-import HeadingAtom from "../../atoms/heading/heading.atom";
-import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
-import "./QNA.scss";
+} from 'antd';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import QNAApi from '../../../api/QNAApi';
+import useDeleteQuestion from '../../../hooks/QNA/useDeleteQuestion';
+import useGetAllQNAOfACourse from '../../../hooks/QNA/useGetAllQNA';
+import useUpdateQuestion from '../../../hooks/QNA/useUpdateQuestion';
+import { useAppSelector } from '../../../redux/store';
+import ButtonAtom from '../../atoms/button/button.attom';
+import EditProfileSkeleton from '../../atoms/edit-profile-skeleton/editProfileSkeleton';
+import HeadingAtom from '../../atoms/heading/heading.atom';
+import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
+import './QNA.scss';
+import useUpdateReply from '../../../hooks/QNA/useUpdateReply';
+import useDeleteReply from '../../../hooks/QNA/useDeleteReply';
 const QnAModal = ({ openModal, closeModal }: any) => {
   const {
     control,
@@ -32,17 +34,28 @@ const QnAModal = ({ openModal, closeModal }: any) => {
     setValue,
   } = useForm({
     defaultValues: {
-      message: "",
-      reply: "",
+      message: '',
+      reply: '',
     },
   });
-  const [questionId, setQuestionId] = useState("");
-  const [messageId, setMessageId] = useState("");
+  const [questionId, setQuestionId] = useState('');
+  const [messageId, setMessageId] = useState('');
   const [showReplyBox, setShowReplyBox] = useState(false);
-  console.log({ messageId });
-
   const [questionLoading, setQuestionLoading] = useState(false);
   const [recallApi, setRecallApi] = useState(0);
+  const [qnaId, setQnaId] = useState('');
+  const [QNAReply, setQNAReply] = useState('');
+  const [replyId, setReplyId] = useState('');
+
+  const reset = () => {
+    setValue('message', '');
+    setQnaId('');
+    setReplyId('');
+    setShowReplyBox(false);
+    setQNAReply('');
+    setMessageId('');
+    setQuestionId('');
+  };
   const { courseId } = useParams();
   const { loading, data } = useGetAllQNAOfACourse(
     courseId as string,
@@ -50,14 +63,15 @@ const QnAModal = ({ openModal, closeModal }: any) => {
     recallApi
   );
   const { updateQNA } = useUpdateQuestion();
-  const [qnaId, setQnaId] = useState("");
   const onSubmit = async (data: any) => {
-    try {
-      if (questionId) {
-        await updateQNA(courseId, questionId, data.message);
-        setRecallApi(Math.random());
-        setValue("message", "");
-      } else {
+    if (questionId) {
+      await updateQNA(courseId, questionId, data.message);
+      setRecallApi(Math.random());
+      setValue('message', '');
+      setQuestionId('');
+      reset();
+    } else {
+      try {
         setQuestionLoading(true);
         let newData = {};
         if (data?.message) {
@@ -72,13 +86,14 @@ const QnAModal = ({ openModal, closeModal }: any) => {
         setQuestionLoading(false);
         if (!questionLoading) {
           setRecallApi(Math.random());
-          setValue("message", "");
+          setValue('message', '');
         }
+        reset();
+      } catch (error: any) {
+        setQuestionLoading(false);
+        reset();
+        message.error(error?.response?.message);
       }
-    } catch (error: any) {
-      setQuestionLoading(false);
-
-      message.error(error?.response?.message);
     }
   };
 
@@ -87,35 +102,57 @@ const QnAModal = ({ openModal, closeModal }: any) => {
     setShowReplyBox(true);
   };
   const [qnaLoading, setQNALoading] = useState(false);
-  const [QNAReply, setQNAReply] = useState("");
+  const { updateReply } = useUpdateReply();
+  const handleUpdateReply = async () => {
+    await updateReply(courseId, questionId, replyId, QNAReply);
+    setRecallApi(Math.random());
+    setQNAReply('');
+    reset();
+  };
+  const handleUpdateQuestion = async () => {};
   const handleReplyToQNA = async () => {
-    try {
-      setQNALoading(true);
-      const newData = {
-        reply: QNAReply,
-        courseId: courseId,
-      };
-      const response = await QNAApi.replyToQNA(messageId, newData);
-      setQNALoading(false);
-      message.success(response?.data?.message);
-      if (!qnaLoading) {
-        setRecallApi(Math.random());
+    if (replyId) {
+      await updateReply(courseId, questionId, replyId, QNAReply);
+      setRecallApi(Math.random());
+      setQNAReply('');
+      reset();
+    } else {
+      try {
+        setQNALoading(true);
+        const newData = {
+          reply: QNAReply,
+          courseId: courseId,
+        };
+        const response = await QNAApi.replyToQNA(messageId, newData);
+        setQNALoading(false);
+        message.success(response?.data?.message);
+        if (!qnaLoading) {
+          setQNAReply('');
+          setRecallApi(Math.random());
+        }
+        reset();
+      } catch (error: any) {
+        message.error(error?.response?.message);
+        setQNALoading(false);
+        reset();
       }
-    } catch (error: any) {
-      message.error(error?.response?.message);
-      setQNALoading(false);
     }
-    console.log("data", QNAReply);
   };
   const userData = useAppSelector((state) => state.auth.userData);
-  console.log("QNA ID", qnaId);
+  const { deleteReply } = useDeleteReply();
   const { deleteQuestion } = useDeleteQuestion();
   const handleDelete = async () => {
-    if (questionId) {
+    if (replyId) {
+      await deleteReply(courseId, qnaId, questionId, replyId);
+      setRecallApi(Math.random());
+      reset();
+    } else {
       await deleteQuestion(courseId, qnaId, questionId);
       setRecallApi(Math.random());
+      reset();
     }
   };
+
   return (
     <Modal
       footer={null}
@@ -124,14 +161,14 @@ const QnAModal = ({ openModal, closeModal }: any) => {
         setShowReplyBox(false);
         closeModal();
       }}
-      bodyStyle={{ overflowY: "auto" }}
+      bodyStyle={{ overflowY: 'auto' }}
     >
       {loading ? (
         <EditProfileSkeleton />
       ) : (
         <div
           className="course_QNA_Container"
-          style={{ overflowY: "auto", height: "100%" }}
+          style={{ overflowY: 'auto', height: '100%' }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <HeadingAtom
@@ -141,9 +178,9 @@ const QnAModal = ({ openModal, closeModal }: any) => {
             ></HeadingAtom>
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "1rem",
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: '1rem',
               }}
             >
               <Controller
@@ -178,7 +215,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                       <div className="items-center">
                         <Avatar src={message.user.dp} />
                         <HeadingAtom
-                          style={{ color: "#8710d8" }}
+                          style={{ color: '#8710d8' }}
                           level={5}
                           text={message?.user?.name}
                         />
@@ -192,22 +229,24 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                                   type="text"
                                   text="Update"
                                   handleButtonClick={() => {
-                                    setValue("message", message?.message);
+                                    setValue('message', message?.message);
                                     setQuestionId(message?._id);
                                   }}
                                 ></ButtonAtom>
                                 <Popconfirm
                                   title="Are you sure?"
                                   onConfirm={() => {
-                                    setQnaId(data?._id);
-                                    setQuestionId(message?._id);
                                     handleDelete();
                                   }}
-                                  // okButtonProps={{
-                                  //   loading: deleteReviewLoading,
-                                  // }}
                                 >
-                                  <Button danger type="text">
+                                  <Button
+                                    danger
+                                    type="text"
+                                    onClick={() => {
+                                      setQnaId(data?._id);
+                                      setQuestionId(message?._id);
+                                    }}
+                                  >
                                     Delete
                                   </Button>
                                 </Popconfirm>
@@ -217,7 +256,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                           >
                             <EllipsisOutlined
                               className="cursor-pointer"
-                              style={{ fontSize: "30px" }}
+                              style={{ fontSize: '30px' }}
                             />
                           </Popover>
                         )}
@@ -237,7 +276,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                     {message?.reply?.map((reply: any, index: any) => (
                       <Card
                         key={index}
-                        style={{ marginTop: "10px" }}
+                        style={{ marginTop: '10px' }}
                         className="reply-card"
                       >
                         <div className="QNA_user_details">
@@ -245,7 +284,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                             <Avatar src={reply.user.dp} />
 
                             <HeadingAtom
-                              style={{ color: "#8710d8" }}
+                              style={{ color: '#8710d8' }}
                               text={reply.user.name}
                               level={5}
                             ></HeadingAtom>
@@ -258,24 +297,27 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                                     <ButtonAtom
                                       type="text"
                                       text="Update"
-                                      // handleButtonClick={() =>
-                                      //   handleOpenUpdateModal(
-                                      //     review?._id,
-                                      //     review?.rating,
-                                      //     review?.reviewMessage
-                                      //   )
-                                      // }
+                                      handleButtonClick={() => {
+                                        setQNAReply(reply?.message);
+                                        setShowReplyBox(true);
+                                        setMessageId(message?._id);
+                                        setReplyId(reply?._id);
+                                        setQuestionId(message?._id);
+                                      }}
                                     ></ButtonAtom>
                                     <Popconfirm
                                       title="Are you sure?"
-                                      onConfirm={() =>
-                                        handleDeleteReview(review?._id)
-                                      }
-                                      // okButtonProps={{
-                                      //   loading: deleteReviewLoading,
-                                      // }}
+                                      onConfirm={handleDelete}
                                     >
-                                      <Button danger type="text">
+                                      <Button
+                                        danger
+                                        type="text"
+                                        onClick={() => {
+                                          setQnaId(data?._id);
+                                          setReplyId(reply?._id);
+                                          setQuestionId(message?._id);
+                                        }}
+                                      >
                                         Delete
                                       </Button>
                                     </Popconfirm>
@@ -285,7 +327,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                               >
                                 <EllipsisOutlined
                                   className="cursor-pointer"
-                                  style={{ fontSize: "30px" }}
+                                  style={{ fontSize: '30px' }}
                                 />
                               </Popover>
                             )}
@@ -305,6 +347,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                             setQNAReply(e.target.value);
                           }}
                           placeholder="Reply to this Q&A"
+                          value={QNAReply}
                         />
                         {errors.reply && <p>This field is required</p>}
                         <ButtonAtom
