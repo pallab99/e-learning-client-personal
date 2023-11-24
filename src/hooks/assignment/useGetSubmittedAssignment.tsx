@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import AssignmentApi from '../../api/AssignmentApi';
+//@ts-nocheck
+import { useEffect, useState } from "react";
+import AssignmentApi from "../../api/AssignmentApi";
 
 const useGetSubmittedAssignment = (
   courseId: string,

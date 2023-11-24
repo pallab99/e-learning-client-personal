@@ -1,19 +1,20 @@
-import { Card, Form, Radio, message } from 'antd';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import QuizApi from '../../../../api/QuizApi';
-import useGetQuizById from '../../../../hooks/quiz/useGetQuizById';
-import useGetSubmittedQuiz from '../../../../hooks/quiz/useGetSubmittedQuiz';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import './studentQuizSubmission.scss';
-import QuizSubmissionSkeleton from '../../../atoms/quiz-submission-skeleton/quizSubmissionSkeleton';
-import AlertAtom from '../../../atoms/alert/alertAtom';
+//@ts-nocheck
+import { Card, Form, Radio, message } from "antd";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import QuizApi from "../../../../api/QuizApi";
+import useGetQuizById from "../../../../hooks/quiz/useGetQuizById";
+import useGetSubmittedQuiz from "../../../../hooks/quiz/useGetSubmittedQuiz";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import QuizSubmissionSkeleton from "../../../atoms/quiz-submission-skeleton/quizSubmissionSkeleton";
+import "./studentQuizSubmission.scss";
 
 const QuizSubmission = () => {
-  const { handleSubmit, control, setValue } = useForm({ mode: 'onChange' });
+  const { handleSubmit, control, setValue } = useForm({ mode: "onChange" });
 
   const { sectionId, quizId } = useParams();
   const [recallApi, setRecallApi] = useState(0);
@@ -21,8 +22,6 @@ const QuizSubmission = () => {
     quizId as string,
     recallApi
   );
-  console.log(submittedQuiz);
-  // const reversedAns=
   const { loading, data } = useGetQuizById(
     sectionId as string,
     quizId as string,
@@ -83,7 +82,14 @@ const QuizSubmission = () => {
                       <div className="question_div">
                         <ParagraphAtom
                           text={`${index + 1}. ${question.question}`}
-                          className="text-22"
+                          className={`text-22 ${
+                            submittedQuiz && submittedQuiz?.answers
+                              ? question?.correctAnswer ===
+                                submittedQuiz?.answers[index]
+                                ? "correct-answer_bg"
+                                : "wrong-answer_bg"
+                              : ""
+                          }`}
                         />
                         <ParagraphAtom
                           text={` ${question.point} points`}
@@ -109,11 +115,11 @@ const QuizSubmission = () => {
                                 className={
                                   submittedQuiz && submittedQuiz?.answers
                                     ? question?.correctAnswer === i + 1
-                                      ? 'correct-answer'
+                                      ? "correct-answer"
                                       : submittedQuiz?.answers[index] === i + 1
-                                      ? 'wrong-answer'
-                                      : ''
-                                    : ''
+                                      ? "wrong-answer"
+                                      : ""
+                                    : ""
                                 }
                                 onChange={(e) => handleRadioChange(i)}
                                 disabled={
@@ -138,7 +144,7 @@ const QuizSubmission = () => {
                 text="Submit"
                 type="primary"
                 htmlType="submit"
-                style={{ width: '50%' }}
+                style={{ width: "50%" }}
                 disabled={quizAnswer.length != data?.questions?.length}
                 loading={submissionLoading}
               />

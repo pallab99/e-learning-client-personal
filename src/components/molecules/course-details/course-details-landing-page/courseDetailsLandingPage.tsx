@@ -16,6 +16,7 @@ import HeadingAtom from "../../../atoms/heading/heading.atom";
 import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
 import QnAModal from "../../QNA/qna";
 import "./courseDetailsLandingPage.scss";
+
 const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   console.log("courseBasicInfo", courseBasicInfo?.data);

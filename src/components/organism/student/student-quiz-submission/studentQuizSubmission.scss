@@ -43,3 +43,11 @@
   display: flex;
   justify-content: center;
 }
+.wrong-answer_bg {
+  background-color: rgba(255, 0, 0, 0.3);
+  color: black !important;
+}
+.correct-answer_bg {
+  background-color: rgba(0, 128, 0, 0.3);
+  color: black !important;
+}

@@ -62,10 +62,12 @@ const HeaderOrganism = () => {
           )}
           <ParagraphAtom text="Instructor" className="text-18 cursor-pointer" />
           {student === STUDENT && (
-            <ParagraphAtom
-              text="My Learning"
-              className="text-18 cursor-pointer"
-            />
+            <Link to="/my-learning" style={{ textDecoration: "none" }}>
+              <ParagraphAtom
+                text="My Learning"
+                className="text-18 cursor-pointer"
+              />
+            </Link>
           )}
           {student === STUDENT && (
             <IconAtom

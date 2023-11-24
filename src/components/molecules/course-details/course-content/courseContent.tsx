@@ -1,69 +1,25 @@
-import type { CollapseProps } from 'antd';
-import { Card, Collapse, Modal, Skeleton } from 'antd';
-import React, { useState } from 'react';
-import ReactPlayer from 'react-player';
-import { Link, useParams } from 'react-router-dom';
-import useGetCourseSection from '../../../../hooks/course-section/useGetCourseSection';
-import { useAppSelector } from '../../../../redux/store';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import Quiz from '../../quiz-submision/quizSubmission';
-import './courseContent.scss';
-
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
-
-const items: CollapseProps['items'] = [
-  {
-    key: '1',
-    label: (
-      <div className="accordion_panel_title">
-        <HeadingAtom text="Front-End Web Development" level={5}></HeadingAtom>
-        <ParagraphAtom text="7 lectures 30 mins"></ParagraphAtom>
-      </div>
-    ),
-    children: <p>{text}</p>,
-  },
-  {
-    key: '2',
-    label: (
-      <div className="accordion_panel_title">
-        <HeadingAtom text="Backend Web Development" level={5}></HeadingAtom>
-        <ParagraphAtom text="7 lectures 30 mins"></ParagraphAtom>
-      </div>
-    ),
-    children: <p>{text}</p>,
-  },
-  {
-    key: '3',
-    label: (
-      <div className="accordion_panel_title">
-        <HeadingAtom text="Full-Stack Web Development" level={5}></HeadingAtom>
-        <ParagraphAtom text="7 lectures 30 mins"></ParagraphAtom>
-      </div>
-    ),
-    children: <p>{text}</p>,
-  },
-  {
-    key: '4',
-    label: (
-      <div className="accordion_panel_title">
-        <HeadingAtom text="Front-End Web Development" level={5}></HeadingAtom>
-        <ParagraphAtom text="7 lectures 30 mins"></ParagraphAtom>
-      </div>
-    ),
-    children: <p>{text}</p>,
-  },
-];
+//@ts-nocheck
+import {
+  FileOutlined,
+  FilePdfOutlined,
+  FileUnknownOutlined,
+} from "@ant-design/icons";
+import { Checkbox, Collapse, Modal, Skeleton } from "antd";
+import React, { useState } from "react";
+import ReactPlayer from "react-player";
+import { Link, useParams } from "react-router-dom";
+import useGetCourseSection from "../../../../hooks/course-section/useGetCourseSection";
+import useAddToUserProgress from "../../../../hooks/user-progress/useAddToUserProgress";
+import useGetUserProgress from "../../../../hooks/user-progress/useGetUserProgress";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import "./courseContent.scss";
 
 const CourseContent = () => {
   const { courseId } = useParams();
   const { data, loading } = useGetCourseSection(courseId as string);
-  const [videoUrl, setVideoUrl] = React.useState('');
+  const [videoUrl, setVideoUrl] = React.useState("");
   const [isVideoModalVisible, setIsVideoModalVisible] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const handleOpenVideoModal = (url: string) => {
@@ -76,9 +32,16 @@ const CourseContent = () => {
     setIsVideoModalVisible(false);
     setIsPlaying(false);
   };
-  const [videoPlayerClassName, setVideoPlayerClassName] = useState('');
-  const userData = useAppSelector((state) => state.auth.userData);
-  console.log('userData', userData);
+  const [recallApi, setRecallApi] = useState(0);
+  const { addToUserProgress, userProgressLoading } = useAddToUserProgress();
+  const { userProgressData } = useGetUserProgress(courseId, recallApi);
+
+  const handleUserProgress = async (e: any, contendId: string) => {
+    await addToUserProgress(courseId as string, contendId);
+    if (!userProgressLoading) {
+      setRecallApi(Math.random());
+    }
+  };
 
   const accordionItems = data?.data?.map((section: any) => {
     return {
@@ -86,61 +49,110 @@ const CourseContent = () => {
       label: section.title,
       children: (
         <div>
-          <h3>Section Content</h3>
           {section?.sectionContent?.map((content: any) => (
-            <Card className="mt-20" key={content._id}>
-              {/* {console.log(content)} */}
-              <HeadingAtom level={5} text={content.contentTitle} />
-              {content.contentLength > 0 ? (
-                <ButtonAtom
-                  handleButtonClick={() =>
-                    handleOpenVideoModal(content.contentUrl)
-                  }
-                  type="link"
-                  text="Preview"
-                  disabled={content?.contentUrl ? false : true}
-                />
-              ) : (
-                <>
-                  {content?.contentUrl ? (
-                    <Link to={content.contentUrl}>Preview</Link>
-                  ) : null}
-                </>
-              )}
-              {content?.contentLength > 0 && (
-                <ParagraphAtom
-                  text={`Length: ${content.contentLength} secs`}
-                ></ParagraphAtom>
-              )}
-            </Card>
+            <div className="course_content_div mt-20" key={content._id}>
+              <div className="course_content_div_left_side">
+                <FileOutlined />
+                <ParagraphAtom text={content?.contentTitle} />
+              </div>
+              <div className="course_content_div_right_side">
+                {content?.contentLength > 0 ? (
+                  <ButtonAtom
+                    handleButtonClick={() =>
+                      handleOpenVideoModal(content?.contentUrl)
+                    }
+                    type="link"
+                    text="Preview"
+                    style={{ color: "purple", fontWeight: "500" }}
+                    disabled={content?.contentUrl ? false : true}
+                  />
+                ) : (
+                  <>
+                    {content?.contentUrl ? (
+                      <Link
+                        style={{ color: "purple", fontWeight: "500" }}
+                        to={content.contentUrl}
+                      >
+                        Preview
+                      </Link>
+                    ) : null}
+                  </>
+                )}
+                {content?.contentUrl && (
+                  <Checkbox
+                    checked={userProgressData?.data?.completedLessons?.includes(
+                      content?._id
+                    )}
+                    onChange={(e) => handleUserProgress(e, content?._id)}
+                  ></Checkbox>
+                )}
+              </div>
+            </div>
           ))}
-          {section.assignment && (
-            <Card className="mt-20">
-              <h3>Assignment</h3>
-              <h4>{section.assignment.title}</h4>
-              <Link
-                to={`/assignment/${courseId}/${section?._id}/${section?.assignment?._id}`}
-              >
-                Preview
-              </Link>
-            </Card>
+          {section?.assignment && (
+            <div className="course_content_div mt-20">
+              <div className="course_content_div_left_side">
+                <FilePdfOutlined />
+                <ParagraphAtom text={section?.assignment?.title} />
+              </div>
+              <div className="course_content_div_right_side">
+                {section?.assignment?.assignmentFileURL ? (
+                  <Link
+                    style={{ color: "purple", fontWeight: "500" }}
+                    to={`/assignment/${courseId}/${section?._id}/${section?.assignment?._id}`}
+                  >
+                    Preview
+                  </Link>
+                ) : null}
+                {section?.assignment?.assignmentFileURL && (
+                  <Checkbox
+                    checked={userProgressData?.data?.completedLessons?.includes(
+                      section?.assignment?._id
+                    )}
+                    onChange={(e) =>
+                      handleUserProgress(e, section?.assignment?._id)
+                    }
+                  ></Checkbox>
+                )}
+              </div>
+            </div>
           )}
-          <div className="mt-20">
-            <ParagraphAtom text={section?.quiz?.title}></ParagraphAtom>
-            {section?.quiz && (
-              <>
-                <Quiz instructor={false} quizData={section?.quiz}></Quiz>
-                <Link to={`/quiz/${section._id}/${section?.quiz?._id}`}>
-                  <ButtonAtom text="Take Participant"></ButtonAtom>
-                </Link>
-              </>
-            )}
-          </div>
+          {section?.quiz && (
+            <div className="course_content_div mt-20">
+              <div className="course_content_div_left_side">
+                <FileUnknownOutlined />
+                <ParagraphAtom text={section?.quiz?.title}></ParagraphAtom>
+              </div>
+              <div className="course_content_div_right_side">
+                {section?.quiz && (
+                  <>
+                    {section?.quiz?.questions?.length ? (
+                      <Link
+                        style={{ color: "purple", fontWeight: "500" }}
+                        to={`/quiz/${section._id}/${section?.quiz?._id}`}
+                      >
+                        Preview
+                      </Link>
+                    ) : null}
+                    {section?.quiz?.questions?.length ? (
+                      <Checkbox
+                        checked={userProgressData?.data?.completedLessons?.includes(
+                          section?.quiz?._id
+                        )}
+                        onChange={(e) =>
+                          handleUserProgress(e, section?.quiz?._id)
+                        }
+                      ></Checkbox>
+                    ) : null}
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       ),
     };
   });
-  console.log('accordion', accordionItems);
 
   const [activeKeys, setActiveKeys] = React.useState([]);
   const controlCollapse = () => {
@@ -161,27 +173,14 @@ const CourseContent = () => {
           <div className="course-curriculum_header">
             <HeadingAtom text="Course Content" level={3} />
           </div>
-          <div className="course-curriculum_sub_header">
-            <ParagraphAtom text="44 sections  •  380 lectures  •  62h 49m total length" />
-            <ButtonAtom
-              text={
-                activeKeys.length === items.length
-                  ? 'Collapse All Section'
-                  : 'Expand All Section'
-              }
-              type="link"
-              size="large"
-              style={{ color: '#5624d0' }}
-              handleButtonClick={controlCollapse}
-            />
-          </div>
+
           <div className="course-curriculum_content mt-20">
             <Collapse
-              defaultActiveKey={['1']}
+              defaultActiveKey={["1"]}
               items={accordionItems}
               activeKey={activeKeys}
               onChange={setActiveKeys}
-              style={{ backgroundColor: '#f6f9fa' }}
+              style={{ backgroundColor: "#f6f9fa" }}
             />
           </div>
           <Modal
@@ -199,7 +198,7 @@ const CourseContent = () => {
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               playing={isPlaying}
-              config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+              config={{ file: { attributes: { controlsList: "nodownload" } } }}
               onContextMenu={(e) => e.preventDefault()}
             />
           </Modal>

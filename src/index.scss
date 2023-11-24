@@ -5,6 +5,7 @@
 }
 body html {
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 .text-center {
@@ -104,4 +105,11 @@ body html {
 }
 .color-red {
   color: red !important;
+}
+
+.items-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }

@@ -1,28 +1,29 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import NotFoundPage from '../components/pages/404/404.pages';
-import AllPublishedCoursePage from '../components/pages/admin/course/published/publishedCourse';
-import AllSubscriptionListPage from '../components/pages/admin/subscriptionList/subscriptionList';
-import AllAdminPage from '../components/pages/admin/user/admin/admin';
-import AllInstructorPage from '../components/pages/admin/user/instructor/instrctor';
-import AllStudentPage from '../components/pages/admin/user/student/students';
-import CourseDetailsPage from '../components/pages/course-details/courseDetailsPage';
-import EmailVerifiedPage from '../components/pages/email-verified/emailVerifed';
-import ForgetPasswordPage from '../components/pages/forget-password/forgetPassword.pages';
-import HeaderFooterLayout from '../components/pages/header-footer-layout/headerFooterLayout';
-import HomePage from '../components/pages/home/home';
-import InstructorProtectedRoutePage from '../components/pages/instructorProtectedRoute/instructorProtectedRoute';
-import ViewAllAssignmentPage from '../components/pages/instructors/assignment/assignment';
-import AssignmentTable from '../components/pages/instructors/assignment/assignmentTable';
-import CreateCoursePage from '../components/pages/instructors/course/create-course/createCourse';
-import UpdateCoursePage from '../components/pages/instructors/course/update-course/updateCourse';
-import InstructorDashboardPage from '../components/pages/instructors/dashboard/dashboard.page';
-import ProfilePage from '../components/pages/profile/profile';
-import ProfilePicturePage from '../components/pages/profile/profilePicture';
-import SignInPage from '../components/pages/signIn/signIn.pages';
-import SignUPPage from '../components/pages/signUp/signIp.pages';
-import QuizSubmissionForStudentPage from '../components/pages/student/quiz-submission-for-student/quizSubmissionForStudent';
-import UnauthorizedPage from '../components/pages/unauthorized/unauthorized';
-import AssignmentSubmissionPage from '../components/pages/student/assignment-submission/assignmentSubmission';
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import NotFoundPage from "../components/pages/404/404.pages";
+import AllPublishedCoursePage from "../components/pages/admin/course/published/publishedCourse";
+import AllSubscriptionListPage from "../components/pages/admin/subscriptionList/subscriptionList";
+import AllAdminPage from "../components/pages/admin/user/admin/admin";
+import AllInstructorPage from "../components/pages/admin/user/instructor/instrctor";
+import AllStudentPage from "../components/pages/admin/user/student/students";
+import CourseDetailsPage from "../components/pages/course-details/courseDetailsPage";
+import EmailVerifiedPage from "../components/pages/email-verified/emailVerifed";
+import ForgetPasswordPage from "../components/pages/forget-password/forgetPassword.pages";
+import HeaderFooterLayout from "../components/pages/header-footer-layout/headerFooterLayout";
+import HomePage from "../components/pages/home/home";
+import InstructorProtectedRoutePage from "../components/pages/instructorProtectedRoute/instructorProtectedRoute";
+import ViewAllAssignmentPage from "../components/pages/instructors/assignment/assignment";
+import AssignmentTable from "../components/pages/instructors/assignment/assignmentTable";
+import CreateCoursePage from "../components/pages/instructors/course/create-course/createCourse";
+import UpdateCoursePage from "../components/pages/instructors/course/update-course/updateCourse";
+import InstructorDashboardPage from "../components/pages/instructors/dashboard/dashboard.page";
+import ProfilePage from "../components/pages/profile/profile";
+import ProfilePicturePage from "../components/pages/profile/profilePicture";
+import SignInPage from "../components/pages/signIn/signIn.pages";
+import SignUPPage from "../components/pages/signUp/signIp.pages";
+import AssignmentSubmissionPage from "../components/pages/student/assignment-submission/assignmentSubmission";
+import MyLearningPage from "../components/pages/student/my-learning/myLearning";
+import QuizSubmissionForStudentPage from "../components/pages/student/quiz-submission-for-student/quizSubmissionForStudent";
+import UnauthorizedPage from "../components/pages/unauthorized/unauthorized";
 
 const AllRoutes = () => {
   return (
@@ -113,6 +114,14 @@ const AllRoutes = () => {
           element={
             <HeaderFooterLayout>
               <AssignmentSubmissionPage />
+            </HeaderFooterLayout>
+          }
+        />
+        <Route
+          path="/my-learning"
+          element={
+            <HeaderFooterLayout>
+              <MyLearningPage />
             </HeaderFooterLayout>
           }
         />

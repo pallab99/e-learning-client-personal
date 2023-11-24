@@ -1,5 +1,6 @@
 import { Empty } from "antd";
 import useGetAllCourseByInstructor from "../../../../hooks/course/useGetCourseByInstructor";
+import { useScrollToTop } from "../../../../hooks/useScrollToTop";
 import InstructorCourseListSkeletonAtom from "../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton";
 import CourseCardOrganism from "../../../organism/instructor/dashboard/dashboard/courseCard.organism";
 import CreateCourseHeaderOrganism from "../../../organism/instructor/dashboard/dashboard/createCourse.organism";
@@ -7,6 +8,7 @@ import InstructorDashboardSideBarOrganism from "../../../organism/instructor/das
 import "./dashboard.style.scss";
 const InstructorDashboardPage = () => {
   const { data, loading } = useGetAllCourseByInstructor();
+  useScrollToTop();
 
   return (
     <div className="instructor-dashboard-div-wrapper">

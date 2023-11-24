@@ -12,3 +12,21 @@
   display: flex;
   justify-content: space-between;
 }
+.course_content_div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .ant-typography {
+    margin-bottom: 0rem;
+  }
+}
+.course_content_div_right_side {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+.course_content_div_left_side {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}

@@ -1,7 +1,7 @@
-import React from 'react';
+import MyLearning from "../../../organism/student/my-learning/myLearning";
 
 const MyLearningPage = () => {
-  return <div>MyLearningPage</div>;
+  return <MyLearning></MyLearning>;
 };
 
 export default MyLearningPage;

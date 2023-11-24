@@ -7,6 +7,7 @@ class AuthApi {
     allStudents: "/user/students/all",
     updateUser: "/user/update",
     updateDp: "/user/update-DP",
+    getMyLearning: "/user/students/my-learning",
   };
   async myProfile() {
     return await Api?.http?.get(this.endPoints.profile);
@@ -22,6 +23,10 @@ class AuthApi {
   }
   async updateDp(data: any) {
     return await Api?.http?.patch(this.endPoints.updateDp, data);
+  }
+
+  async getMyLearning() {
+    return await Api?.http?.get(this.endPoints.getMyLearning);
   }
 }
 

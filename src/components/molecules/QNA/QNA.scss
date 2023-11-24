@@ -17,10 +17,12 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .QNA_user_details::after {
-  content: '';
+  content: "";
   position: absolute;
   border-left: 2px solid #000; /* Change this to your desired line style */
   top: 50%;
@@ -29,7 +31,7 @@
   z-index: -1;
 }
 .reply-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -39,7 +41,7 @@
 }
 
 .qna-card::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   right: 0;
