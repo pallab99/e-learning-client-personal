@@ -1,12 +1,21 @@
-import { Card, Image } from "antd";
-import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
-import FlexAtom from "../../../../atoms/flex/flex.atom";
-import HeadingAtom from "../../../../atoms/heading/heading.atom";
-import "./courseCard.style.scss";
-
+import { Card, Image, Popconfirm, Popover, Tag } from 'antd';
+import { Link } from 'react-router-dom';
+import FlexAtom from '../../../../atoms/flex/flex.atom';
+import HeadingAtom from '../../../../atoms/heading/heading.atom';
+import './courseCard.style.scss';
+import {
+  DashOutlined,
+  SyncOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons';
+import ButtonAtom from '../../../../atoms/button/button.attom';
+import useSubmitCoursePublicationRequest from '../../../../../hooks/course/useSubmitCoursePublicationRequest';
 const CourseCardOrganism = ({ data }: any) => {
-  const isMobile = useMediaQuery({ query: "(max-width: 668px)" });
+  const { submitForCoursePublications, coursePublicationRequestLoader } =
+    useSubmitCoursePublicationRequest();
+  const handleSubmitForCoursePublications = async (courseId: string) => {
+    await submitForCoursePublications(courseId);
+  };
   return (
     <>
       {data?.map((ele: any) => (
@@ -16,7 +25,7 @@ const CourseCardOrganism = ({ data }: any) => {
           class="mt-20 cursor-pointer card-hover"
           key={ele._id}
         >
-          <Card className="course-card" style={{ width: "100%" }}>
+          <Card className="course-card" style={{ width: '100%' }}>
             <div className="course-card-div">
               <div className="card-left">
                 <Image
@@ -31,8 +40,39 @@ const CourseCardOrganism = ({ data }: any) => {
                     level={5}
                     ellipsis={true}
                   ></HeadingAtom>
+                  {/* <ParagraphAtom
+                    text={ele?.verified ? 'Published' : 'Pending'}
+                    className="text-22"
+                  /> */}
+                  {ele?.verified ? (
+                    <Tag icon={<CheckCircleOutlined />} color="success">
+                      Published
+                    </Tag>
+                  ) : (
+                    <Tag icon={<SyncOutlined spin />} color="processing">
+                      Pending
+                    </Tag>
+                  )}
                 </Link>
               </div>
+              {!ele?.verified && (
+                <Popover
+                  content={
+                    <ButtonAtom
+                      text="Submit for Review"
+                      handleButtonClick={() =>
+                        handleSubmitForCoursePublications(ele?._id)
+                      }
+                      loading={coursePublicationRequestLoader}
+                    ></ButtonAtom>
+                  }
+                  trigger="click"
+                >
+                  <DashOutlined
+                    style={{ fontSize: '24px', paddingRight: '2%' }}
+                  />
+                </Popover>
+              )}
             </div>
           </Card>
         </FlexAtom>

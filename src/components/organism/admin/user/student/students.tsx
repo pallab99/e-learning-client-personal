@@ -141,7 +141,7 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      width: '15%',
+      width: '20%',
       ...getColumnSearchProps('name'),
       sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ['descend', 'ascend'],
@@ -150,7 +150,7 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      width: '20%',
+      width: '30%',
       ...getColumnSearchProps('email'),
       sorter: (a, b) => a.email.length - b.email.length,
       sortDirections: ['descend', 'ascend'],
@@ -170,49 +170,25 @@ const AllStudentTableOrganism: React.FC<AllStudentTableOrganismProps> = ({
       sorter: (a, b) => a.createdAt.length - b.createdAt.length,
       sortDirections: ['descend', 'ascend'],
     },
-    {
-      title: 'action',
-      dataIndex: 'action',
-      key: 'action',
-      render: (_: any, record: any) => {
-        return (
-          <>
-            <ButtonAtom
-              text="edit"
-              type="default"
-              handleButtonClick={() => handleEdit(record.id)}
-            />
-            <ButtonAtom
-              text="delete"
-              type="default"
-              dangerBtn={true}
-              handleButtonClick={() => handleDelete(record.id)}
-            />
-          </>
-        );
-      },
-    },
   ];
 
   return (
     <div className="all-student-table-div mt-50">
-      <Card>
-        <HeadingAtom text="All student list" level={1} className="mb-30" />
-        <Table
-          columns={columns}
-          dataSource={data}
-          scroll={{ x: 1000 }}
-          pagination={{
-            pageSize: 5,
-            total: data?.length,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`,
-          }}
-          locale={{
-            emptyText: loading ? <TableSkeletonAtom /> : <Empty />,
-          }}
-        />
-      </Card>
+      <HeadingAtom text="All student list" level={1} className="mb-30" />
+      <Table
+        columns={columns}
+        dataSource={data}
+        scroll={{ x: 1200 }}
+        pagination={{
+          pageSize: 5,
+          total: data?.length,
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} of ${total} items`,
+        }}
+        locale={{
+          emptyText: loading ? <TableSkeletonAtom /> : <Empty />,
+        }}
+      />
     </div>
   );
 };

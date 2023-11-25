@@ -236,40 +236,38 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
   };
   return (
     <div className="course-table-div mt-50">
-      <Card>
-        <div className="card-header-flex">
-          <div className="table-header-div">
-            <HeadingAtom
-              text="All subscription request list"
-              level={3}
-              className="mb-30"
-            />
-          </div>
+      <div className="card-header-flex">
+        <div className="table-header-div">
+          <HeadingAtom
+            text="All subscription request list"
+            level={3}
+            className="mb-30"
+          />
         </div>
-        <Table
-          columns={columns}
-          dataSource={data}
-          scroll={{ x: 900 }}
-          pagination={{
-            pageSize: 5,
-            total: data?.length,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`,
-          }}
-          locale={{
-            emptyText: loading ? <TableSkeletonAtom /> : <Empty />,
-          }}
-        />
-        <SubscriptRequestCourseModal
-          isModalOpen={isModalOpen}
-          closeModal={closeModal}
-          courseData={courseData}
-          acceptRequest={acceptRequest}
-          rejectRequest={rejectRequest}
-          btnLoading1={btnLoading1}
-          btnLoading2={btnLoading2}
-        ></SubscriptRequestCourseModal>
-      </Card>
+      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        scroll={{ x: 1200 }}
+        pagination={{
+          pageSize: 5,
+          total: data?.length,
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} of ${total} items`,
+        }}
+        locale={{
+          emptyText: loading ? <TableSkeletonAtom /> : <Empty />,
+        }}
+      />
+      <SubscriptRequestCourseModal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        courseData={courseData}
+        acceptRequest={acceptRequest}
+        rejectRequest={rejectRequest}
+        btnLoading1={btnLoading1}
+        btnLoading2={btnLoading2}
+      ></SubscriptRequestCourseModal>
     </div>
   );
 };

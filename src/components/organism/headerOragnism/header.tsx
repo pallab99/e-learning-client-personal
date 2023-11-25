@@ -1,18 +1,18 @@
-import { Image } from "antd";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { STUDENT } from "../../../constant/userType";
-import useGetCartByUser from "../../../hooks/cart/useGetUserCart";
-import { useAppSelector } from "../../../redux/store";
-import ButtonAtom from "../../atoms/button/button.attom";
-import IconAtom from "../../atoms/icon/icon.atom";
-import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
-import CartDrawerMolecules from "../../molecules/cart-drawer/cartDrawerMolecules";
-import DesktopHeaderDropdownMenuMolecules from "../../molecules/header-dropdown-menu/desktop-header-dropdown/headerDropdownMenu";
-import MobileHeaderDropdownMenuMolecules from "../../molecules/header-dropdown-menu/mobile-header-dropdown/headerDropdownMenu";
-import HeaderSearchBarMolecules from "../../molecules/header-search-bar/headerSearchBar";
-import WishlistDrawerMolecules from "../../molecules/wishlist-drawer/wishlistDrawerMolecules";
-import "./header.scss";
+import { Image } from 'antd';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { STUDENT } from '../../../constant/userType';
+import useGetCartByUser from '../../../hooks/cart/useGetUserCart';
+import { useAppSelector } from '../../../redux/store';
+import ButtonAtom from '../../atoms/button/button.attom';
+import IconAtom from '../../atoms/icon/icon.atom';
+import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
+import CartDrawerMolecules from '../../molecules/cart-drawer/cartDrawerMolecules';
+import DesktopHeaderDropdownMenuMolecules from '../../molecules/header-dropdown-menu/desktop-header-dropdown/headerDropdownMenu';
+import MobileHeaderDropdownMenuMolecules from '../../molecules/header-dropdown-menu/mobile-header-dropdown/headerDropdownMenu';
+import HeaderSearchBarMolecules from '../../molecules/header-search-bar/headerSearchBar';
+import WishlistDrawerMolecules from '../../molecules/wishlist-drawer/wishlistDrawerMolecules';
+import './header.scss';
 
 const HeaderOrganism = () => {
   const [recallApi, setRecallApi] = useState(false);
@@ -42,7 +42,7 @@ const HeaderOrganism = () => {
     <>
       <div className="desktop-header-div">
         <div className="desktop-header-wrapper">
-          <Link to={"/"}>
+          <Link to={'/'}>
             <Image
               height={60}
               width={80}
@@ -51,18 +51,13 @@ const HeaderOrganism = () => {
               className="cursor-pointer"
             ></Image>
           </Link>
-          {/* {(!userData.accessToken || student === STUDENT) && (
-            <ParagraphAtom
-              text="Categories"
-              className="text-18 cursor-pointer"
-            />
-          )} */}
+
           {(!userData.accessToken || student === STUDENT) && (
             <HeaderSearchBarMolecules />
           )}
           <ParagraphAtom text="Instructor" className="text-18 cursor-pointer" />
           {student === STUDENT && (
-            <Link to="/my-learning" style={{ textDecoration: "none" }}>
+            <Link to="/my-learning" style={{ textDecoration: 'none' }}>
               <ParagraphAtom
                 text="My Learning"
                 className="text-18 cursor-pointer"
@@ -80,9 +75,9 @@ const HeaderOrganism = () => {
           <WishlistDrawerMolecules
             open={openWishlistDrawer}
             onClose={handleCloseWishlistDrawer}
-            key={"right"}
+            key={'right'}
             isMobile={isMobile}
-            placement={isMobile ? "bottom" : "right"}
+            placement={isMobile ? 'bottom' : 'right'}
             setRecallApi={setRecallApi}
             cartLoading={loading}
           />
@@ -101,7 +96,7 @@ const HeaderOrganism = () => {
           )}
           <div className="log-in-sign-up-btn">
             {!userData.accessToken && (
-              <Link to={"/log-in"}>
+              <Link to={'/log-in'}>
                 <ButtonAtom
                   type="primary"
                   size="large"
@@ -110,7 +105,7 @@ const HeaderOrganism = () => {
               </Link>
             )}
             {!userData.accessToken && (
-              <Link to={"/sign-up"}>
+              <Link to={'/sign-up'}>
                 <ButtonAtom size="large" text="Sign Up"></ButtonAtom>
               </Link>
             )}
@@ -120,7 +115,7 @@ const HeaderOrganism = () => {
             onClose={handleCloseCartDrawer}
             // key={}
             isMobile={isMobile}
-            placement={isMobile ? "bottom" : "right"}
+            placement={isMobile ? 'bottom' : 'right'}
             cartData={data}
             setRecallApi={setRecallApi}
             cartLoading={loading}
@@ -132,7 +127,7 @@ const HeaderOrganism = () => {
       </div>
       <div className="mobile-header-div">
         <div className="mobile-header-wrapper">
-          <Link to={"/"}>
+          <Link to={'/'}>
             <Image
               height={60}
               width={80}

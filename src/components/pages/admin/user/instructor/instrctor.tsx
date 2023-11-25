@@ -8,13 +8,15 @@ const AllInstructorPage = () => {
   const tableData =
     data &&
     data?.map((ele: any) => {
+      const date = new Date(ele?.createdAt);
+      const dateString = date.toLocaleDateString();
       return {
         id: ele?._id,
         avatar: <Image src={ele?.user?.dp}></Image>,
         name: ele?.user?.name,
         email: ele?.email,
         phoneNumber: ele?.user?.phoneNumber,
-        createdAt: ele?.createdAt,
+        createdAt: dateString,
       };
     });
 
