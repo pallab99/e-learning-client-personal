@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import AssignmentApi from '../../api/AssignmentApi';
+import { useAppDispatch } from '../../redux/store';
+import { handleGetCourseData } from '../../redux/slices/courseSlice';
 
 const useGetAllAssignment = (courseId: string | undefined) => {
   const [assignment, setAssignment] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     getAllAssignment(courseId);
   }, [courseId]);
@@ -15,6 +18,7 @@ const useGetAllAssignment = (courseId: string | undefined) => {
       setLoading(true);
       const response = await AssignmentApi.getAllAssignmentByCourse(courseId);
       setAssignment(response?.data?.data);
+      dispatch(handleGetCourseData);
       setLoading(false);
       setError(null);
     } catch (error: any) {

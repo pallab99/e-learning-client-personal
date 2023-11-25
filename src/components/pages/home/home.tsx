@@ -21,8 +21,6 @@ const HomePage = () => {
           />
         </div>
       </div>
-      {/* <Brand /> */}
-      {!courseSearchTerm && <CourseRecommendation />}
       <CourseCardMolecules />
     </div>
   );

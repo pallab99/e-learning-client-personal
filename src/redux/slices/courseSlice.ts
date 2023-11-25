@@ -7,6 +7,7 @@ interface ICourseState {
   sort?: string;
   page?: number;
   limit?: number;
+  courseData?: any;
 }
 
 const initialState: ICourseState = {
@@ -16,6 +17,7 @@ const initialState: ICourseState = {
   sort: '',
   page: 1,
   limit: 10,
+  courseData: [],
 };
 
 const courseSlice = createSlice({
@@ -38,6 +40,9 @@ const courseSlice = createSlice({
     handleCourseFilterByCategory(state, action) {
       state.category = action.payload;
     },
+    handleGetCourseData(state, action) {
+      state.courseData = action.payload;
+    },
   },
 });
 
@@ -47,6 +52,7 @@ export const {
   courseSearchTerm,
   handleCoursePagination,
   handleCourseFilterByCategory,
+  handleGetCourseData,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

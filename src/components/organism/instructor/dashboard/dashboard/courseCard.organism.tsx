@@ -40,10 +40,6 @@ const CourseCardOrganism = ({ data }: any) => {
                     level={5}
                     ellipsis={true}
                   ></HeadingAtom>
-                  {/* <ParagraphAtom
-                    text={ele?.verified ? 'Published' : 'Pending'}
-                    className="text-22"
-                  /> */}
                   {ele?.verified ? (
                     <Tag icon={<CheckCircleOutlined />} color="success">
                       Published

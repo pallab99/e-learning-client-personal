@@ -17,14 +17,12 @@ class CourseApi {
     filterOption: string,
     sortValue: string,
     filterCourseByCategory: string[] | [],
-    courseSearchTerm: string,
     page: any = 1,
     limit: any = 10
   ) {
+    console.log('get all');
+
     let url: string = `${this.endPoints.getAllCourse}?page=${page}&limit=${limit}`;
-    if (courseSearchTerm) {
-      url = url + `&search=${courseSearchTerm}`;
-    }
     if (filterOption) {
       url = url + `&filterLevel=${filterOption}`;
     }
@@ -34,6 +32,15 @@ class CourseApi {
 
     if (filterCourseByCategory.length > 0) {
       url = url + `&filterCategory=${filterCourseByCategory}`;
+    }
+    return await Api?.http?.get(url);
+  }
+  async autoCompleteSearch(searchTerm: string, page: any = 1, limit: any = 10) {
+    console.log('auto');
+
+    let url: string = `${this.endPoints.getAllCourse}?page=${page}&limit=${limit}`;
+    if (searchTerm) {
+      url = url + `&search=${searchTerm}`;
     }
     return await Api?.http?.get(url);
   }
