@@ -112,9 +112,9 @@ const CourseCardMolecules = () => {
                         <p className="title mt-5">{course.title}</p>
                         <p className="author mt-5">{course.author}</p>
                         <div className="ratings mt-5 text-18">
-                          {course.ratings | 4}
-                          <Rate disabled defaultValue={4} />
-                          <span className="reviews">{`(123,00)`}</span>
+                          {course?.rating}
+                          <Rate disabled defaultValue={course?.rating} />
+                          <span className="reviews">{`  (${course?.ratingCount})`}</span>
                         </div>
                         <p className="Price mt-5 text-18">
                           <FaChartSimple />{' '}

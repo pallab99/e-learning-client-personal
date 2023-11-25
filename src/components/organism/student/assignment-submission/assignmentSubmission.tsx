@@ -27,7 +27,6 @@ const AssignmentSubmission = () => {
     assignmentId as string,
     submittedAssignmentData
   );
-  console.log(assignmentData);
 
   const items: DescriptionsProps['items'] = [
     {
@@ -35,7 +34,8 @@ const AssignmentSubmission = () => {
       label: 'Submission Status',
       children: (
         <Badge
-          status={error && error && !error?.success ? 'error' : 'success'}
+          size="large"
+          status={error && !error?.success ? 'error' : 'success'}
           text={error && !error?.success ? 'Not Attempted' : 'Submitted'}
         />
       ),
@@ -45,6 +45,7 @@ const AssignmentSubmission = () => {
       label: 'Grading Status',
       children: (
         <Badge
+          size="large"
           status={
             error && !error?.success
               ? 'error'
