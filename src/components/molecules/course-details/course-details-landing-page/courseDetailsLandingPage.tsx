@@ -99,16 +99,23 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
               className="ratings mt-5 text-20 color-white"
               style={{ color: 'white' }}
             >
-              {'4.5'}
-              <Rate disabled defaultValue={4} />
-              <span className="reviews color-white">{`(123,00)`}</span>
-              <span>1,120,049 students</span>
+              {courseBasicInfo?.data?.rating}
+              <Rate
+                disabled
+                defaultValue={courseBasicInfo?.data?.rating}
+                allowHalf
+              />
+              <span className="reviews color-white">{`(${courseBasicInfo?.data?.ratingCount})`}</span>
+              <span>{`${courseBasicInfo?.data?.students?.length} students`}</span>
             </div>
             <div className="course-landing-page__main-content_creator">
               <ParagraphAtom
                 className="text-18 color-white mt-10"
                 text={`Created By ${
-                  courseBasicInfo && courseBasicInfo?.data?.instructors[0]?.name
+                  courseBasicInfo &&
+                  courseBasicInfo?.data &&
+                  courseBasicInfo?.data?.instructors &&
+                  courseBasicInfo?.data?.instructors[0]?.name
                 }`}
               ></ParagraphAtom>
             </div>

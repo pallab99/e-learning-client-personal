@@ -64,7 +64,7 @@ const UpdateCourseOrganism = () => {
       setValue('title', data?.data?.title);
       setValue('sub_title', data?.data?.sub_title);
       setValue('description', data?.data?.description);
-      setValue('category', data?.data?.category?.title);
+      setValue('category', data?.data?.category[0]?.title);
       setValue('level', data?.data?.level);
       setValue('benefits', data?.data?.benefits);
       setValue('prerequisites', data?.data?.prerequisites);
@@ -72,11 +72,21 @@ const UpdateCourseOrganism = () => {
   }, [data, setValue]);
   const { btnLoading, updateCourse } = useUpdateCourse();
   const onSubmit = async (data: any) => {
-    const newData = {
+    console.log('update course', data);
+
+    const category = categoryValues.filter((value) => {
+      if (value.label === data?.category) {
+        return value?.value;
+      }
+    });
+
+    const newCategory =
+      category.length === 0 ? data?.category : category[0].value;
+
+    await updateCourse(courseId as string, {
       ...data,
-      description: description,
-    };
-    await updateCourse(courseId as string, data);
+      category: newCategory,
+    });
   };
   const config = {
     readonly: false,
