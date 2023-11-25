@@ -1,16 +1,22 @@
 //@ts-nocheck
-import { useEffect, useState } from "react";
-import UserProgress from "../../api/UserProgress";
+import { useEffect, useState } from 'react';
+import UserProgress from '../../api/UserProgress';
+import { useAppSelector } from '../../redux/store';
+import { STUDENT } from '../../constant/userType';
 
 const useGetUserProgress = (courseId: string, recallApi?: number) => {
   const [userProgressData, setUserProgressData] = useState<object>({});
   const [userProgressLoading, setUserProgressLoading] = useState(false);
   const [error, setError] = useState();
   const [noSubmission, setNoSubmission] = useState(false);
+  const userData = useAppSelector((state) => state.auth.userData);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getUserProgress(courseId);
-  }, [courseId, recallApi]);
+    if (userData && userData.rank === STUDENT) {
+      getUserProgress(courseId);
+    }
+  }, [courseId, recallApi, userData]);
 
   const getUserProgress = async (courseId: string) => {
     try {

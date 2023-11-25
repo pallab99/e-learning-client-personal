@@ -12,7 +12,7 @@ const AllPublishedCoursePage = () => {
     return {
       _id: ele?._id,
       title: ele?.title,
-      totalStudent: ele?.students.length,
+      totalStudent: ele?.students?.length,
       category: ele?.category,
       level: ele?.level,
       totalHours: ele?.totalHours | 0,
