@@ -5,6 +5,7 @@ import ViewAssignment from '../../../organism/instructor/viewAssignment/viewAssi
 import './assignmentTable.scss';
 import {
   Card,
+  Empty,
   Image,
   Input,
   InputNumber,
@@ -18,9 +19,11 @@ import ButtonAtom from '../../../atoms/button/button.attom';
 import HeadingAtom from '../../../atoms/heading/heading.atom';
 import AssignmentApi from '../../../../api/AssignmentApi';
 import { useState } from 'react';
+import CourseCardSkeleton from '../../../atoms/courseCardSkeleton/courseCardSkeleton';
+import InstructorCourseListSkeletonAtom from '../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
 const AssignmentTable = () => {
   const { courseId } = useParams();
-  const { loading, assignment } = useGetAllAssignment(courseId);
+  const { loading, assignment, error } = useGetAllAssignment(courseId);
   //   console.log(assignment);
   const assignments = assignment?.map((assignment) => ({
     _id: assignment._id,
@@ -31,17 +34,20 @@ const AssignmentTable = () => {
   console.log(assignments);
   const [submissions, setSubmissions] = useState([]);
   const [openSubmissionModal, setOpnSubmissionModal] = useState(false);
-
+  const [getAllAssignmentLoading, setGetAllAssignmentLoading] = useState(false);
   const fetchSubmissions = async (assignmentId: string | undefined) => {
     try {
+      setGetAllAssignmentLoading(true);
       const response = await AssignmentApi.getAllSubmittedAssignmentOfASection(
         courseId,
         assignmentId
       );
 
       setSubmissions(response?.data?.data);
+      setGetAllAssignmentLoading(false);
     } catch (err) {
       console.error(err);
+      setGetAllAssignmentLoading(false);
     }
   };
   const [grade, setGrade] = useState(0);
@@ -49,52 +55,76 @@ const AssignmentTable = () => {
   const handleGrade = (value: any) => {
     setGrade(value);
   };
+  const [handleAssessmentLoading, setHandleAssessmentLoading] = useState(false);
   const handLeGiveAssignmentGrade = async (
     value: any,
     submittedAssignmentId: string
   ) => {
     try {
+      setHandleAssessmentLoading(true);
       const res = await AssignmentApi.giveAssessment(
         assignmentId,
         submittedAssignmentId,
         value
       );
       message.success(res?.data?.message);
+      setHandleAssessmentLoading(false);
     } catch (error: any) {
       message.error(error?.response?.message);
+      setHandleAssessmentLoading(false);
     }
   };
   return (
     <div className="instructor-dashboard-div-wrapper">
       <InstructorDashboardSideBarOrganism />
       <div className="instructor-dashboard-div">
-        {assignments.map((ele: any) => {
-          return (
-            <Card className="mt-40">
-              <HeadingAtom level={3} text={ele?.title}></HeadingAtom>
-              <HeadingAtom level={4} text={`${ele?.point} Marks`}></HeadingAtom>
-              <div className="assignment_bnt_action">
-                <Link to={ele?.assignmentFileURL}>View assignment file</Link>
-                <ButtonAtom
-                  text="View All Submissions"
-                  type="link"
-                  style={{ color: 'purple' }}
-                  handleButtonClick={() => {
-                    setAssignmentId(ele?._id);
-                    fetchSubmissions(ele?._id);
-                    setOpnSubmissionModal(true);
-                  }}
-                ></ButtonAtom>
-              </div>
-            </Card>
-          );
-        })}
+        {loading ? (
+          [1, 2, 3, 4].map((ele) => {
+            return <InstructorCourseListSkeletonAtom key={ele} />;
+          })
+        ) : error ? (
+          <div className="empty-div mt-40" style={{ height: '100dvh' }}>
+            <Empty />
+          </div>
+        ) : (
+          assignments.map((ele: any) => {
+            return (
+              <Card className="mt-40">
+                <HeadingAtom level={3} text={ele?.title}></HeadingAtom>
+                <HeadingAtom
+                  level={4}
+                  text={`${ele?.point} Marks`}
+                ></HeadingAtom>
+                <div className="assignment_bnt_action">
+                  <Link to={ele?.assignmentFileURL}>View assignment file</Link>
+                  <ButtonAtom
+                    text="View All Submissions"
+                    type="link"
+                    style={{ color: 'purple' }}
+                    handleButtonClick={() => {
+                      setAssignmentId(ele?._id);
+                      fetchSubmissions(ele?._id);
+                      setOpnSubmissionModal(true);
+                    }}
+                  ></ButtonAtom>
+                </div>
+              </Card>
+            );
+          })
+        )}
         <Modal
           open={openSubmissionModal}
           onCancel={() => setOpnSubmissionModal(false)}
           footer={null}
         >
-          {submissions &&
+          {getAllAssignmentLoading ? (
+            [1, 2, 3].map((ele: any) => {
+              return <InstructorCourseListSkeletonAtom key={ele} />;
+            })
+          ) : submissions?.data?.length <= 0 ? (
+            <Empty />
+          ) : (
+            submissions &&
             submissions?.data?.map((ele: any) => {
               return (
                 <div>
@@ -124,6 +154,7 @@ const AssignmentTable = () => {
                                   handleGrade(value);
                                 }
                               }}
+                              defaultValue={ele?.grade | 0}
                             />
                             <Tooltip
                               title="Total marks for this assignment"
@@ -141,6 +172,8 @@ const AssignmentTable = () => {
                               handleButtonClick={() => {
                                 handLeGiveAssignmentGrade(grade, ele?._id);
                               }}
+                              loading={handleAssessmentLoading}
+                              type="primary"
                             ></ButtonAtom>
                           </Space.Compact>
                         </div>
@@ -149,7 +182,8 @@ const AssignmentTable = () => {
                   </Card>
                 </div>
               );
-            })}
+            })
+          )}
         </Modal>
       </div>
     </div>

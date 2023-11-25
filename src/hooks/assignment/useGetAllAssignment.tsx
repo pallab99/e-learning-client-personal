@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import AssignmentApi from "../../api/AssignmentApi";
+import AssignmentApi from '../../api/AssignmentApi';
 
 const useGetAllAssignment = (courseId: string | undefined) => {
   const [assignment, setAssignment] = useState<Array<any>>([]);
@@ -16,6 +16,7 @@ const useGetAllAssignment = (courseId: string | undefined) => {
       const response = await AssignmentApi.getAllAssignmentByCourse(courseId);
       setAssignment(response?.data?.data);
       setLoading(false);
+      setError(null);
     } catch (error: any) {
       setLoading(false);
       setError(error);
