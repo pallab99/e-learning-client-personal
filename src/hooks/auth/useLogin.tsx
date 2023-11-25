@@ -22,7 +22,7 @@ const useLogin = () => {
       if (response?.data.data.rank === INSTRUCTOR) {
         navigate('/instructor/courses');
       } else if (response?.data.data.rank === ADMIN) {
-        navigate('/admin/user/student');
+        navigate('/admin/course/published');
       } else {
         navigate('/');
       }

@@ -212,7 +212,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
       message.success(res?.data?.message);
       setBtnLoading1(false);
       closeModal();
-      setRecallApi(!recallApi);
+      setRecallApi(Math.random());
     } catch (error: any) {
       message.error(error?.response?.message);
       setBtnLoading1(false);

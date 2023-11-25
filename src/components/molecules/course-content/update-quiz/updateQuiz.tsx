@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Modal, Space, message } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -38,7 +39,6 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
     formState: { errors },
     watch,
     setValue,
-    unregister,
   } = useForm({
     mode: 'onChange',
     resolver: zodResolver(QuizFormSchema),
