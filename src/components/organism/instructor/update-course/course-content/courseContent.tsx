@@ -1,23 +1,22 @@
-import { EditOutlined } from "@ant-design/icons";
-import { Card, Collapse, Dropdown, Empty, MenuProps, Modal } from "antd";
-import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
-import { Link, useParams } from "react-router-dom";
-import useGetCourseSection from "../../../../../hooks/course-section/useGetCourseSection";
-import ButtonAtom from "../../../../atoms/button/button.attom";
-import CourseContentSkeleton from "../../../../atoms/course-content skeleton/courseContentSkeleton";
-import HeadingAtom from "../../../../atoms/heading/heading.atom";
-import ParagraphAtom from "../../../../atoms/paragraph/paragraph.atom";
-import CourseContentMolecules from "../../../../molecules/course-content/courseContent";
-import CreateAssignmentMolecules from "../../../../molecules/course-content/create-assignment/createAssignment";
-import CreateQuizModal from "../../../../molecules/course-content/create-quiz/createQuiz";
-// import UpdateCourseContentMolecules from "../../../../molecules/course-content/update-course-content/updatCourseContentModal";
-import UpdateCourseContentMolecules from "../../../../molecules/course-content/update-course-content/updatCourseContentModal";
-import UpdateQuizModal from "../../../../molecules/course-content/update-quiz/updateQuiz";
-import Quiz from "../../../../molecules/quiz-submision/quizSubmission";
-import "./courseContent.scss";
+import { EditOutlined, FileOutlined, FilePdfOutlined } from '@ant-design/icons';
+import { Card, Collapse, Dropdown, Empty, MenuProps, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
+import ReactPlayer from 'react-player';
+import { Link, useParams } from 'react-router-dom';
+import useGetCourseSection from '../../../../../hooks/course-section/useGetCourseSection';
+import ButtonAtom from '../../../../atoms/button/button.attom';
+import CourseContentSkeleton from '../../../../atoms/course-content skeleton/courseContentSkeleton';
+import HeadingAtom from '../../../../atoms/heading/heading.atom';
+import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
+import CourseContentMolecules from '../../../../molecules/course-content/courseContent';
+import CreateAssignmentMolecules from '../../../../molecules/course-content/create-assignment/createAssignment';
+import CreateQuizModal from '../../../../molecules/course-content/create-quiz/createQuiz';
+import UpdateCourseContentMolecules from '../../../../molecules/course-content/update-course-content/updatCourseContentModal';
+import UpdateQuizModal from '../../../../molecules/course-content/update-quiz/updateQuiz';
+import Quiz from '../../../../molecules/quiz-submision/quizSubmission';
+import './courseContent.scss';
 // import {EditOutlined} from "@ant-design/icons"
-import { pdfjs } from "react-pdf";
+import { pdfjs } from 'react-pdf';
 
 const CourseContent = () => {
   const { courseId } = useParams();
@@ -26,20 +25,20 @@ const CourseContent = () => {
 
   const items = [
     {
-      key: "1",
-      label: "Create Content",
+      key: '1',
+      label: 'Create Content',
     },
     {
-      key: "2",
-      label: "Create Assignment",
+      key: '2',
+      label: 'Create Assignment',
     },
     {
-      key: "3",
-      label: "Create Quiz",
+      key: '3',
+      label: 'Create Quiz',
     },
   ];
 
-  const [videoUrl, setVideoUrl] = React.useState("");
+  const [videoUrl, setVideoUrl] = React.useState('');
   const [isVideoModalVisible, setIsVideoModalVisible] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const handleOpenVideoModal = (url: string) => {
@@ -52,9 +51,9 @@ const CourseContent = () => {
     setIsVideoModalVisible(false);
     setIsPlaying(false);
   };
-  const [videoPlayerClassName, setVideoPlayerClassName] = useState("");
+  const [videoPlayerClassName, setVideoPlayerClassName] = useState('');
   useEffect(() => {
-    setVideoPlayerClassName("react-player");
+    setVideoPlayerClassName('react-player');
   }, [isVideoModalVisible]);
   const [openAssignmentModal, setOpenAssignmentModal] = React.useState(false);
   const [openQuizModal, setOpenQuizModal] = React.useState(false);
@@ -69,11 +68,11 @@ const CourseContent = () => {
   const handleOpenQuizModal = () => {
     setOpenQuizModal(true);
   };
-  const [quizData, setQuizData] = useState("");
+  const [quizData, setQuizData] = useState('');
   const [allQuizData, setAllQuizData] = useState({});
   const handleCloseQuizModal = () => {
     setOpenQuizModal(false);
-    setQuizData("");
+    setQuizData('');
   };
 
   // const handleOpenUpdateQuizModal()
@@ -90,7 +89,7 @@ const CourseContent = () => {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   }, []);
   const pdfURL =
-    "https://cors-anywhere.herokuapp.com/https://mern-pallab-bucket.s3.eu-west-3.amazonaws.com/course/IntroductiontoreactJS/introductiontoC/introductiontoC/1700633564166-SRS_Sample_2.pdf";
+    'https://cors-anywhere.herokuapp.com/https://mern-pallab-bucket.s3.eu-west-3.amazonaws.com/course/IntroductiontoreactJS/introductiontoC/introductiontoC/1700633564166-SRS_Sample_2.pdf';
   const accordionItems = data?.data?.map((section: any) => {
     return {
       key: section._id,
@@ -99,9 +98,26 @@ const CourseContent = () => {
         <div>
           <h3>Section Content</h3>
           {section.sectionContent.map((content: any) => (
-            <Card className="mt-20" key={content._id}>
-              <div className="section_content_title_di">
+            <div
+              className="instructor_section_content_flex mt-30"
+              key={content._id}
+            >
+              <div className="instructor_section_content_flex_left">
+                <FileOutlined />
                 <HeadingAtom level={5} text={content.contentTitle} />
+              </div>
+              <div className="instructor_section_content_flex_right">
+                {content.contentLength > 0 ? (
+                  <ButtonAtom
+                    handleButtonClick={() =>
+                      handleOpenVideoModal(content.contentUrl)
+                    }
+                    type="link"
+                    text="Preview"
+                  />
+                ) : (
+                  <Link to={content.contentUrl}>Preview</Link>
+                )}
                 <EditOutlined
                   className="cursor-pointer"
                   onClick={() => {
@@ -110,52 +126,32 @@ const CourseContent = () => {
                   }}
                 />
               </div>
-
-              {content.contentLength > 0 ? (
-                <ButtonAtom
-                  handleButtonClick={() =>
-                    handleOpenVideoModal(content.contentUrl)
-                  }
-                  type="link"
-                  text="Preview"
-                />
-              ) : (
-                <Link to={content.contentUrl}>Preview</Link>
-              )}
-              {content?.contentLength > 0 && (
-                <ParagraphAtom
-                  text={`Length: ${content.contentLength} secs`}
-                ></ParagraphAtom>
-              )}
-            </Card>
+            </div>
           ))}
           {section?.assignment && (
-            <Card className="mt-20">
-              <HeadingAtom text="Assignment" level={2}></HeadingAtom>
-              <HeadingAtom
-                level={3}
-                text={section?.assignment?.title}
-              ></HeadingAtom>
-              <ParagraphAtom
-                text={`Description: ${section?.assignment?.description}`}
-                className="text-18"
-              ></ParagraphAtom>
-              <ParagraphAtom
-                text={`Instructions: ${section?.assignment?.instructions}`}
-              ></ParagraphAtom>
-              <HeadingAtom
-                level={4}
-                text={`Assignment Point: ${section?.assignment?.point}`}
-              ></HeadingAtom>
-              <Link to={section?.assignment?.assignmentFileURL}>
-                View Assignment file
-              </Link>
-              {/* <div>
-                <Document file={pdfURL}>
-                  <Page pageNumber={1} />
-                </Document>
-              </div> */}
-            </Card>
+            <div className="mt-20 instructor_section_content_flex">
+              <div className="instructor_section_content_flex_left">
+                <FilePdfOutlined />
+                <HeadingAtom
+                  level={5}
+                  text={section?.assignment?.title}
+                ></HeadingAtom>
+                <HeadingAtom
+                  level={5}
+                  text={`Point: ${section?.assignment?.point}`}
+                ></HeadingAtom>
+              </div>
+              <div className="instructor_section_content_flex_right">
+                <Link to={section?.assignment?.assignmentFileURL}>Preview</Link>
+                <EditOutlined
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setHandleOpenEditContentModal(true);
+                    // setContentData(content);
+                  }}
+                />
+              </div>
+            </div>
           )}
           <div className="mt-20">
             {section?.quiz && (
@@ -202,12 +198,12 @@ const CourseContent = () => {
     };
   });
 
-  const onMenuClick: MenuProps["onClick"] = (e) => {
-    if (e.key === "1") {
+  const onMenuClick: MenuProps['onClick'] = (e) => {
+    if (e.key === '1') {
       handleOpenModal();
-    } else if (e.key === "2") {
+    } else if (e.key === '2') {
       handleOpenAssignmentModal();
-    } else if (e.key === "3") {
+    } else if (e.key === '3') {
       handleOpenQuizModal();
     }
   };

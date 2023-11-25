@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Modal, Space, message } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import QuizApi from '../../../../api/QuizApi';
 import QuizFormSchema from '../../../../schema/course/quizSchema';
 import AlertAtom from '../../../atoms/alert/alertAtom';
@@ -38,9 +38,14 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
     formState: { errors },
     watch,
     setValue,
+    unregister,
   } = useForm({
     mode: 'onChange',
     resolver: zodResolver(QuizFormSchema),
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'questions',
   });
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
 
@@ -96,6 +101,10 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
       setLoading(false);
     }
   };
+  const deleteQuestion = (index: number) => {
+    remove(index);
+    setNumberOfQuestions(numberOfQuestions - 1);
+  };
 
   return (
     <Modal open={open} onCancel={onClose} footer={null}>
@@ -124,39 +133,92 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
             )}
           </div>
           {[...Array(numberOfQuestions)].map((_, index) => (
-            <div key={index}>
-              <div className="input-group mb-20">
-                <ParagraphAtom text={'Enter the question'} />
+            <>
+              <div key={index}>
+                <div className="input-group mb-20">
+                  <ParagraphAtom text={'Enter the question'} />
+                  <Controller
+                    name={`questions[${index}].question`}
+                    control={control}
+                    render={({ field }) => (
+                      <TextInputAtom
+                        placeholder={`Question ${index + 1}`}
+                        size="large"
+                        fieldValues={field}
+                      />
+                    )}
+                  />
+                  {errors.questions &&
+                    errors?.questions[index] &&
+                    errors?.questions[index]?.question && (
+                      <AlertAtom
+                        message={errors?.questions[index]?.question.message}
+                        type="error"
+                        className="mt-10"
+                      />
+                    )}
+                </div>
+                {[...Array(4)].map((_, optionIndex) => (
+                  <div className="input-group mb-20">
+                    {/* <ParagraphAtom text={'Enter the question'} /> */}
+                    <Controller
+                      name={`questions[${index}].options[${optionIndex}]`}
+                      control={control}
+                      render={({ field }) => (
+                        <TextInputAtom
+                          placeholder={`Option ${optionIndex + 1}`}
+                          size="large"
+                          fieldValues={field}
+                        />
+                      )}
+                    />
+                    {errors.questions &&
+                      errors.questions[index] &&
+                      errors.questions[index].options &&
+                      errors.questions[index].options[optionIndex] && (
+                        <AlertAtom
+                          message={
+                            errors.questions[index].options[optionIndex].message
+                          }
+                          type="error"
+                          className="mt-10"
+                        />
+                      )}
+                  </div>
+                ))}
                 <Controller
-                  name={`questions[${index}].question`}
+                  name={`questions[${index}].correctAnswer`}
                   control={control}
                   render={({ field }) => (
-                    <TextInputAtom
-                      placeholder={`Question ${index + 1}`}
-                      size="large"
+                    <SelectField
+                      values={[
+                        { label: 'Option 1', value: '1' },
+                        { label: 'Option 2', value: '2' },
+                        { label: 'Option 3', value: '3' },
+                        { label: 'Option 4', value: '4' },
+                      ]}
                       fieldValues={field}
-                    />
+                      size="large"
+                      placeholder="Select the right answer"
+                    ></SelectField>
                   )}
                 />
                 {errors.questions &&
-                  errors?.questions[index] &&
-                  errors?.questions[index]?.question && (
+                  errors.questions[index] &&
+                  errors.questions[index].correctAnswer && (
                     <AlertAtom
-                      message={errors?.questions[index]?.question.message}
+                      message={errors.questions[index].correctAnswer.message}
                       type="error"
                       className="mt-10"
                     />
                   )}
-              </div>
-              {[...Array(4)].map((_, optionIndex) => (
                 <div className="input-group mb-20">
-                  {/* <ParagraphAtom text={'Enter the question'} /> */}
                   <Controller
-                    name={`questions[${index}].options[${optionIndex}]`}
+                    name={`questions[${index}].point`}
                     control={control}
                     render={({ field }) => (
                       <TextInputAtom
-                        placeholder={`Option ${optionIndex + 1}`}
+                        placeholder={`Points`}
                         size="large"
                         fieldValues={field}
                       />
@@ -164,67 +226,23 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
                   />
                   {errors.questions &&
                     errors.questions[index] &&
-                    errors.questions[index].options &&
-                    errors.questions[index].options[optionIndex] && (
+                    errors.questions[index].point && (
                       <AlertAtom
-                        message={
-                          errors.questions[index].options[optionIndex].message
-                        }
+                        message={errors.questions[index].point.message}
                         type="error"
                         className="mt-10"
                       />
                     )}
                 </div>
-              ))}
-              <Controller
-                name={`questions[${index}].correctAnswer`}
-                control={control}
-                render={({ field }) => (
-                  <SelectField
-                    values={[
-                      { label: 'Option 1', value: '1' },
-                      { label: 'Option 2', value: '2' },
-                      { label: 'Option 3', value: '3' },
-                      { label: 'Option 4', value: '4' },
-                    ]}
-                    fieldValues={field}
-                    size="large"
-                    placeholder="Select the right answer"
-                  ></SelectField>
-                )}
-              />
-              {errors.questions &&
-                errors.questions[index] &&
-                errors.questions[index].correctAnswer && (
-                  <AlertAtom
-                    message={errors.questions[index].correctAnswer.message}
-                    type="error"
-                    className="mt-10"
-                  />
-                )}
-              <div className="input-group mb-20">
-                <Controller
-                  name={`questions[${index}].point`}
-                  control={control}
-                  render={({ field }) => (
-                    <TextInputAtom
-                      placeholder={`Points`}
-                      size="large"
-                      fieldValues={field}
-                    />
-                  )}
-                />
-                {errors.questions &&
-                  errors.questions[index] &&
-                  errors.questions[index].point && (
-                    <AlertAtom
-                      message={errors.questions[index].point.message}
-                      type="error"
-                      className="mt-10"
-                    />
-                  )}
               </div>
-            </div>
+
+              <ButtonAtom
+                text={'Delete Question'}
+                size="large"
+                dangerBtn
+                handleButtonClick={() => deleteQuestion(index)}
+              />
+            </>
           ))}
           <div className="input-group">
             <ParagraphAtom text="* Select the section. Max 1 assignment under a section" />

@@ -11,3 +11,24 @@
 .course_content_quiz_div {
   display: flex;
 }
+.instructor_section_content_flex {
+  display: flex;
+  align-items: center;
+  .ant-typography {
+    margin-bottom: 0rem;
+    margin-top: 0rem !important;
+  }
+  justify-content: space-between;
+}
+.instructor_section_content_flex_right {
+  display: flex;
+  gap: 0.8rem;
+}
+.instructor_section_content_flex_left {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  .typography + h5.ant-typography {
+    margin-top: 0rem !important;
+  }
+}
