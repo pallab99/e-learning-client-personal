@@ -1,5 +1,5 @@
 import { HeartOutlined } from '@ant-design/icons';
-import { Rate, message } from 'antd';
+import { Progress, Rate, message } from 'antd';
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useMediaQuery } from 'react-responsive';
@@ -74,6 +74,12 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   };
   const isStudent = useAppSelector((state) => state.auth.userData.rank);
   const [openQNAModal, setOPENQNAModal] = useState(false);
+  const userProgress = useAppSelector((state) => state?.userProgress.progress);
+  const showUserProgress = useAppSelector(
+    (state) => state?.userProgress.boughtTheCourse
+  );
+  console.log(showUserProgress);
+
   return (
     <main className="paid-course-landing-page__container ">
       <div className="dark-background">
@@ -106,6 +112,15 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
                   courseBasicInfo && courseBasicInfo?.data?.instructors[0]?.name
                 }`}
               ></ParagraphAtom>
+              {/* {userData && userData?.rank === STUDENT && showUserProgress && (
+                <Progress
+                  strokeLinecap="butt"
+                  percent={Number(userProgress.toFixed(2))}
+                  style={{ color: 'white', borderRadius: '20px' }}
+                  size={[300, 20]}
+                  // trailColor="purple"
+                />
+              )} */}
             </div>
           </div>
         </div>
@@ -129,6 +144,14 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
                   className="mt-20"
                   handleButtonClick={() => setOPENQNAModal(true)}
                 ></ButtonAtom>
+                <div className="student-progress">
+                  <Progress
+                    strokeLinecap="butt"
+                    percent={Number(userProgress.toFixed(2))}
+                    style={{ color: 'white', borderRadius: '20px' }}
+                    size={[300, 20]}
+                  />
+                </div>
                 <QnAModal
                   openModal={openQNAModal}
                   closeModal={() => setOPENQNAModal(false)}

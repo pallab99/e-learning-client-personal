@@ -1,5 +1,10 @@
-import { EditOutlined, FileOutlined, FilePdfOutlined } from '@ant-design/icons';
-import { Card, Collapse, Dropdown, Empty, MenuProps, Modal } from 'antd';
+import {
+  EditOutlined,
+  FileOutlined,
+  FilePdfOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
+import { Collapse, Dropdown, Empty, MenuProps, Modal, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { Link, useParams } from 'react-router-dom';
@@ -7,7 +12,6 @@ import useGetCourseSection from '../../../../../hooks/course-section/useGetCours
 import ButtonAtom from '../../../../atoms/button/button.attom';
 import CourseContentSkeleton from '../../../../atoms/course-content skeleton/courseContentSkeleton';
 import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../../atoms/paragraph/paragraph.atom';
 import CourseContentMolecules from '../../../../molecules/course-content/courseContent';
 import CreateAssignmentMolecules from '../../../../molecules/course-content/create-assignment/createAssignment';
 import CreateQuizModal from '../../../../molecules/course-content/create-quiz/createQuiz';
@@ -17,6 +21,7 @@ import Quiz from '../../../../molecules/quiz-submision/quizSubmission';
 import './courseContent.scss';
 // import {EditOutlined} from "@ant-design/icons"
 import { pdfjs } from 'react-pdf';
+import useDeleteCourseContent from '../../../../../hooks/course-content/useDeleteContent';
 
 const CourseContent = () => {
   const { courseId } = useParams();
@@ -88,8 +93,14 @@ const CourseContent = () => {
   useEffect(() => {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   }, []);
-  const pdfURL =
-    'https://cors-anywhere.herokuapp.com/https://mern-pallab-bucket.s3.eu-west-3.amazonaws.com/course/IntroductiontoreactJS/introductiontoC/introductiontoC/1700633564166-SRS_Sample_2.pdf';
+  const { deleteContentLoading, deleteCourseContent } =
+    useDeleteCourseContent();
+  const handleDeleteContent = async (contentId: string) => {
+    await deleteCourseContent(contentId);
+    if (!deleteContentLoading) {
+      setRecallApi(Math.random());
+    }
+  };
   const accordionItems = data?.data?.map((section: any) => {
     return {
       key: section._id,
@@ -125,6 +136,17 @@ const CourseContent = () => {
                     setContentData(content);
                   }}
                 />
+                <Popconfirm
+                  title="Title"
+                  description="Open Popconfirm with Promise"
+                  onConfirm={() => handleDeleteContent(content?._id)}
+                  onOpenChange={() => console.log('open change')}
+                >
+                  <DeleteOutlined
+                    className="cursor-pointer"
+                    style={{ color: 'red' }}
+                  />
+                </Popconfirm>
               </div>
             </div>
           ))}

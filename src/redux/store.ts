@@ -20,6 +20,7 @@ import fileUploadProgressSlice from './slices/fileUploadProgressSlice';
 import instructorSearch from './slices/instructorSearch';
 import wishListSlice from './slices/wishListSlice';
 import courseSlice from './slices/courseSlice';
+import userProgressSlice from './slices/userProgressSlice';
 
 const persistConfig = {
   key: 'root',
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   uploadProgress: fileUploadProgressSlice,
   instructor: instructorSearch,
   course: courseSlice,
+  userProgress: userProgressSlice,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

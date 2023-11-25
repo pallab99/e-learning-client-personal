@@ -113,3 +113,20 @@ body html {
   justify-content: center;
   gap: 1rem;
 }
+
+.ant-progress-line {
+  width: 95%;
+}
+.ant-progress-inner {
+  border-radius: 20px !important;
+  // border-color: white !important;
+}
+.ant-progress.ant-progress-show-info .ant-progress-outer {
+  width: 99% !important;
+  margin-top: 1rem;
+}
+@media only screen and (max-width: 768px) {
+  .ant-progress-text {
+    color: white !important;
+  }
+}
