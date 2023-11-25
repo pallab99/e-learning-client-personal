@@ -1,13 +1,13 @@
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import CourseApi from '../../api/CourseApi';
-import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { updateUerBoughtTheCourse } from '../../redux/slices/userProgressSlice';
+import { useAppSelector } from '../../redux/store';
 
 const useGetStudentBoughtTheCourse = (courseId: string, recallApi?: number) => {
   const [studentBoughtTheCourseData, setStudentBoughtTheCourseData] =
     useState<object>({});
-  const [loading, setLoading] = useState(false);
+  const [userBoughtTheCourseLoader, setUserBoughtTheCourseLoader] =
+    useState(false);
   const [error, setError] = useState();
   const userLoggedIn = Cookies.get('accessToken');
   const userData = useAppSelector((state) => state.auth.userData);
@@ -16,29 +16,20 @@ const useGetStudentBoughtTheCourse = (courseId: string, recallApi?: number) => {
       studentBoughtTheCourse(courseId);
     }
   }, [courseId, recallApi, userLoggedIn, userData]);
-  const dispatch = useAppDispatch();
   const studentBoughtTheCourse = async (courseId: string) => {
     try {
-      setLoading(true);
+      setUserBoughtTheCourseLoader(true);
       const response = await CourseApi.studentBoughtTheCourse(courseId);
       setStudentBoughtTheCourseData(response?.data?.data);
-      setLoading(false);
-      console.log(response?.data?.data);
-
-      if (response?.data?.data) {
-        dispatch(updateUerBoughtTheCourse(true));
-      } else {
-        dispatch(updateUerBoughtTheCourse(false));
-      }
+      setUserBoughtTheCourseLoader(false);
     } catch (error: any) {
-      setLoading(false);
       setError(error);
     } finally {
-      setLoading(false);
+      setUserBoughtTheCourseLoader(false);
     }
   };
 
-  return { studentBoughtTheCourseData, loading, error };
+  return { studentBoughtTheCourseData, userBoughtTheCourseLoader, error };
 };
 
 export default useGetStudentBoughtTheCourse;

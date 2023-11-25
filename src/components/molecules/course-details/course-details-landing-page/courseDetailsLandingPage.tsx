@@ -1,5 +1,5 @@
 import { HeartOutlined } from '@ant-design/icons';
-import { Progress, Rate, message } from 'antd';
+import { Progress, Rate, Skeleton, message } from 'antd';
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useMediaQuery } from 'react-responsive';
@@ -26,9 +26,8 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const { courseId } = useParams();
   const { courseAvailableInUserWishlist, error } =
     useGetCourseAvailableInWishlistByUser(courseId as string);
-  const { studentBoughtTheCourseData } = useGetStudentBoughtTheCourse(
-    courseId as string
-  );
+  const { studentBoughtTheCourseData, userBoughtTheCourseLoader } =
+    useGetStudentBoughtTheCourse(courseId as string);
   console.log({ studentBoughtTheCourseData });
   const userLoggedIn = useAppSelector((state) => state.auth.userData);
   const navigate = useNavigate();
@@ -112,15 +111,6 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
                   courseBasicInfo && courseBasicInfo?.data?.instructors[0]?.name
                 }`}
               ></ParagraphAtom>
-              {/* {userData && userData?.rank === STUDENT && showUserProgress && (
-                <Progress
-                  strokeLinecap="butt"
-                  percent={Number(userProgress.toFixed(2))}
-                  style={{ color: 'white', borderRadius: '20px' }}
-                  size={[300, 20]}
-                  // trailColor="purple"
-                />
-              )} */}
             </div>
           </div>
         </div>
@@ -132,7 +122,11 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
               config={{ file: { attributes: { controlsList: 'nodownload' } } }}
               onContextMenu={(e) => e.preventDefault()}
             />
-            {Object.keys(studentBoughtTheCourseData).length > 0 ? (
+            {userBoughtTheCourseLoader ? (
+              <div className="course_details_button_skeleton mt-20">
+                <Skeleton.Button active />
+              </div>
+            ) : Object.keys(studentBoughtTheCourseData).length > 0 ? (
               <div
                 style={{ paddingLeft: '2%', paddingRight: '2%', width: '100%' }}
               >

@@ -72,11 +72,21 @@
   }
   .course-landing-page_sidebar-container_main_content {
     background-color: #2c2f31;
-   
   }
   .course-landing-page_sidebar-container_main_content_btn-group {
     padding-left: 0rem;
     gap: 1.6rem;
     padding-right: 0rem;
+  }
+}
+.course_details_button_skeleton {
+  width: 100%;
+  padding-left: 2%;
+  padding-right: 2%;
+  .ant-skeleton.ant-skeleton-element .ant-skeleton-button {
+    width: 100% !important;
+  }
+  .ant-skeleton.ant-skeleton-element {
+    width: 100% !important;
   }
 }
