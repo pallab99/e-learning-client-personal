@@ -5,11 +5,17 @@ import { useAppSelector } from '../../../redux/store';
 
 const AdminProtectedRoutePage = () => {
   const token = Cookies.get('accessToken');
+  console.log('token', token);
+
   const admin = useAppSelector((state) => state.auth.userData.rank);
-  if (!token) {
-    return <Navigate to="/admin/log-in" />;
+  if (token && token?.length <= 0) {
+    console.log('admin token');
+
+    return <Navigate to="/log-in" />;
   }
-  return admin === ADMIN ? <Outlet /> : <Navigate to="/unauthorized" />;
+  console.log('admin logout');
+
+  return token && admin === ADMIN ? <Outlet /> : <Navigate to="/log-in" />;
 };
 
 export default AdminProtectedRoutePage;

@@ -26,6 +26,8 @@ import QuizSubmissionForStudentPage from '../components/pages/student/quiz-submi
 import UnauthorizedPage from '../components/pages/unauthorized/unauthorized';
 import AdminProtectedRoutePage from '../components/pages/adminProtectedRoute/adminProtectedRoute';
 import StudentProtectedRoutePage from '../components/pages/studentProtectedRoute/studentPrtectedRoute';
+import AdminSignInFormOrganism from '../components/organism/admin/sign-in-form/signInForm.organism';
+import AdminSignInPage from '../components/pages/admin/admin-sign-in/signIn.pages';
 
 const AllRoutes = () => {
   return (
@@ -59,7 +61,7 @@ const AllRoutes = () => {
           path="/admin/log-in"
           element={
             <HeaderFooterLayout>
-              <SignInPage />
+              <AdminSignInPage />
             </HeaderFooterLayout>
           }
         />

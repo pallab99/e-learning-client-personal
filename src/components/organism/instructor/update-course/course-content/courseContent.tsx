@@ -113,6 +113,8 @@ const CourseContent = () => {
       setRecallApi(Math.random());
     }
   };
+  const [openAssignmentPreview, setOpenAssignmnetPreview] = useState(false);
+  const [assignmentFile, setAssignmentFile] = useState('');
   const accordionItems = data?.data?.map((section: any) => {
     return {
       key: section._id,
@@ -176,7 +178,29 @@ const CourseContent = () => {
                 ></HeadingAtom>
               </div>
               <div className="instructor_section_content_flex_right">
-                <Link to={section?.assignment?.assignmentFileURL}>Preview</Link>
+                {/* <Link to={section?.assignment?.assignmentFileURL}>Preview</Link> */}
+                <ButtonAtom
+                  text="Preview"
+                  type="text"
+                  handleButtonClick={() => {
+                    setOpenAssignmnetPreview(true);
+                    setAssignmentFile(section?.assignment?.assignmentFileURL);
+                  }}
+                  className="instructor_preview_assignment_btn"
+                ></ButtonAtom>
+                <Modal
+                  open={openAssignmentPreview}
+                  onCancel={() => setOpenAssignmnetPreview(false)}
+                  footer={null}
+                >
+                  <div className="assignment_iframe_div mt-40">
+                    <iframe
+                      src={assignmentFile}
+                      height={600}
+                      width={'100%'}
+                    ></iframe>
+                  </div>
+                </Modal>
                 <EditOutlined
                   className="cursor-pointer"
                   onClick={() => {
