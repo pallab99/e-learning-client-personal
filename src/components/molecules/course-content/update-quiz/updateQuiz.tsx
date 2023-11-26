@@ -12,6 +12,7 @@ import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
 import { SelectField } from '../../../atoms/select-filed/selectField';
 import TextInputAtom from '../../../atoms/text-input/textInput.atom';
 import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
+import UpdateQuizFormSchema from '../../../../schema/course/updateQuizSchema';
 
 interface ICreateQuizModalProps {
   courseId?: string | undefined;
@@ -41,7 +42,7 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
     setValue,
   } = useForm({
     mode: 'onChange',
-    resolver: zodResolver(QuizFormSchema),
+    resolver: zodResolver(UpdateQuizFormSchema),
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -244,28 +245,7 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
               />
             </>
           ))}
-          <div className="input-group">
-            <ParagraphAtom text="* Select the section. Max 1 assignment under a section" />
-            <Controller
-              name="courseSection"
-              control={control}
-              render={({ field }) => (
-                <SelectField
-                  values={sectionData}
-                  placeholder="Select the section"
-                  fieldValues={field}
-                  size="large"
-                />
-              )}
-            />
-            {errors?.courseSection && (
-              <AlertAtom
-                message={errors.courseSection.message}
-                type="error"
-                className="mt-10"
-              />
-            )}
-          </div>
+
           <ButtonAtom
             text={'Add Another question'}
             size="large"
