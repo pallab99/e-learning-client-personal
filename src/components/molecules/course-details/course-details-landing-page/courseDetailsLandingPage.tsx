@@ -123,13 +123,22 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
         </div>
         <div className="course-landing-page_sidebar-container">
           <div className="course-landing-page_sidebar-container_main_content">
-            <ReactPlayer
-              className="react_player_course_landing_page"
-              url={courseBasicInfo?.data?.demoVideo}
-              controls
-              config={{ file: { attributes: { controlsList: 'nodownload' } } }}
-              onContextMenu={(e) => e.preventDefault()}
-            />
+            {courseBasicInfo?.data?.demoVideo ? (
+              <ReactPlayer
+                className="react_player_course_landing_page"
+                url={courseBasicInfo?.data?.demoVideo}
+                controls
+                config={{
+                  file: { attributes: { controlsList: 'nodownload' } },
+                }}
+                onContextMenu={(e) => e.preventDefault()}
+              />
+            ) : (
+              <img
+                style={{ height: '100%' }}
+                src="https://s.udemycdn.com/instructor/dashboard/engaging-course-2x.jpg"
+              ></img>
+            )}
             {userBoughtTheCourseLoader ? (
               <div className="course_details_button_skeleton mt-20">
                 <Skeleton.Button active />

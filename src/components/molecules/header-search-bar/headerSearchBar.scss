@@ -1,5 +1,5 @@
 .desktop-header-searchBar-div {
-  width: 60%;
+  width: 70%;
   border-color: black;
   outline: none;
   .ant-input ant-input-lg {
@@ -52,6 +52,11 @@
   border-start-end-radius: 20px !important;
   border-end-end-radius: 20px !important;
 }
-.custom-auto-complete .ant-select-auto-complete {
-  border-radius: 20px !important;
+.custom-auto-complete {
+  .ant-select-single.ant-select-lg .ant-select-selector {
+    border-radius: 20px !important;
+  }
+  .ant-select-selection-search-input {
+    border-radius: 20px !important;
+  }
 }
