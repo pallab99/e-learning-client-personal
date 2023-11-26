@@ -124,6 +124,7 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
         <div className="course-landing-page_sidebar-container">
           <div className="course-landing-page_sidebar-container_main_content">
             <ReactPlayer
+              className="react_player_course_landing_page"
               url={courseBasicInfo?.data?.demoVideo}
               controls
               config={{ file: { attributes: { controlsList: 'nodownload' } } }}

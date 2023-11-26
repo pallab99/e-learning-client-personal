@@ -67,8 +67,8 @@
   .dark-background {
     display: flex;
     flex-direction: column-reverse;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .course-landing-page_sidebar-container_main_content {
     background-color: #2c2f31;
@@ -89,4 +89,8 @@
   .ant-skeleton.ant-skeleton-element {
     width: 100% !important;
   }
+}
+.react_player_course_landing_page {
+  height: 100% !important;
+  width: 100% !important;
 }
