@@ -24,6 +24,7 @@ const HeaderSearchBarMolecules = () => {
   return (
     <div className="desktop-header-searchBar-div">
       <AutoComplete
+        id="top_search_bar"
         style={{ width: '100%', borderRadius: '20px' }}
         placeholder="Search for anything"
         onSearch={handleSearch}

@@ -1,6 +1,6 @@
-  // .pageWrapper {
-  //   color: red;
-  // }
+// .pageWrapper {
+//   color: red;
+// }
 
 .Banner {
   max-width: 1300px;
@@ -21,4 +21,9 @@
     margin-right: 2.5rem;
     margin-left: 2.5rem;
   }
+}
+.tour_button_div {
+  display: flex;
+  margin-top: 2rem;
+  justify-content: center;
 }

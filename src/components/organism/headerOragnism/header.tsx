@@ -54,7 +54,11 @@ const HeaderOrganism = () => {
             <HeaderSearchBarMolecules />
           )}
           {student === STUDENT && (
-            <Link to="/my-learning" style={{ textDecoration: 'none' }}>
+            <Link
+              to="/my-learning"
+              style={{ textDecoration: 'none' }}
+              id="my_learning_link"
+            >
               <ParagraphAtom
                 text="My Learning"
                 className="text-18 cursor-pointer"
@@ -62,11 +66,13 @@ const HeaderOrganism = () => {
             </Link>
           )}
           {student === STUDENT && (
-            <IconAtom
-              type="heart"
-              className="text-18 cursor-pointer"
-              handleOnClick={handleOpenWishlistDrawer}
-            ></IconAtom>
+            <div id="my_wishlist">
+              <IconAtom
+                type="heart"
+                className="text-18 cursor-pointer"
+                handleOnClick={handleOpenWishlistDrawer}
+              ></IconAtom>
+            </div>
           )}
 
           <WishlistDrawerMolecules
@@ -79,7 +85,7 @@ const HeaderOrganism = () => {
             cartLoading={loading}
           />
           {student === STUDENT && (
-            <div className="cart-icon-count">
+            <div className="cart-icon-count" id="my_cart">
               <IconAtom
                 type="cart"
                 className="text-18 cursor-pointer cart-icon"

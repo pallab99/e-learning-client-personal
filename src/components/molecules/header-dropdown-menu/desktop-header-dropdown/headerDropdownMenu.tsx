@@ -73,18 +73,20 @@ const DesktopHeaderDropdownMenuMolecules = () => {
   return (
     <>
       {userData.accessToken && (
-        <Dropdown
-          menu={{ items }}
-          open={visible}
-          onOpenChange={handleVisibleChange}
-          trigger={['hover']}
-        >
-          <Avatar
-            size={30}
-            icon={<UserOutlined />}
-            className="cursor-pointer"
-          />
-        </Dropdown>
+        <div id="my_profile">
+          <Dropdown
+            menu={{ items }}
+            open={visible}
+            onOpenChange={handleVisibleChange}
+            trigger={['hover']}
+          >
+            <Avatar
+              size={30}
+              icon={<UserOutlined />}
+              className="cursor-pointer"
+            />
+          </Dropdown>
+        </div>
       )}
     </>
   );

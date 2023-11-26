@@ -62,7 +62,7 @@ const CourseCardMolecules = () => {
   return (
     <div className="CardContainer cursor-pointer">
       <h2>What to learn next</h2>
-      <div className="select-field-course">
+      <div className="select-field-course" id="course_filter">
         <SortSelect
           options={categoryOption}
           placeholder="Select Category"
@@ -88,7 +88,7 @@ const CourseCardMolecules = () => {
           {!data?.data?.courses?.length ? (
             <Empty />
           ) : (
-            <div className="CardContent">
+            <div className="CardContent" id="course_card">
               {data &&
                 data?.data?.courses?.map((course, index) => (
                   <div
@@ -134,7 +134,7 @@ const CourseCardMolecules = () => {
           )}
         </>
       )}
-      <div className="pagination-div">
+      <div className="pagination-div" id="course_pagination">
         <Pagination
           className="mt-40"
           defaultCurrent={1}

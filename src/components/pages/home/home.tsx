@@ -1,13 +1,7 @@
-// import { searchTerm } from '../../../signals/course';
-import { useAppSelector } from '../../../redux/store';
-import Brand from '../../molecules/brand-card/brandCard';
 import CourseCardMolecules from '../../molecules/course-card/courseCard';
-import CourseRecommendation from '../../molecules/course-card/recomendation';
 import './home.scss';
-
+import OnboardingSteps from './../../../components/user-onbording/userOnbording';
 const HomePage = () => {
-  const courseSearchTerm = useAppSelector((state) => state.course.searchTerm);
-
   return (
     <div className="pageWrapper">
       <div className="Banner">
@@ -21,6 +15,10 @@ const HomePage = () => {
           />
         </div>
       </div>
+      <div className="tour_button_div">
+        <OnboardingSteps />
+      </div>
+
       <CourseCardMolecules />
     </div>
   );
