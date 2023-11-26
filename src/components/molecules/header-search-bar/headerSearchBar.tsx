@@ -1,7 +1,7 @@
 import './headerSearchBar.scss';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { debounce } from 'lodash';
-import { useAppDispatch, useAppSelector } from '../../../redux/store';
+import { useAppDispatch } from '../../../redux/store';
 import { courseSearchTerm } from '../../../redux/slices/courseSlice';
 import { AutoComplete, Image } from 'antd';
 import { Link } from 'react-router-dom';
@@ -11,25 +11,28 @@ import InstructorCourseListSkeletonAtom from '../../atoms/instructorCourseListSk
 
 const HeaderSearchBarMolecules = () => {
   const dispatch = useAppDispatch();
+  const [searchTerm, setSearchTerm] = useState('');
   const debouncedSetSearchTerm = useCallback(
     debounce((value: string) => {
-      dispatch(courseSearchTerm(value));
+      setSearchTerm(value);
     }, 1000),
-    [dispatch]
+    []
   );
   const handleSearch = (e: any) => {
     debouncedSetSearchTerm(e);
   };
-  const { data, loading } = useGetAutoCompleteSearch();
+  const { data, loading } = useGetAutoCompleteSearch(searchTerm);
 
   return (
     <div className="desktop-header-searchBar-div">
       <AutoComplete
-        style={{ width: '100%' }}
-        placeholder="Search here"
+        style={{ width: '100%', borderRadius: '20px' }}
+        placeholder="Search for anything"
         onSearch={handleSearch}
         listHeight={500}
         allowClear
+        className="custom-auto-complete"
+        size="large"
       >
         {data
           ? data?.map((option: any, index: any) => (

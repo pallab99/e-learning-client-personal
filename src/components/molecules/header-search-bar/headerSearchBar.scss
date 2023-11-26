@@ -37,6 +37,9 @@
   .ant-select {
     width: 100% !important;
   }
+  .ant-select-single .ant-select-selecto {
+    border-radius: 20px !important;
+  }
 }
 .desktop-header-searchBar .ant-input {
   border-radius: 20px;
@@ -48,4 +51,7 @@
   border-radius: 20px;
   border-start-end-radius: 20px !important;
   border-end-end-radius: 20px !important;
+}
+.custom-auto-complete .ant-select-auto-complete {
+  border-radius: 20px !important;
 }

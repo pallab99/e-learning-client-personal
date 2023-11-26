@@ -3,42 +3,26 @@ import { useEffect, useState } from 'react';
 import CourseApi from '../../api/CourseApi';
 import { useAppSelector } from '../../redux/store';
 
-const useGetAutoCompleteSearch = () => {
+const useGetAutoCompleteSearch = (courseSearchTerm: string) => {
   const [data, setData] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
 
-  const courseSearchTerm = useAppSelector((state) => state.course.searchTerm);
-  const courseCurrentPage = useAppSelector((state) => state.course.page);
-  const perPageLimit = useAppSelector((state) => state.course.limit);
+  // const courseSearchTerm = useAppSelector((state) => state.course.searchTerm);
+  console.log('search', courseSearchTerm);
+
   useEffect(() => {
     if (courseSearchTerm) {
-      getAllCourse(
-        courseSearchTerm as string,
-        courseCurrentPage as number,
-        perPageLimit as number
-      );
+      getAllCourse(courseSearchTerm as string);
     }
-  }, [courseSearchTerm, courseCurrentPage, perPageLimit]);
+  }, [courseSearchTerm]);
 
-  const getAllCourse = async (
-    courseSearchTerm: string,
-    courseCurrentPage: number,
-    perPageLimit: number
-  ) => {
+  const getAllCourse = async (courseSearchTerm: string) => {
     try {
       setLoading(true);
-      const response = await CourseApi.autoCompleteSearch(
-        courseSearchTerm,
-        courseCurrentPage,
-        perPageLimit
-      );
+      const response = await CourseApi.autoCompleteSearch(courseSearchTerm);
       console.log(response?.data);
-
       setData(response?.data?.data?.courses);
-
-      // dispatch(handleGetCourseData(response?.data?.data?.courses));
-
       setLoading(false);
     } catch (error: any) {
       setLoading(false);
