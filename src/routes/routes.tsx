@@ -113,6 +113,22 @@ const AllRoutes = () => {
             </HeaderFooterLayout>
           }
         />
+        <Route
+          path="/profile/basic-information"
+          element={
+            <HeaderFooterLayout>
+              <ProfilePage />
+            </HeaderFooterLayout>
+          }
+        />
+        <Route
+          path="/profile/photo"
+          element={
+            <HeaderFooterLayout>
+              <ProfilePicturePage />
+            </HeaderFooterLayout>
+          }
+        />
         <Route element={<StudentProtectedRoutePage />}>
           <Route
             path="/profile/basic-information"
@@ -157,22 +173,6 @@ const AllRoutes = () => {
         </Route>
 
         <Route element={<InstructorProtectedRoutePage />}>
-          <Route
-            path="/profile/basic-information"
-            element={
-              <HeaderFooterLayout>
-                <ProfilePage />
-              </HeaderFooterLayout>
-            }
-          />
-          <Route
-            path="/profile/photo"
-            element={
-              <HeaderFooterLayout>
-                <ProfilePicturePage />
-              </HeaderFooterLayout>
-            }
-          />
           <Route
             path="/instructor/courses"
             element={

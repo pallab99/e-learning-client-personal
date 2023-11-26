@@ -1,6 +1,6 @@
 import { SearchOutlined } from '@ant-design/icons';
 import type { InputRef } from 'antd';
-import { Card, Empty, Image, Input, Space, Table, message } from 'antd';
+import { Empty, Image, Input, Space, Table, message } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import React, { useRef, useState } from 'react';
@@ -43,7 +43,6 @@ const AllPublishedCourseTableOrganism: React.FC<AllAdminOrganismProps> = ({
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-  console.log('table data', data);
 
   const handleSearch = (
     selectedKeys: string[],

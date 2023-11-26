@@ -148,7 +148,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
       title: 'Thumbnail',
       dataIndex: 'thumbnail',
       key: 'thumbnail',
-      width: '10%',
+      width: '20%',
       render: (_: any, record: any) => {
         return (
           <Image
@@ -164,7 +164,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
       title: 'UserName',
       dataIndex: 'userName',
       key: 'userName',
-      width: '15%',
+      width: '25%',
       ...getColumnSearchProps('userName'),
       sorter: (a, b) => a.userName.length - b.userName.length,
       sortDirections: ['descend', 'ascend'],
@@ -176,7 +176,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
       title: 'PendingCourses',
       dataIndex: 'pendingCourses',
       key: 'pendingCourses',
-      width: '10%',
+      width: '35%',
       ...getColumnSearchProps('pendingCourses'),
       sorter: (a, b) => a.pendingCourses - b.pendingCourses,
       sortDirections: ['descend', 'ascend'],
