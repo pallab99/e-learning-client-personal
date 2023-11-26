@@ -16,7 +16,7 @@ const HomePage = () => {
             width="1340"
             height="400"
             alt=""
-            src="https://img-b.udemycdn.com/notices/web_carousel_slide/image/8a209063-821d-430b-82f2-7fc3600d67f5.jpg"
+            src="	https://img-c.udemycdn.com/notices/web_carousel_slide/image/cda48665-0e6b-44a4-bd7f-95a869c815f8.jpg"
             loading="eager"
           />
         </div>

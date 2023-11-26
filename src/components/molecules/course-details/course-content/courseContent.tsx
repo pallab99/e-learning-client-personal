@@ -3,23 +3,23 @@ import {
   FileOutlined,
   FilePdfOutlined,
   FileUnknownOutlined,
-} from "@ant-design/icons";
-import { Checkbox, Collapse, Modal, Skeleton } from "antd";
-import React, { useState } from "react";
-import ReactPlayer from "react-player";
-import { Link, useParams } from "react-router-dom";
-import useGetCourseSection from "../../../../hooks/course-section/useGetCourseSection";
-import useAddToUserProgress from "../../../../hooks/user-progress/useAddToUserProgress";
-import useGetUserProgress from "../../../../hooks/user-progress/useGetUserProgress";
-import ButtonAtom from "../../../atoms/button/button.attom";
-import HeadingAtom from "../../../atoms/heading/heading.atom";
-import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
-import "./courseContent.scss";
+} from '@ant-design/icons';
+import { Checkbox, Collapse, Modal, Skeleton } from 'antd';
+import React, { useState } from 'react';
+import ReactPlayer from 'react-player';
+import { Link, useParams } from 'react-router-dom';
+import useGetCourseSection from '../../../../hooks/course-section/useGetCourseSection';
+import useAddToUserProgress from '../../../../hooks/user-progress/useAddToUserProgress';
+import useGetUserProgress from '../../../../hooks/user-progress/useGetUserProgress';
+import ButtonAtom from '../../../atoms/button/button.attom';
+import HeadingAtom from '../../../atoms/heading/heading.atom';
+import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
+import './courseContent.scss';
 
 const CourseContent = () => {
   const { courseId } = useParams();
   const { data, loading } = useGetCourseSection(courseId as string);
-  const [videoUrl, setVideoUrl] = React.useState("");
+  const [videoUrl, setVideoUrl] = React.useState('');
   const [isVideoModalVisible, setIsVideoModalVisible] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const handleOpenVideoModal = (url: string) => {
@@ -63,14 +63,18 @@ const CourseContent = () => {
                     }
                     type="link"
                     text="Preview"
-                    style={{ color: "purple", fontWeight: "500" }}
+                    style={{
+                      color: 'purple',
+                      fontWeight: '500',
+                    }}
                     disabled={content?.contentUrl ? false : true}
+                    className={`${!content?.contentUrl && 'color-gray'}`}
                   />
                 ) : (
                   <>
                     {content?.contentUrl ? (
                       <Link
-                        style={{ color: "purple", fontWeight: "500" }}
+                        style={{ color: 'purple', fontWeight: '500' }}
                         to={content.contentUrl}
                       >
                         Preview
@@ -98,7 +102,7 @@ const CourseContent = () => {
               <div className="course_content_div_right_side">
                 {section?.assignment?.assignmentFileURL ? (
                   <Link
-                    style={{ color: "purple", fontWeight: "500" }}
+                    style={{ color: 'purple', fontWeight: '500' }}
                     to={`/assignment/${courseId}/${section?._id}/${section?.assignment?._id}`}
                   >
                     Preview
@@ -128,7 +132,7 @@ const CourseContent = () => {
                   <>
                     {section?.quiz?.questions?.length ? (
                       <Link
-                        style={{ color: "purple", fontWeight: "500" }}
+                        style={{ color: 'purple', fontWeight: '500' }}
                         to={`/quiz/${section._id}/${section?.quiz?._id}`}
                       >
                         Preview
@@ -176,11 +180,11 @@ const CourseContent = () => {
 
           <div className="course-curriculum_content mt-20">
             <Collapse
-              defaultActiveKey={["1"]}
+              defaultActiveKey={['1']}
               items={accordionItems}
               activeKey={activeKeys}
               onChange={setActiveKeys}
-              style={{ backgroundColor: "#f6f9fa" }}
+              style={{ backgroundColor: '#f6f9fa' }}
             />
           </div>
           <Modal
@@ -198,7 +202,7 @@ const CourseContent = () => {
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               playing={isPlaying}
-              config={{ file: { attributes: { controlsList: "nodownload" } } }}
+              config={{ file: { attributes: { controlsList: 'nodownload' } } }}
               onContextMenu={(e) => e.preventDefault()}
             />
           </Modal>

@@ -24,6 +24,12 @@
   display: flex;
   gap: 2rem;
   align-items: center;
+  .color-gray {
+    color: gray !important;
+  }
+  .color-purple {
+    color: purple !important;
+  }
 }
 .course_content_div_left_side {
   display: flex;

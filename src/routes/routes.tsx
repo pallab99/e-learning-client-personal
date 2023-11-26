@@ -1,29 +1,31 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import NotFoundPage from "../components/pages/404/404.pages";
-import AllPublishedCoursePage from "../components/pages/admin/course/published/publishedCourse";
-import AllSubscriptionListPage from "../components/pages/admin/subscriptionList/subscriptionList";
-import AllAdminPage from "../components/pages/admin/user/admin/admin";
-import AllInstructorPage from "../components/pages/admin/user/instructor/instrctor";
-import AllStudentPage from "../components/pages/admin/user/student/students";
-import CourseDetailsPage from "../components/pages/course-details/courseDetailsPage";
-import EmailVerifiedPage from "../components/pages/email-verified/emailVerifed";
-import ForgetPasswordPage from "../components/pages/forget-password/forgetPassword.pages";
-import HeaderFooterLayout from "../components/pages/header-footer-layout/headerFooterLayout";
-import HomePage from "../components/pages/home/home";
-import InstructorProtectedRoutePage from "../components/pages/instructorProtectedRoute/instructorProtectedRoute";
-import ViewAllAssignmentPage from "../components/pages/instructors/assignment/assignment";
-import AssignmentTable from "../components/pages/instructors/assignment/assignmentTable";
-import CreateCoursePage from "../components/pages/instructors/course/create-course/createCourse";
-import UpdateCoursePage from "../components/pages/instructors/course/update-course/updateCourse";
-import InstructorDashboardPage from "../components/pages/instructors/dashboard/dashboard.page";
-import ProfilePage from "../components/pages/profile/profile";
-import ProfilePicturePage from "../components/pages/profile/profilePicture";
-import SignInPage from "../components/pages/signIn/signIn.pages";
-import SignUPPage from "../components/pages/signUp/signIp.pages";
-import AssignmentSubmissionPage from "../components/pages/student/assignment-submission/assignmentSubmission";
-import MyLearningPage from "../components/pages/student/my-learning/myLearning";
-import QuizSubmissionForStudentPage from "../components/pages/student/quiz-submission-for-student/quizSubmissionForStudent";
-import UnauthorizedPage from "../components/pages/unauthorized/unauthorized";
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import NotFoundPage from '../components/pages/404/404.pages';
+import AllPublishedCoursePage from '../components/pages/admin/course/published/publishedCourse';
+import AllSubscriptionListPage from '../components/pages/admin/subscriptionList/subscriptionList';
+import AllAdminPage from '../components/pages/admin/user/admin/admin';
+import AllInstructorPage from '../components/pages/admin/user/instructor/instrctor';
+import AllStudentPage from '../components/pages/admin/user/student/students';
+import CourseDetailsPage from '../components/pages/course-details/courseDetailsPage';
+import EmailVerifiedPage from '../components/pages/email-verified/emailVerifed';
+import ForgetPasswordPage from '../components/pages/forget-password/forgetPassword.pages';
+import HeaderFooterLayout from '../components/pages/header-footer-layout/headerFooterLayout';
+import HomePage from '../components/pages/home/home';
+import InstructorProtectedRoutePage from '../components/pages/instructorProtectedRoute/instructorProtectedRoute';
+import ViewAllAssignmentPage from '../components/pages/instructors/assignment/assignment';
+import AssignmentTable from '../components/pages/instructors/assignment/assignmentTable';
+import CreateCoursePage from '../components/pages/instructors/course/create-course/createCourse';
+import UpdateCoursePage from '../components/pages/instructors/course/update-course/updateCourse';
+import InstructorDashboardPage from '../components/pages/instructors/dashboard/dashboard.page';
+import ProfilePage from '../components/pages/profile/profile';
+import ProfilePicturePage from '../components/pages/profile/profilePicture';
+import SignInPage from '../components/pages/signIn/signIn.pages';
+import SignUPPage from '../components/pages/signUp/signIp.pages';
+import AssignmentSubmissionPage from '../components/pages/student/assignment-submission/assignmentSubmission';
+import MyLearningPage from '../components/pages/student/my-learning/myLearning';
+import QuizSubmissionForStudentPage from '../components/pages/student/quiz-submission-for-student/quizSubmissionForStudent';
+import UnauthorizedPage from '../components/pages/unauthorized/unauthorized';
+import AdminProtectedRoutePage from '../components/pages/adminProtectedRoute/adminProtectedRoute';
+import StudentProtectedRoutePage from '../components/pages/studentProtectedRoute/studentPrtectedRoute';
 
 const AllRoutes = () => {
   return (
@@ -47,6 +49,14 @@ const AllRoutes = () => {
         />
         <Route
           path="/log-in"
+          element={
+            <HeaderFooterLayout>
+              <SignInPage />
+            </HeaderFooterLayout>
+          }
+        />
+        <Route
+          path="/admin/log-in"
           element={
             <HeaderFooterLayout>
               <SignInPage />
@@ -101,31 +111,66 @@ const AllRoutes = () => {
             </HeaderFooterLayout>
           }
         />
-        <Route
-          path="/quiz/:sectionId/:quizId"
-          element={
-            <HeaderFooterLayout>
-              <QuizSubmissionForStudentPage />
-            </HeaderFooterLayout>
-          }
-        />
-        <Route
-          path="/assignment/:courseId/:sectionId/:assignmentId"
-          element={
-            <HeaderFooterLayout>
-              <AssignmentSubmissionPage />
-            </HeaderFooterLayout>
-          }
-        />
-        <Route
-          path="/my-learning"
-          element={
-            <HeaderFooterLayout>
-              <MyLearningPage />
-            </HeaderFooterLayout>
-          }
-        />
+        <Route element={<StudentProtectedRoutePage />}>
+          <Route
+            path="/profile/basic-information"
+            element={
+              <HeaderFooterLayout>
+                <ProfilePage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/profile/photo"
+            element={
+              <HeaderFooterLayout>
+                <ProfilePicturePage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/quiz/:sectionId/:quizId"
+            element={
+              <HeaderFooterLayout>
+                <QuizSubmissionForStudentPage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/assignment/:courseId/:sectionId/:assignmentId"
+            element={
+              <HeaderFooterLayout>
+                <AssignmentSubmissionPage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/my-learning"
+            element={
+              <HeaderFooterLayout>
+                <MyLearningPage />
+              </HeaderFooterLayout>
+            }
+          />
+        </Route>
+
         <Route element={<InstructorProtectedRoutePage />}>
+          <Route
+            path="/profile/basic-information"
+            element={
+              <HeaderFooterLayout>
+                <ProfilePage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/profile/photo"
+            element={
+              <HeaderFooterLayout>
+                <ProfilePicturePage />
+              </HeaderFooterLayout>
+            }
+          />
           <Route
             path="/instructor/courses"
             element={
@@ -192,63 +237,65 @@ const AllRoutes = () => {
           />
         </Route>
 
-        <Route
-          path="/profile/basic-information"
-          element={
-            <HeaderFooterLayout>
-              <ProfilePage />
-            </HeaderFooterLayout>
-          }
-        />
-        <Route
-          path="/profile/photo"
-          element={
-            <HeaderFooterLayout>
-              <ProfilePicturePage />
-            </HeaderFooterLayout>
-          }
-        />
-        <Route
-          path="/admin/user/student"
-          element={
-            <HeaderFooterLayout>
-              <AllStudentPage />
-            </HeaderFooterLayout>
-          }
-        />
-        <Route
-          path="/admin/user/instructor"
-          element={
-            <HeaderFooterLayout>
-              <AllInstructorPage />
-            </HeaderFooterLayout>
-          }
-        />
-        <Route
-          path="/admin/user/admin"
-          element={
-            <HeaderFooterLayout>
-              <AllAdminPage />
-            </HeaderFooterLayout>
-          }
-        />
-        <Route
-          path="/admin/course/published"
-          element={
-            <HeaderFooterLayout>
-              <AllPublishedCoursePage />
-            </HeaderFooterLayout>
-          }
-        />
+        <Route element={<AdminProtectedRoutePage />}>
+          <Route
+            path="/profile/basic-information"
+            element={
+              <HeaderFooterLayout>
+                <ProfilePage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/profile/photo"
+            element={
+              <HeaderFooterLayout>
+                <ProfilePicturePage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/admin/user/student"
+            element={
+              <HeaderFooterLayout>
+                <AllStudentPage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/admin/user/instructor"
+            element={
+              <HeaderFooterLayout>
+                <AllInstructorPage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/admin/user/admin"
+            element={
+              <HeaderFooterLayout>
+                <AllAdminPage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
+            path="/admin/course/published"
+            element={
+              <HeaderFooterLayout>
+                <AllPublishedCoursePage />
+              </HeaderFooterLayout>
+            }
+          />
 
-        <Route
-          path="/admin/subscription/all"
-          element={
-            <HeaderFooterLayout>
-              <AllSubscriptionListPage />
-            </HeaderFooterLayout>
-          }
-        />
+          <Route
+            path="/admin/subscription/all"
+            element={
+              <HeaderFooterLayout>
+                <AllSubscriptionListPage />
+              </HeaderFooterLayout>
+            }
+          />
+        </Route>
       </Routes>
     </Router>
   );

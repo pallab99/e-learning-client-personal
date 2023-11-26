@@ -1,10 +1,11 @@
-import { Card, Empty, Pagination, Rate, Typography } from 'antd';
+//@ts-nocheck
+import { Card, Empty, Pagination, Rate } from 'antd';
 import { FaChartSimple } from 'react-icons/fa6';
 import useGetAllCourse from '../../../hooks/course/useGetAllCourse';
 import ButtonAtom from '../../atoms/button/button.attom';
 import SortSelect from '../sort-select/sortSelect';
 import './courseCard.scss';
-
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import useGetAllCategory from '../../../hooks/category/useGetAllCategory';
 import { levelOption, selectOption } from '../../../constant/courseFilter';
 import CourseCardSkeleton from '../../atoms/courseCardSkeleton/courseCardSkeleton';
@@ -95,12 +96,10 @@ const CourseCardMolecules = () => {
                     onClick={() => handleCourseClick(course?._id)}
                   >
                     <Card key={index}>
-                      <img
+                      <LazyLoadImage
                         src={course.thumbnail}
                         alt="course"
-                        width="240"
-                        height="135"
-                        loading="lazy"
+                        effect="blur"
                         style={{
                           overflow: 'hidden',
                           width: '90%',

@@ -53,7 +53,6 @@ const HeaderOrganism = () => {
           {(!userData.accessToken || student === STUDENT) && (
             <HeaderSearchBarMolecules />
           )}
-          <ParagraphAtom text="Instructor" className="text-18 cursor-pointer" />
           {student === STUDENT && (
             <Link to="/my-learning" style={{ textDecoration: 'none' }}>
               <ParagraphAtom
@@ -96,7 +95,7 @@ const HeaderOrganism = () => {
             {!userData.accessToken && (
               <Link to={'/log-in'}>
                 <ButtonAtom
-                  type="primary"
+                  // type="primary"
                   size="large"
                   text="Log In"
                 ></ButtonAtom>
@@ -104,7 +103,12 @@ const HeaderOrganism = () => {
             )}
             {!userData.accessToken && (
               <Link to={'/sign-up'}>
-                <ButtonAtom size="large" text="Sign Up"></ButtonAtom>
+                <ButtonAtom
+                  size="large"
+                  text="Sign Up"
+                  type="primary"
+                  style={{ backgroundColor: '#2d2f31' }}
+                ></ButtonAtom>
               </Link>
             )}
           </div>
