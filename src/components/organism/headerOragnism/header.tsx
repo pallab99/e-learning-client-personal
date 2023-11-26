@@ -13,7 +13,7 @@ import MobileHeaderDropdownMenuMolecules from '../../molecules/header-dropdown-m
 import HeaderSearchBarMolecules from '../../molecules/header-search-bar/headerSearchBar';
 import WishlistDrawerMolecules from '../../molecules/wishlist-drawer/wishlistDrawerMolecules';
 import './header.scss';
-
+import logo from './../../../assets/logo/Skillbase.png';
 const HeaderOrganism = () => {
   const [recallApi, setRecallApi] = useState(false);
   const { data, loading, error } = useGetCartByUser(recallApi);
@@ -35,8 +35,6 @@ const HeaderOrganism = () => {
   const isMobile = window.innerWidth <= 768;
   const student = useAppSelector((state) => state.auth.userData.rank);
   const userData = useAppSelector((state) => state.auth.userData);
-  // const loggedIn=useAppSelector(state=>state?.auth?.userData)
-  console.log({ userData });
 
   return (
     <>
@@ -44,9 +42,9 @@ const HeaderOrganism = () => {
         <div className="desktop-header-wrapper">
           <Link to={'/'}>
             <Image
-              height={60}
-              width={80}
-              src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy.svg"
+              height={80}
+              width={100}
+              src={logo}
               preview={false}
               className="cursor-pointer"
             ></Image>
@@ -113,14 +111,12 @@ const HeaderOrganism = () => {
           <CartDrawerMolecules
             open={openCartDrawer}
             onClose={handleCloseCartDrawer}
-            // key={}
             isMobile={isMobile}
             placement={isMobile ? 'bottom' : 'right'}
             cartData={data}
             setRecallApi={setRecallApi}
             cartLoading={loading}
             error={error}
-            // key
           />
           <DesktopHeaderDropdownMenuMolecules />
         </div>
@@ -131,13 +127,12 @@ const HeaderOrganism = () => {
             <Image
               height={60}
               width={80}
-              src="https://www.udemy.com/staticx/udemy/images/v7/logo-udemy.svg"
+              src={logo}
               preview={false}
               className="cursor-pointer"
             ></Image>
           </Link>
           <HeaderSearchBarMolecules />
-
           <MobileHeaderDropdownMenuMolecules
             handleOpenCartDrawer={handleOpenCartDrawer}
           />

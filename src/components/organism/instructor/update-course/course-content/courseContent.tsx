@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   EditOutlined,
   FileOutlined,
@@ -22,6 +23,7 @@ import './courseContent.scss';
 // import {EditOutlined} from "@ant-design/icons"
 import { pdfjs } from 'react-pdf';
 import useDeleteCourseContent from '../../../../../hooks/course-content/useDeleteContent';
+import useDisableAssignment from '../../../../../hooks/assignment/useDisableAssignment';
 
 const CourseContent = () => {
   const { courseId } = useParams();
@@ -101,6 +103,16 @@ const CourseContent = () => {
       setRecallApi(Math.random());
     }
   };
+  const { disableAssignmentLoader, disableAssignment } = useDisableAssignment();
+  const handleDisableAssignment = async (
+    sectionId: string,
+    assignmentId: string
+  ) => {
+    await disableAssignment(courseId, sectionId, assignmentId);
+    if (!disableAssignmentLoader) {
+      setRecallApi(Math.random());
+    }
+  };
   const accordionItems = data?.data?.map((section: any) => {
     return {
       key: section._id,
@@ -169,9 +181,23 @@ const CourseContent = () => {
                   className="cursor-pointer"
                   onClick={() => {
                     setHandleOpenEditContentModal(true);
-                    // setContentData(content);
                   }}
                 />
+                <Popconfirm
+                  title="Title"
+                  description="Open Popconfirm with Promise"
+                  onConfirm={() =>
+                    handleDisableAssignment(
+                      section?._id,
+                      section?.assignment?._id
+                    )
+                  }
+                >
+                  <DeleteOutlined
+                    className="cursor-pointer"
+                    style={{ color: 'red' }}
+                  />
+                </Popconfirm>
               </div>
             </div>
           )}

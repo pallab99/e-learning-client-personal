@@ -10,6 +10,7 @@ class AssignmentApi {
     getAssignment: '/assignment/details/course/section/assignment/',
     submitAssignment: '/assignment/submit/',
     giveAssessment: '/assignment/assessment/create/',
+    disableAssignment: '/assignment/disable/',
   };
   async createAssignment(
     courseId: string | undefined,
@@ -64,6 +65,15 @@ class AssignmentApi {
   ) {
     const url = `${this.endPoints.giveAssessment}${assignmentId}/${submittedAssignmentId}`;
     return await Api?.http?.patch(url, { grade });
+  }
+
+  async disableAssignment(
+    courseId: string | undefined,
+    sectionId: string | undefined,
+    assignmentId: string | undefined
+  ) {
+    const url = `${this.endPoints.disableAssignment}${courseId}/${sectionId}/${assignmentId}`;
+    return await Api.http?.delete(url);
   }
 }
 

@@ -1,8 +1,7 @@
 import './headerSearchBar.scss';
 import { useCallback, useState } from 'react';
 import { debounce } from 'lodash';
-import { useAppDispatch } from '../../../redux/store';
-import { courseSearchTerm } from '../../../redux/slices/courseSlice';
+
 import { AutoComplete, Image } from 'antd';
 import { Link } from 'react-router-dom';
 import HeadingAtom from '../../atoms/heading/heading.atom';
@@ -10,7 +9,6 @@ import useGetAutoCompleteSearch from '../../../hooks/course/useGetAutoCompleteSe
 import InstructorCourseListSkeletonAtom from '../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
 
 const HeaderSearchBarMolecules = () => {
-  const dispatch = useAppDispatch();
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSetSearchTerm = useCallback(
     debounce((value: string) => {
@@ -48,8 +46,8 @@ const HeaderSearchBarMolecules = () => {
                         <Image
                           src={option?.thumbnail}
                           alt="Course thumbnail"
-                          width={80}
-                          height={50}
+                          width={60}
+                          height={40}
                         />
                         <HeadingAtom
                           text={option.title}

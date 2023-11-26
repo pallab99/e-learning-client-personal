@@ -60,7 +60,7 @@ const CourseCardMolecules = () => {
   };
   return (
     <div className="CardContainer cursor-pointer">
-      <h2>All Courses</h2>
+      <h2>What to learn next</h2>
       <div className="select-field-course">
         <SortSelect
           options={categoryOption}
