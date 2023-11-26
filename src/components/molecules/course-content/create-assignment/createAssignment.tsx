@@ -1,8 +1,7 @@
+//@ts-nocheck
 import { Button, Modal, Space, Upload, message } from 'antd';
 import React, { useState } from 'react';
-
 import { Controller, useForm } from 'react-hook-form';
-
 import { UploadOutlined } from '@ant-design/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useCreateCourseAssignment from '../../../../hooks/assignment/useCreateCourseAssignment';

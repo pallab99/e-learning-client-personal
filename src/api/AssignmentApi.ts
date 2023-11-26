@@ -3,6 +3,7 @@ import Api from './apiConfigs';
 class AssignmentApi {
   endPoints = {
     createAssignment: '/assignment/create/',
+    updateAssignment: '/assignment/update/',
     getAllAssignmentByCourse: '/assignment/all/course/',
     getSubmittedAssignment: '/assignment/submit/details/',
     getUserSubmittedAssignment: '/assignment/submit/user/',
@@ -12,6 +13,15 @@ class AssignmentApi {
     giveAssessment: '/assignment/assessment/create/',
     disableAssignment: '/assignment/disable/',
   };
+  async updateAssignment(
+    courseId: string | undefined,
+    sectionId: string | undefined,
+    assignmentId: string | undefined,
+    data: any
+  ) {
+    const url = `${this.endPoints.updateAssignment}${courseId}/${sectionId}/${assignmentId}`;
+    return await Api?.http?.patch(url, data);
+  }
   async createAssignment(
     courseId: string | undefined,
     sectionId: string | undefined,

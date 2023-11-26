@@ -1,17 +1,17 @@
-import { Button, Modal, Space, Upload, message } from "antd";
-import React, { useState } from "react";
-
-import { Controller, useForm } from "react-hook-form";
-
-import { UploadOutlined } from "@ant-design/icons";
-import { zodResolver } from "@hookform/resolvers/zod";
-import useCreateCourseAssignment from "../../../../hooks/assignment/useCreateCourseAssignment";
-import createAssignmentSchema from "../../../../schema/course/createAssignment";
-import AlertAtom from "../../../atoms/alert/alertAtom";
-import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
-import { SelectField } from "../../../atoms/select-filed/selectField";
-import TextInputAtom from "../../../atoms/text-input/textInput.atom";
-import CenteredBtnOrganism from "../../centered-btn/centered-btn.molecules";
+//@ts-nocheck
+import { Button, Modal, Space, Upload, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { UploadOutlined } from '@ant-design/icons';
+import { zodResolver } from '@hookform/resolvers/zod';
+import useCreateCourseAssignment from '../../../../hooks/assignment/useCreateCourseAssignment';
+import AlertAtom from '../../../atoms/alert/alertAtom';
+import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
+import TextInputAtom from '../../../atoms/text-input/textInput.atom';
+import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
+import ButtonAtom from '../../../atoms/button/button.attom';
+import updateAssignmentSchema from '../../../../schema/course/updateAssignment';
+import useUpdateCourseAssignment from '../../../../hooks/assignment/useUpdateCourseAssignment';
 
 interface ICourseContentModalProps {
   courseId?: string | undefined;
@@ -22,7 +22,7 @@ interface ICourseContentModalProps {
   recallApi?: any;
 }
 
-const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
+const UpdateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
   courseId,
   data,
   open,
@@ -37,47 +37,82 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
     watch,
     setValue,
   } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      title: "",
-      description: "",
-      instructions: "",
-      point: "",
-      sectionId: "",
+      title: '',
+      description: '',
+      instructions: '',
+      point: '',
+      sectionId: '',
       content: {
         file: null,
       },
     },
-    resolver: zodResolver(createAssignmentSchema),
+    resolver: zodResolver(updateAssignmentSchema),
   });
-  const { loading, createAssignment } = useCreateCourseAssignment();
+  console.log('assignment daatata', data);
+  useEffect(() => {
+    setValue('title', data?.title);
+    setValue('description', data?.description);
+    setValue('instructions', data?.instructions);
+    setValue('point', String(data?.point));
+  }, [data, setValue]);
+
+  const { loading, updateAssignment } = useUpdateCourseAssignment();
   const onSubmit = async (contentData: any) => {
-    console.log(contentData);
-    const formData = new FormData();
-    formData.append("title", contentData?.title);
-    formData.append("description", contentData?.description);
-    formData.append("instructions", contentData?.instructions);
-    formData.append("point", contentData?.point);
-    formData.append("sectionId", contentData?.sectionId);
-    formData.append("file_to_upload", contentData?.content?.file);
-    await createAssignment(courseId, contentData.sectionId, formData);
-    if (!loading) {
-      onClose();
-      recallApi(Math.random());
+    console.log('update submit assignment', contentData);
+    if (!contentData?.content?.file) {
+      await updateAssignment(
+        courseId,
+        data.courseSection,
+        data?._id,
+        contentData
+      );
+      if (!loading) {
+        onClose();
+        recallApi(Math.random());
+      }
+    } else {
+      console.log('file to upload');
+
+      const formData = new FormData();
+      formData.append('title', contentData?.title);
+      formData.append('description', contentData?.description);
+      formData.append('instructions', contentData?.instructions);
+      formData.append('point', contentData?.point);
+      formData.append('file_to_upload', contentData?.content?.file);
+
+      await updateAssignment(
+        courseId,
+        data?.courseSection,
+        data?._id,
+        formData
+      );
+      if (!loading) {
+        setValue('title', '');
+        setValue('description', '');
+        setValue('instructions', '');
+        setValue('point', '');
+        setValue('content', null);
+
+        onClose();
+        recallApi(Math.random());
+      }
     }
   };
   const [fileList, setFileList] = useState([]);
   const [file, setFile] = useState(null);
-
+  const [openAssignmentPreview, setOpenAssignmnetPreview] = useState(false);
+  const [assignmentFile, setAssignmentFile] = useState('');
   const beforeUpload = (file: File) => {
-    const allowedTypes = ["application/pdf"];
+    const allowedTypes = ['application/pdf'];
     const isTypeAllowed = allowedTypes.includes(file.type);
     const isLt100M = file.size / 1024 / 1024 < 100;
 
     if (!isTypeAllowed) {
-      message.error("You can only upload PDF file");
+      message.error('You can only upload PDF file');
     } else if (!isLt100M) {
-      message.error("File must be smaller than 100MB!");
+      message.error('File must be smaller than 100MB!');
     } else {
       setFile(file);
     }
@@ -87,9 +122,9 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
   return (
     <Modal open={open} onCancel={onClose} footer={null}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
           <div className="input-group mb-20">
-            <ParagraphAtom text={"Enter the Assignment title"} />
+            <ParagraphAtom text={'Enter the Assignment title'} />
             <Controller
               name="title"
               control={control}
@@ -110,9 +145,9 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
             )}
           </div>
           <div className="input-group mb-20">
-            <ParagraphAtom text={"Enter the Assignment description"} />
+            <ParagraphAtom text={'Enter the Assignment description'} />
             <Controller
-              name={"description"}
+              name={'description'}
               control={control}
               render={({ field }) => (
                 <TextInputAtom
@@ -132,9 +167,9 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
           </div>
 
           <div className="input-group mb-20">
-            <ParagraphAtom text={"Enter the Assignment instructions"} />
+            <ParagraphAtom text={'Enter the Assignment instructions'} />
             <Controller
-              name={"instructions"}
+              name={'instructions'}
               control={control}
               render={({ field }) => (
                 <TextInputAtom
@@ -153,9 +188,9 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
             )}
           </div>
           <div className="input-group mb-20">
-            <ParagraphAtom text={"Enter the Assignment point"} />
+            <ParagraphAtom text={'Enter the Assignment point'} />
             <Controller
-              name={"point"}
+              name={'point'}
               control={control}
               render={({ field }) => (
                 <TextInputAtom
@@ -190,11 +225,11 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
                     setFile(null);
                   }}
                   maxCount={1}
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   {...field}
                 >
                   <Button
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     icon={<UploadOutlined />}
                     size="large"
                   >
@@ -204,37 +239,31 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
               )}
             />
           </div>
-
-          <div className="input-group">
-            <ParagraphAtom text="* Select the section. Max 1 assignment under a section" />
-            <Controller
-              name="sectionId"
-              control={control}
-              render={({ field }) => (
-                <SelectField
-                  values={sectionData}
-                  placeholder="Select the section"
-                  fieldValues={field}
-                  size="large"
-                />
-              )}
-            />
-            {errors?.sectionId && (
-              <AlertAtom
-                message={errors.sectionId.message}
-                type="error"
-                className="mt-10"
-              />
-            )}
-          </div>
-
+          <ButtonAtom
+            text="Preview Uploaded File"
+            type="text"
+            handleButtonClick={() => {
+              setOpenAssignmnetPreview(true);
+              setAssignmentFile(data?.assignmentFileURL);
+            }}
+            className="instructor_preview_assignment_btn"
+          ></ButtonAtom>
+          <Modal
+            open={openAssignmentPreview}
+            onCancel={() => setOpenAssignmnetPreview(false)}
+            footer={null}
+          >
+            <div className="assignment_iframe_div mt-40">
+              <iframe src={assignmentFile} height={600} width={'100%'}></iframe>
+            </div>
+          </Modal>
           <CenteredBtnOrganism
             justify="center"
-            text={"create"}
+            text={'Update'}
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             loading={loading}
           />
         </Space>
@@ -243,4 +272,4 @@ const CreateAssignmentMolecules: React.FC<ICourseContentModalProps> = ({
   );
 };
 
-export default CreateAssignmentMolecules;
+export default UpdateAssignmentMolecules;

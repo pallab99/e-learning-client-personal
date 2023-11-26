@@ -24,6 +24,7 @@ import './courseContent.scss';
 import { pdfjs } from 'react-pdf';
 import useDeleteCourseContent from '../../../../../hooks/course-content/useDeleteContent';
 import useDisableAssignment from '../../../../../hooks/assignment/useDisableAssignment';
+import UpdateAssignmentMolecules from '../../../../molecules/course-content/update assignment/updateAssignment';
 
 const CourseContent = () => {
   const { courseId } = useParams();
@@ -115,6 +116,11 @@ const CourseContent = () => {
   };
   const [openAssignmentPreview, setOpenAssignmnetPreview] = useState(false);
   const [assignmentFile, setAssignmentFile] = useState('');
+  const [handleOpenEditAssignmentModal, setHandleOpenEditAssignmentModal] =
+    useState(false);
+  const [editAssignmentData, setEditAssignmentData] = useState({});
+  const [sectionDtaaForUpdateAssignmnet, setSectionDataForUpdateAssignment] =
+    useState({});
   const accordionItems = data?.data?.map((section: any) => {
     return {
       key: section._id,
@@ -178,7 +184,6 @@ const CourseContent = () => {
                 ></HeadingAtom>
               </div>
               <div className="instructor_section_content_flex_right">
-                {/* <Link to={section?.assignment?.assignmentFileURL}>Preview</Link> */}
                 <ButtonAtom
                   text="Preview"
                   type="text"
@@ -204,7 +209,9 @@ const CourseContent = () => {
                 <EditOutlined
                   className="cursor-pointer"
                   onClick={() => {
-                    setHandleOpenEditContentModal(true);
+                    setHandleOpenEditAssignmentModal(true);
+                    setEditAssignmentData(section?.assignment);
+                    // setSectionDataForUpdateAssignment()
                   }}
                 />
                 <Popconfirm
@@ -322,7 +329,14 @@ const CourseContent = () => {
           courseId={courseId}
           recallApi={setRecallApi}
         ></CreateAssignmentMolecules>
-
+        <UpdateAssignmentMolecules
+          open={handleOpenEditAssignmentModal}
+          onClose={() => setHandleOpenEditAssignmentModal(false)}
+          sectionData={sectionData}
+          courseId={courseId}
+          recallApi={setRecallApi}
+          data={editAssignmentData}
+        ></UpdateAssignmentMolecules>
         <CreateQuizModal
           open={openQuizModal}
           onClose={handleCloseQuizModal}
