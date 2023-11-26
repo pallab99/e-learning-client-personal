@@ -222,6 +222,14 @@ const AllRoutes = () => {
             }
           />
           <Route
+            path="/instructor/course/status/:courseId"
+            element={
+              <HeaderFooterLayout>
+                <UpdateCoursePage />
+              </HeaderFooterLayout>
+            }
+          />
+          <Route
             path="/instructor/assignments"
             element={
               <HeaderFooterLayout>

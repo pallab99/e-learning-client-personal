@@ -1,35 +1,41 @@
-import { Tabs, TabsProps } from "antd";
-import { useNavigate, useParams } from "react-router-dom";
-import InstructorDashboardSideBarOrganism from "../../../../organism/instructor/dashboard/sidebar/sidebar.organism";
-import CourseLandingPage from "../../../../organism/instructor/update-course/course-landing-page/courseLandingPage";
-import UpdateCourseOrganism from "../../../../organism/instructor/update-course/updateCourse";
+import { Tabs, TabsProps } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
+import InstructorDashboardSideBarOrganism from '../../../../organism/instructor/dashboard/sidebar/sidebar.organism';
+import CourseLandingPage from '../../../../organism/instructor/update-course/course-landing-page/courseLandingPage';
+import UpdateCourseOrganism from '../../../../organism/instructor/update-course/updateCourse';
 // import "./createCourse.scss";
-import CourseContent from "../../../../organism/instructor/update-course/course-content/courseContent";
-import CourseSection from "../../../../organism/instructor/update-course/course-section/courseSection";
-import "./updateCourse.scss";
+import CourseContent from '../../../../organism/instructor/update-course/course-content/courseContent';
+import CourseSection from '../../../../organism/instructor/update-course/course-section/courseSection';
+import './updateCourse.scss';
+import CourseStatus from '../../../../organism/instructor/update-course/course-status/courseStatus';
 const UpdateCoursePage = () => {
   const navigate = useNavigate();
   const { courseId } = useParams();
-  const items: TabsProps["items"] = [
+  const items: TabsProps['items'] = [
     {
       key: `/instructor/course/update/${courseId}`,
-      label: "Basic Information",
+      label: 'Basic Information',
       children: <UpdateCourseOrganism />,
     },
     {
       key: `/instructor/course/landing-page/${courseId}`,
-      label: "Landing Page",
+      label: 'Landing Page',
       children: <CourseLandingPage />,
     },
     {
       key: `/instructor/course/section/${courseId}`,
-      label: "Course Section",
+      label: 'Course Section',
       children: <CourseSection />,
     },
     {
       key: `/instructor/course/content/${courseId}`,
-      label: "Course content",
+      label: 'Course content',
       children: <CourseContent />,
+    },
+    {
+      key: `/instructor/course/status/${courseId}`,
+      label: 'Course status',
+      children: <CourseStatus />,
     },
   ];
   const tabOnchange = (key: string) => {
@@ -38,7 +44,7 @@ const UpdateCoursePage = () => {
   return (
     <div className="tab-div">
       <InstructorDashboardSideBarOrganism />
-      <Tabs items={items} onChange={tabOnchange} style={{ width: "100%" }} />
+      <Tabs items={items} onChange={tabOnchange} style={{ width: '100%' }} />
     </div>
   );
 };
