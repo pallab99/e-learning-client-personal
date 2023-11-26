@@ -1,12 +1,21 @@
 //@ts-nocheck
-import React, { useState } from 'react';
-import { Button, Tour } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Tour } from 'antd';
 import type { TourProps } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { showTour } from '../../redux/slices/authSlice';
-
+import './userOnboard.scss';
 const UserOnboarding: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [showButton, setShowButton] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowButton(true);
+      setOpenModal(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const steps: TourProps['steps'] = [
     {
@@ -81,25 +90,38 @@ const UserOnboarding: React.FC = () => {
       },
     },
   ];
-  const [showButton, setShowButton] = useState<boolean>(true);
+
   const dispatch = useAppDispatch();
   const handleClose = () => {
     setOpen(false);
     dispatch(showTour(false));
+    setOpenModal(false);
   };
   const showTourButton = useAppSelector((state) => state.auth.showTourButton);
 
   return (
     <>
-      {showTourButton && (
-        <Button
-          type="primary"
-          onClick={() => setOpen(true)}
-          className="button_tour"
-          size="large"
-        >
-          Get A Tour
-        </Button>
+      {showButton && showTourButton && (
+        <div className="user_onboard_modal">
+          <Modal
+            open={openModal}
+            onCancel={handleClose}
+            footer={null}
+            centered
+            width={200}
+          >
+            <div className="take_a_tour_btn">
+              <Button
+                type="primary"
+                onClick={() => setOpen(true)}
+                className="button_tour"
+                size="large"
+              >
+                Get A Tour
+              </Button>
+            </div>
+          </Modal>
+        </div>
       )}
 
       <Tour

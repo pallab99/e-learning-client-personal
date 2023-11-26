@@ -144,7 +144,7 @@
   cursor: pointer;
   display: inline-block;
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
-    "Helvetica Neue", sans-serif;
+    'Helvetica Neue', sans-serif;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
@@ -220,6 +220,10 @@
 
   .Cards {
     max-width: 24rem;
+  }
+  .Cards img {
+    height: auto !important;
+    width: 100% !important;
   }
   .CardContainer {
     padding-left: 0.5rem;
