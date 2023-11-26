@@ -77,7 +77,6 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const showUserProgress = useAppSelector(
     (state) => state?.userProgress.boughtTheCourse
   );
-  console.log(showUserProgress);
 
   return (
     <main className="paid-course-landing-page__container ">
@@ -131,7 +130,9 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
                 config={{
                   file: { attributes: { controlsList: 'nodownload' } },
                 }}
-                onContextMenu={(e) => e.preventDefault()}
+                onContextMenu={(e: { preventDefault: () => any }) =>
+                  e.preventDefault()
+                }
               />
             ) : (
               <img
