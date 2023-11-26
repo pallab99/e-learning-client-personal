@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { useState } from 'react';
 import AuthApi from '../../api/AuthApi';
-import { addUserData } from '../../redux/slices/authSlice';
+import { addUserData, showTour } from '../../redux/slices/authSlice';
 import { useAppDispatch } from '../../redux/store';
 import { ILogin } from '../../types/loginData';
 import { IUserLoginData } from '../../types/userData';
@@ -27,6 +27,7 @@ const useLogin = () => {
         navigate('/');
       }
       dispatch(addUserData(response?.data.data));
+      dispatch(showTour(true));
       setUserData(response?.data.data);
       setLoading(false);
       message.success(response?.data.message);

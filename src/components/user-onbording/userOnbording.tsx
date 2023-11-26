@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Button, Tour } from 'antd';
 import type { TourProps } from 'antd';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { showTour } from '../../redux/slices/authSlice';
 
 const UserOnboarding: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -79,21 +81,30 @@ const UserOnboarding: React.FC = () => {
       },
     },
   ];
+  const [showButton, setShowButton] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
+  const handleClose = () => {
+    setOpen(false);
+    dispatch(showTour(false));
+  };
+  const showTourButton = useAppSelector((state) => state.auth.showTourButton);
 
   return (
     <>
-      <Button
-        type="primary"
-        onClick={() => setOpen(true)}
-        className="button_tour"
-        size="large"
-      >
-        Get A Tour
-      </Button>
+      {showTourButton && (
+        <Button
+          type="primary"
+          onClick={() => setOpen(true)}
+          className="button_tour"
+          size="large"
+        >
+          Get A Tour
+        </Button>
+      )}
 
       <Tour
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
         steps={steps}
         zIndex={100000000000}
         arrow

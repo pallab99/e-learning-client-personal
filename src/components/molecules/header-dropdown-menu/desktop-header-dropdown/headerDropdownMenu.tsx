@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthApi from '../../../../api/AuthApi';
 import { ADMIN, STUDENT } from '../../../../constant/userType';
-import { logOut } from '../../../../redux/slices/authSlice';
+import { logOut, showTour } from '../../../../redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../../../redux/store';
 import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
 
@@ -25,6 +25,7 @@ const DesktopHeaderDropdownMenuMolecules = () => {
         navigate('/log-in');
       }
       dispatch(logOut());
+      dispatch(showTour(false));
     } catch (error: any) {
       message.error(error.response.message);
     }

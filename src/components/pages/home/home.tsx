@@ -1,7 +1,10 @@
 import CourseCardMolecules from '../../molecules/course-card/courseCard';
 import './home.scss';
 import OnboardingSteps from './../../../components/user-onbording/userOnbording';
+import { useAppSelector } from '../../../redux/store';
+import { STUDENT } from '../../../constant/userType';
 const HomePage = () => {
+  const userData = useAppSelector((state) => state?.auth.userData);
   return (
     <div className="pageWrapper">
       <div className="Banner">
@@ -15,9 +18,11 @@ const HomePage = () => {
           />
         </div>
       </div>
-      <div className="tour_button_div">
-        <OnboardingSteps />
-      </div>
+      {userData && userData.rank === STUDENT && (
+        <div className="tour_button_div">
+          <OnboardingSteps />
+        </div>
+      )}
 
       <CourseCardMolecules />
     </div>

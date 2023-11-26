@@ -1,13 +1,12 @@
+//@ts-nocheck
 import { Link, useParams } from 'react-router-dom';
 import useGetAllAssignment from '../../../../hooks/assignment/useGetAllAssignment';
 import InstructorDashboardSideBarOrganism from '../../../organism/instructor/dashboard/sidebar/sidebar.organism';
-import ViewAssignment from '../../../organism/instructor/viewAssignment/viewAssignment';
 import './assignmentTable.scss';
 import {
   Card,
   Empty,
   Image,
-  Input,
   InputNumber,
   Modal,
   Space,
@@ -74,6 +73,8 @@ const AssignmentTable = () => {
       setHandleAssessmentLoading(false);
     }
   };
+  const [openAssignmentPreview, setOpenAssignmnetPreview] = useState(false);
+  const [assignmentFile, setAssignmentFile] = useState('');
   return (
     <div className="instructor-dashboard-div-wrapper">
       <InstructorDashboardSideBarOrganism />
@@ -136,9 +137,29 @@ const AssignmentTable = () => {
                           <ParagraphAtom
                             text={ele?.student?.name}
                           ></ParagraphAtom>
-                          <Link to={ele?.assignmentFileURL}>
-                            Submitted File
-                          </Link>
+
+                          <ButtonAtom
+                            text="Preview"
+                            type="text"
+                            handleButtonClick={() => {
+                              setOpenAssignmnetPreview(true);
+                              setAssignmentFile(ele?.assignmentFileURL);
+                            }}
+                            className="instructor_preview_assignment_btn"
+                          ></ButtonAtom>
+                          <Modal
+                            open={openAssignmentPreview}
+                            onCancel={() => setOpenAssignmnetPreview(false)}
+                            footer={null}
+                          >
+                            <div className="assignment_iframe_div mt-40">
+                              <iframe
+                                src={assignmentFile}
+                                height={600}
+                                width={'100%'}
+                              ></iframe>
+                            </div>
+                          </Modal>
                         </div>
                         <div className="submitted_assignment_card_div_description_right_div">
                           <Space.Compact>
