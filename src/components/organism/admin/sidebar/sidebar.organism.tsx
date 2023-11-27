@@ -32,10 +32,9 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem('Courses', '1', '/admin/course/published', <PieChartOutlined />),
-  getItem('Users', 'sub1', '/communication', <MessageOutlined />, [
-    getItem('Students', '2', '/admin/user/student', <UserAddOutlined />),
-    getItem('Instructors', '3', '/admin/user/instructor', <UserOutlined />),
-  ]),
+
+  getItem('Students', '2', '/admin/user/student', <UserAddOutlined />),
+  getItem('Instructors', '3', '/admin/user/instructor', <UserOutlined />),
   getItem('Subscription', 'sub2', '/admin/subscription/all', <SignalFilled />),
 ];
 

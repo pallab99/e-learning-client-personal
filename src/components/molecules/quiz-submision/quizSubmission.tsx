@@ -1,7 +1,7 @@
-import { Card, Form, Radio } from "antd";
-import { Controller, useForm } from "react-hook-form";
-import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
-import "./quizSubmission.scss";
+import { Card, Form, Radio } from 'antd';
+import { Controller, useForm } from 'react-hook-form';
+import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
+import './quizSubmission.scss';
 const Quiz = ({
   quizData,
   instructor,

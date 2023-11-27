@@ -1,19 +1,19 @@
-import { debounce } from "lodash";
-import { useCallback, useState } from "react";
-import "./headerSearchBar.scss";
+import { debounce } from 'lodash';
+import { useCallback, useState } from 'react';
+import './headerSearchBar.scss';
 
-import { AutoComplete, Image } from "antd";
-import { Link } from "react-router-dom";
-import useGetAutoCompleteSearch from "../../../hooks/course/useGetAutoCompleteSearch";
-import HeadingAtom from "../../atoms/heading/heading.atom";
-import InstructorCourseListSkeletonAtom from "../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton";
+import { AutoComplete, Empty, Image, Spin } from 'antd';
+import { Link } from 'react-router-dom';
+import useGetAutoCompleteSearch from '../../../hooks/course/useGetAutoCompleteSearch';
+import HeadingAtom from '../../atoms/heading/heading.atom';
+import InstructorCourseListSkeletonAtom from '../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
 
 const HeaderSearchBarMolecules = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const debouncedSetSearchTerm = useCallback(
     debounce((value: string) => {
       setSearchTerm(value);
-    }, 1000),
+    }, 500),
     []
   );
   const handleSearch = (e: any) => {
@@ -25,40 +25,50 @@ const HeaderSearchBarMolecules = () => {
     <div className="desktop-header-searchBar-div">
       <AutoComplete
         id="top_search_bar"
-        style={{ width: "100%", borderRadius: "20px" }}
+        style={{ width: '100%', borderRadius: '20px' }}
         placeholder="Search for anything"
         onSearch={handleSearch}
         listHeight={500}
         allowClear
         className="custom-auto-complete"
         size="large"
+        notFoundContent={
+          loading ? (
+            <div
+              style={{
+                display: 'flex',
+                marginTop: '20px',
+                marginBottom: '20px',
+                justifyContent: 'center',
+              }}
+            >
+              <Spin size="large" />
+            </div>
+          ) : (
+            !data.length && searchTerm && <Empty />
+          )
+        }
       >
         {data
           ? data?.map((option: any, index: any) => (
               <AutoComplete.Option key={index} value={option.title}>
-                {loading ? (
-                  [1, 2, 3, 4, 5, 6, 7, 8].map((ele: any) => (
-                    <InstructorCourseListSkeletonAtom key={ele} />
-                  ))
-                ) : (
-                  <Link to={`/course/${option?._id}`}>
-                    <div className="course-card-div mt-20">
-                      <div className="card-left">
-                        <Image
-                          src={option?.thumbnail}
-                          alt="Course thumbnail"
-                          width={60}
-                          height={40}
-                        />
-                        <HeadingAtom
-                          text={option.title}
-                          level={5}
-                          ellipsis={true}
-                        ></HeadingAtom>
-                      </div>
+                <Link to={`/course/${option?._id}`}>
+                  <div className="course-card-div mt-20">
+                    <div className="card-left">
+                      <Image
+                        src={option?.thumbnail}
+                        alt="Course thumbnail"
+                        width={60}
+                        height={40}
+                      />
+                      <HeadingAtom
+                        text={option.title}
+                        level={5}
+                        ellipsis={true}
+                      ></HeadingAtom>
                     </div>
-                  </Link>
-                )}
+                  </div>
+                </Link>
               </AutoComplete.Option>
             ))
           : null}

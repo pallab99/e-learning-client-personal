@@ -7,6 +7,8 @@ type MenuItem = Required<MenuProps>['items'][number];
 const DesktopSideBar: React.FC = ({ items }: any) => {
   const [collapsed, setCollapsed] = useState(true);
 
+  console.log('items', items);
+
   const handleMouseEnter = () => {
     setCollapsed(false); // expand the menu when mouse enters
   };
@@ -23,7 +25,7 @@ const DesktopSideBar: React.FC = ({ items }: any) => {
     >
       <Menu
         style={{ height: 'inherit' }}
-        defaultSelectedKeys={['1']}
+        defaultSelectedKeys={[items?.key]}
         mode="inline"
         // theme="dark"
         // inlineCollapsed={collapsed}

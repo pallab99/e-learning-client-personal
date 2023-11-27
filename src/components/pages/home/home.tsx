@@ -2,9 +2,24 @@ import CourseCardMolecules from '../../molecules/course-card/courseCard';
 import './home.scss';
 import OnboardingSteps from './../../../components/user-onbording/userOnbording';
 import { useAppSelector } from '../../../redux/store';
-import { STUDENT } from '../../../constant/userType';
+import { ADMIN, INSTRUCTOR, STUDENT } from '../../../constant/userType';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 const HomePage = () => {
   const userData = useAppSelector((state) => state?.auth.userData);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (userData && userData.accessToken) {
+      if (userData.rank === STUDENT) {
+        navigate('/');
+      } else if (userData.rank === INSTRUCTOR) {
+        navigate('/instructor/courses');
+      } else if (userData.rank === ADMIN) {
+        navigate('/admin/course/published');
+      }
+    }
+  }, [userData, navigate]);
   return (
     <div className="pageWrapper">
       <div className="Banner">

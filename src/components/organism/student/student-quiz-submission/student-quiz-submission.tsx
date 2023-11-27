@@ -1,20 +1,20 @@
 //@ts-nocheck
-import { Card, Form, Radio, message } from "antd";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import QuizApi from "../../../../api/QuizApi";
-import useGetQuizById from "../../../../hooks/quiz/useGetQuizById";
-import useGetSubmittedQuiz from "../../../../hooks/quiz/useGetSubmittedQuiz";
-import AlertAtom from "../../../atoms/alert/alertAtom";
-import ButtonAtom from "../../../atoms/button/button.attom";
-import HeadingAtom from "../../../atoms/heading/heading.atom";
-import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
-import QuizSubmissionSkeleton from "../../../atoms/quiz-submission-skeleton/quizSubmissionSkeleton";
-import "./studentQuizSubmission.scss";
+import { Card, Form, Radio, message } from 'antd';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import QuizApi from '../../../../api/QuizApi';
+import useGetQuizById from '../../../../hooks/quiz/useGetQuizById';
+import useGetSubmittedQuiz from '../../../../hooks/quiz/useGetSubmittedQuiz';
+import AlertAtom from '../../../atoms/alert/alertAtom';
+import ButtonAtom from '../../../atoms/button/button.attom';
+import HeadingAtom from '../../../atoms/heading/heading.atom';
+import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
+import QuizSubmissionSkeleton from '../../../atoms/quiz-submission-skeleton/quizSubmissionSkeleton';
+import './studentQuizSubmission.scss';
 
 const QuizSubmission = () => {
-  const { handleSubmit, control, setValue } = useForm({ mode: "onChange" });
+  const { handleSubmit, control, setValue } = useForm({ mode: 'onChange' });
 
   const { sectionId, quizId } = useParams();
   const [recallApi, setRecallApi] = useState(0);
@@ -86,15 +86,15 @@ const QuizSubmission = () => {
                             submittedQuiz && submittedQuiz?.answers
                               ? question?.correctAnswer ===
                                 submittedQuiz?.answers[index]
-                                ? "correct-answer_bg"
-                                : "wrong-answer_bg"
-                              : ""
+                                ? 'correct-answer_bg'
+                                : 'wrong-answer_bg'
+                              : ''
                           }`}
                         />
-                        <ParagraphAtom
+                        {/* <ParagraphAtom
                           text={` ${question.point} points`}
                           className="text-22"
-                        />
+                        /> */}
                       </div>
                     </div>
                     <Controller
@@ -115,11 +115,11 @@ const QuizSubmission = () => {
                                 className={
                                   submittedQuiz && submittedQuiz?.answers
                                     ? question?.correctAnswer === i + 1
-                                      ? "correct-answer"
+                                      ? 'correct-answer'
                                       : submittedQuiz?.answers[index] === i + 1
-                                      ? "wrong-answer"
-                                      : ""
-                                    : ""
+                                      ? 'wrong-answer'
+                                      : ''
+                                    : ''
                                 }
                                 onChange={(e) => handleRadioChange(i)}
                                 disabled={
@@ -144,7 +144,7 @@ const QuizSubmission = () => {
                 text="Submit"
                 type="primary"
                 htmlType="submit"
-                style={{ width: "50%" }}
+                style={{ width: '50%' }}
                 disabled={quizAnswer.length != data?.questions?.length}
                 loading={submissionLoading}
               />
