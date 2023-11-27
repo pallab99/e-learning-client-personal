@@ -1,13 +1,13 @@
-import { UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Avatar, Dropdown, message } from 'antd';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import AuthApi from '../../../../api/AuthApi';
-import { ADMIN, STUDENT } from '../../../../constant/userType';
-import { logOut, showTour } from '../../../../redux/slices/authSlice';
-import { useAppDispatch, useAppSelector } from '../../../../redux/store';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
+import { UserOutlined } from "@ant-design/icons";
+import type { MenuProps } from "antd";
+import { Avatar, Dropdown, message } from "antd";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthApi from "../../../../api/AuthApi";
+import { ADMIN } from "../../../../constant/userType";
+import { logOut, showTour } from "../../../../redux/slices/authSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
 
 const DesktopHeaderDropdownMenuMolecules = () => {
   const dispatch = useAppDispatch();
@@ -20,9 +20,9 @@ const DesktopHeaderDropdownMenuMolecules = () => {
       const res = await AuthApi.logOut();
       message.success(res?.data.message);
       if (userData?.rank === ADMIN) {
-        navigate('/admin/log-in');
+        navigate("/admin/log-in");
       } else {
-        navigate('/log-in');
+        navigate("/log-in");
       }
       dispatch(logOut());
       dispatch(showTour(false));
@@ -30,28 +30,18 @@ const DesktopHeaderDropdownMenuMolecules = () => {
       message.error(error.response.message);
     }
   };
-  const items: MenuProps['items'] = [
+  const items: MenuProps["items"] = [
     {
       label: (
-        <Link to={'/profile/basic-information'}>
+        <Link to={"/profile/basic-information"}>
           <ParagraphAtom text="profile"></ParagraphAtom>
         </Link>
       ),
-      key: '0',
+      key: "0",
     },
-    isStudent === STUDENT
-      ? {
-          label: (
-            <ParagraphAtom
-              text="cart"
-              className="text-18 cursor-pointer"
-            ></ParagraphAtom>
-          ),
-          key: '1',
-        }
-      : null,
+
     {
-      type: 'divider',
+      type: "divider",
     },
     {
       label: (
@@ -62,7 +52,7 @@ const DesktopHeaderDropdownMenuMolecules = () => {
           handleOnClick={logout}
         ></ParagraphAtom>
       ),
-      key: '3',
+      key: "1",
     },
   ];
   const [visible, setVisible] = useState(false);
@@ -79,7 +69,7 @@ const DesktopHeaderDropdownMenuMolecules = () => {
             menu={{ items }}
             open={visible}
             onOpenChange={handleVisibleChange}
-            trigger={['hover']}
+            trigger={["hover"]}
           >
             <Avatar
               size={30}

@@ -1,19 +1,19 @@
-import { Image } from 'antd';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { STUDENT } from '../../../constant/userType';
-import useGetCartByUser from '../../../hooks/cart/useGetUserCart';
-import { useAppSelector } from '../../../redux/store';
-import ButtonAtom from '../../atoms/button/button.attom';
-import IconAtom from '../../atoms/icon/icon.atom';
-import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
-import CartDrawerMolecules from '../../molecules/cart-drawer/cartDrawerMolecules';
-import DesktopHeaderDropdownMenuMolecules from '../../molecules/header-dropdown-menu/desktop-header-dropdown/headerDropdownMenu';
-import MobileHeaderDropdownMenuMolecules from '../../molecules/header-dropdown-menu/mobile-header-dropdown/headerDropdownMenu';
-import HeaderSearchBarMolecules from '../../molecules/header-search-bar/headerSearchBar';
-import WishlistDrawerMolecules from '../../molecules/wishlist-drawer/wishlistDrawerMolecules';
-import './header.scss';
-import logo from './../../../assets/logo/Skillbase.png';
+import { Image } from "antd";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { ADMIN, INSTRUCTOR, STUDENT } from "../../../constant/userType";
+import useGetCartByUser from "../../../hooks/cart/useGetUserCart";
+import { useAppSelector } from "../../../redux/store";
+import ButtonAtom from "../../atoms/button/button.attom";
+import IconAtom from "../../atoms/icon/icon.atom";
+import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+import CartDrawerMolecules from "../../molecules/cart-drawer/cartDrawerMolecules";
+import DesktopHeaderDropdownMenuMolecules from "../../molecules/header-dropdown-menu/desktop-header-dropdown/headerDropdownMenu";
+import MobileHeaderDropdownMenuMolecules from "../../molecules/header-dropdown-menu/mobile-header-dropdown/headerDropdownMenu";
+import HeaderSearchBarMolecules from "../../molecules/header-search-bar/headerSearchBar";
+import WishlistDrawerMolecules from "../../molecules/wishlist-drawer/wishlistDrawerMolecules";
+import logo from "./../../../assets/logo/Skillbase.png";
+import "./header.scss";
 const HeaderOrganism = () => {
   const [recallApi, setRecallApi] = useState(false);
   const { data, loading, error } = useGetCartByUser(recallApi);
@@ -35,12 +35,17 @@ const HeaderOrganism = () => {
   const isMobile = window.innerWidth <= 768;
   const student = useAppSelector((state) => state.auth.userData.rank);
   const userData = useAppSelector((state) => state.auth.userData);
-
+  const route =
+    userData?.rank === ADMIN
+      ? "/admin/course/published"
+      : userData?.rank === INSTRUCTOR
+      ? "/instructor/courses"
+      : "/";
   return (
     <>
       <div className="desktop-header-div">
         <div className="desktop-header-wrapper">
-          <Link to={'/'}>
+          <Link to={route}>
             <Image
               height={80}
               width={100}
@@ -57,7 +62,7 @@ const HeaderOrganism = () => {
             {student === STUDENT && (
               <Link
                 to="/my-learning"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
                 id="my_learning_link"
               >
                 <ParagraphAtom
@@ -79,9 +84,9 @@ const HeaderOrganism = () => {
             <WishlistDrawerMolecules
               open={openWishlistDrawer}
               onClose={handleCloseWishlistDrawer}
-              key={'right'}
+              key={"right"}
               isMobile={isMobile}
-              placement={isMobile ? 'bottom' : 'right'}
+              placement={isMobile ? "bottom" : "right"}
               setRecallApi={setRecallApi}
               cartLoading={loading}
             />
@@ -100,7 +105,7 @@ const HeaderOrganism = () => {
             )}
             <div className="log-in-sign-up-btn">
               {!userData.accessToken && (
-                <Link to={'/log-in'}>
+                <Link to={"/log-in"}>
                   <ButtonAtom
                     // type="primary"
                     size="large"
@@ -109,12 +114,12 @@ const HeaderOrganism = () => {
                 </Link>
               )}
               {!userData.accessToken && (
-                <Link to={'/sign-up'}>
+                <Link to={"/sign-up"}>
                   <ButtonAtom
                     size="large"
                     text="Sign Up"
                     type="primary"
-                    style={{ backgroundColor: '#2d2f31' }}
+                    style={{ backgroundColor: "#2d2f31" }}
                   ></ButtonAtom>
                 </Link>
               )}
@@ -123,7 +128,7 @@ const HeaderOrganism = () => {
               open={openCartDrawer}
               onClose={handleCloseCartDrawer}
               isMobile={isMobile}
-              placement={isMobile ? 'bottom' : 'right'}
+              placement={isMobile ? "bottom" : "right"}
               cartData={data}
               setRecallApi={setRecallApi}
               cartLoading={loading}
@@ -135,7 +140,7 @@ const HeaderOrganism = () => {
       </div>
       <div className="mobile-header-div">
         <div className="mobile-header-wrapper">
-          <Link to={'/'}>
+          <Link to={route}>
             <Image
               height={60}
               width={80}
@@ -147,6 +152,7 @@ const HeaderOrganism = () => {
           <HeaderSearchBarMolecules />
           <MobileHeaderDropdownMenuMolecules
             handleOpenCartDrawer={handleOpenCartDrawer}
+            handleOpenWishlistDrawer={handleOpenWishlistDrawer}
           />
         </div>
       </div>

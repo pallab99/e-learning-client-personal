@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { EllipsisOutlined, SendOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, SendOutlined } from "@ant-design/icons";
 import {
   Avatar,
   Button,
@@ -10,22 +10,22 @@ import {
   Popconfirm,
   Popover,
   message,
-} from 'antd';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import QNAApi from '../../../api/QNAApi';
-import useDeleteQuestion from '../../../hooks/QNA/useDeleteQuestion';
-import useGetAllQNAOfACourse from '../../../hooks/QNA/useGetAllQNA';
-import useUpdateQuestion from '../../../hooks/QNA/useUpdateQuestion';
-import { useAppSelector } from '../../../redux/store';
-import ButtonAtom from '../../atoms/button/button.attom';
-import EditProfileSkeleton from '../../atoms/edit-profile-skeleton/editProfileSkeleton';
-import HeadingAtom from '../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
-import './QNA.scss';
-import useUpdateReply from '../../../hooks/QNA/useUpdateReply';
-import useDeleteReply from '../../../hooks/QNA/useDeleteReply';
+} from "antd";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import QNAApi from "../../../api/QNAApi";
+import useDeleteQuestion from "../../../hooks/QNA/useDeleteQuestion";
+import useDeleteReply from "../../../hooks/QNA/useDeleteReply";
+import useGetAllQNAOfACourse from "../../../hooks/QNA/useGetAllQNA";
+import useUpdateQuestion from "../../../hooks/QNA/useUpdateQuestion";
+import useUpdateReply from "../../../hooks/QNA/useUpdateReply";
+import { useAppSelector } from "../../../redux/store";
+import ButtonAtom from "../../atoms/button/button.attom";
+import EditProfileSkeleton from "../../atoms/edit-profile-skeleton/editProfileSkeleton";
+import HeadingAtom from "../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+import "./QNA.scss";
 const QnAModal = ({ openModal, closeModal }: any) => {
   const {
     control,
@@ -34,27 +34,27 @@ const QnAModal = ({ openModal, closeModal }: any) => {
     setValue,
   } = useForm({
     defaultValues: {
-      message: '',
-      reply: '',
+      message: "",
+      reply: "",
     },
   });
-  const [questionId, setQuestionId] = useState('');
-  const [messageId, setMessageId] = useState('');
+  const [questionId, setQuestionId] = useState("");
+  const [messageId, setMessageId] = useState("");
   const [showReplyBox, setShowReplyBox] = useState(false);
   const [questionLoading, setQuestionLoading] = useState(false);
   const [recallApi, setRecallApi] = useState(0);
-  const [qnaId, setQnaId] = useState('');
-  const [QNAReply, setQNAReply] = useState('');
-  const [replyId, setReplyId] = useState('');
+  const [qnaId, setQnaId] = useState("");
+  const [QNAReply, setQNAReply] = useState("");
+  const [replyId, setReplyId] = useState("");
 
   const reset = () => {
-    setValue('message', '');
-    setQnaId('');
-    setReplyId('');
+    setValue("message", "");
+    setQnaId("");
+    setReplyId("");
     setShowReplyBox(false);
-    setQNAReply('');
-    setMessageId('');
-    setQuestionId('');
+    setQNAReply("");
+    setMessageId("");
+    setQuestionId("");
   };
   const { courseId } = useParams();
   const { loading, data } = useGetAllQNAOfACourse(
@@ -67,8 +67,8 @@ const QnAModal = ({ openModal, closeModal }: any) => {
     if (questionId) {
       await updateQNA(courseId, questionId, data.message);
       setRecallApi(Math.random());
-      setValue('message', '');
-      setQuestionId('');
+      setValue("message", "");
+      setQuestionId("");
       reset();
     } else {
       try {
@@ -86,7 +86,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
         setQuestionLoading(false);
         if (!questionLoading) {
           setRecallApi(Math.random());
-          setValue('message', '');
+          setValue("message", "");
         }
         reset();
       } catch (error: any) {
@@ -106,7 +106,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
   const handleUpdateReply = async () => {
     await updateReply(courseId, questionId, replyId, QNAReply);
     setRecallApi(Math.random());
-    setQNAReply('');
+    setQNAReply("");
     reset();
   };
   const handleUpdateQuestion = async () => {};
@@ -114,7 +114,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
     if (replyId) {
       await updateReply(courseId, questionId, replyId, QNAReply);
       setRecallApi(Math.random());
-      setQNAReply('');
+      setQNAReply("");
       reset();
     } else {
       try {
@@ -127,7 +127,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
         setQNALoading(false);
         message.success(response?.data?.message);
         if (!qnaLoading) {
-          setQNAReply('');
+          setQNAReply("");
           setRecallApi(Math.random());
         }
         reset();
@@ -161,14 +161,15 @@ const QnAModal = ({ openModal, closeModal }: any) => {
         setShowReplyBox(false);
         closeModal();
       }}
-      bodyStyle={{ overflowY: 'auto' }}
+      bodyStyle={{ overflowY: "auto" }}
+      centered
     >
       {loading ? (
         <EditProfileSkeleton />
       ) : (
         <div
           className="course_QNA_Container"
-          style={{ overflowY: 'auto', height: '100%' }}
+          style={{ overflowY: "auto", height: "100%" }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <HeadingAtom
@@ -178,9 +179,9 @@ const QnAModal = ({ openModal, closeModal }: any) => {
             ></HeadingAtom>
             <div
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                gap: '1rem',
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "1rem",
               }}
             >
               <Controller
@@ -215,7 +216,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                       <div className="items-center">
                         <Avatar src={message.user.dp} />
                         <HeadingAtom
-                          style={{ color: '#8710d8' }}
+                          style={{ color: "#8710d8" }}
                           level={5}
                           text={message?.user?.name}
                         />
@@ -229,7 +230,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                                   type="text"
                                   text="Update"
                                   handleButtonClick={() => {
-                                    setValue('message', message?.message);
+                                    setValue("message", message?.message);
                                     setQuestionId(message?._id);
                                   }}
                                 ></ButtonAtom>
@@ -256,7 +257,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                           >
                             <EllipsisOutlined
                               className="cursor-pointer"
-                              style={{ fontSize: '30px' }}
+                              style={{ fontSize: "30px" }}
                             />
                           </Popover>
                         )}
@@ -276,7 +277,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                     {message?.reply?.map((reply: any, index: any) => (
                       <Card
                         key={index}
-                        style={{ marginTop: '10px' }}
+                        style={{ marginTop: "10px" }}
                         className="reply-card"
                       >
                         <div className="QNA_user_details">
@@ -284,7 +285,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                             <Avatar src={reply.user.dp} />
 
                             <HeadingAtom
-                              style={{ color: '#8710d8' }}
+                              style={{ color: "#8710d8" }}
                               text={reply.user.name}
                               level={5}
                             ></HeadingAtom>
@@ -327,7 +328,7 @@ const QnAModal = ({ openModal, closeModal }: any) => {
                               >
                                 <EllipsisOutlined
                                   className="cursor-pointer"
-                                  style={{ fontSize: '30px' }}
+                                  style={{ fontSize: "30px" }}
                                 />
                               </Popover>
                             )}

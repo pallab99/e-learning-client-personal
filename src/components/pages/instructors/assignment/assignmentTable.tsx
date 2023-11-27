@@ -1,8 +1,4 @@
 //@ts-nocheck
-import { Link, useParams } from 'react-router-dom';
-import useGetAllAssignment from '../../../../hooks/assignment/useGetAllAssignment';
-import InstructorDashboardSideBarOrganism from '../../../organism/instructor/dashboard/sidebar/sidebar.organism';
-import './assignmentTable.scss';
 import {
   Card,
   Empty,
@@ -12,14 +8,17 @@ import {
   Space,
   Tooltip,
   message,
-} from 'antd';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import AssignmentApi from '../../../../api/AssignmentApi';
-import { useState } from 'react';
-import CourseCardSkeleton from '../../../atoms/courseCardSkeleton/courseCardSkeleton';
-import InstructorCourseListSkeletonAtom from '../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
+} from "antd";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import AssignmentApi from "../../../../api/AssignmentApi";
+import useGetAllAssignment from "../../../../hooks/assignment/useGetAllAssignment";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import InstructorCourseListSkeletonAtom from "../../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import InstructorDashboardSideBarOrganism from "../../../organism/instructor/dashboard/sidebar/sidebar.organism";
+import "./assignmentTable.scss";
 const AssignmentTable = () => {
   const { courseId } = useParams();
   const { loading, assignment, error } = useGetAllAssignment(courseId);
@@ -50,7 +49,7 @@ const AssignmentTable = () => {
     }
   };
   const [grade, setGrade] = useState(0);
-  const [assignmentId, setAssignmentId] = useState('');
+  const [assignmentId, setAssignmentId] = useState("");
   const handleGrade = (value: any) => {
     setGrade(value);
   };
@@ -74,7 +73,7 @@ const AssignmentTable = () => {
     }
   };
   const [openAssignmentPreview, setOpenAssignmnetPreview] = useState(false);
-  const [assignmentFile, setAssignmentFile] = useState('');
+  const [assignmentFile, setAssignmentFile] = useState("");
   return (
     <div className="instructor-dashboard-div-wrapper">
       <InstructorDashboardSideBarOrganism />
@@ -84,7 +83,7 @@ const AssignmentTable = () => {
             return <InstructorCourseListSkeletonAtom key={ele} />;
           })
         ) : error ? (
-          <div className="empty-div mt-40" style={{ height: '100dvh' }}>
+          <div className="empty-div mt-40" style={{ height: "100dvh" }}>
             <Empty />
           </div>
         ) : (
@@ -97,17 +96,42 @@ const AssignmentTable = () => {
                   text={`${ele?.point} Marks`}
                 ></HeadingAtom>
                 <div className="assignment_bnt_action">
-                  <Link to={ele?.assignmentFileURL}>View assignment file</Link>
-                  <ButtonAtom
-                    text="View All Submissions"
-                    type="link"
-                    style={{ color: 'purple' }}
-                    handleButtonClick={() => {
-                      setAssignmentId(ele?._id);
-                      fetchSubmissions(ele?._id);
-                      setOpnSubmissionModal(true);
-                    }}
-                  ></ButtonAtom>
+                  {/* <Link to={ele?.assignmentFileURL}>View assignment file</Link> */}
+                  <>
+                    <ButtonAtom
+                      text="Preview"
+                      type="text"
+                      handleButtonClick={() => {
+                        setOpenAssignmnetPreview(true);
+                        setAssignmentFile(ele?.assignmentFileURL);
+                      }}
+                      className="instructor_preview_assignment_btn"
+                    ></ButtonAtom>
+                    <Modal
+                      open={openAssignmentPreview}
+                      onCancel={() => setOpenAssignmnetPreview(false)}
+                      footer={null}
+                      centered
+                    >
+                      <div className="assignment_iframe_div mt-40">
+                        <iframe
+                          src={assignmentFile}
+                          height={450}
+                          width={"100%"}
+                        ></iframe>
+                      </div>
+                    </Modal>
+                    <ButtonAtom
+                      text="View All Submissions"
+                      type="link"
+                      style={{ color: "purple" }}
+                      handleButtonClick={() => {
+                        setAssignmentId(ele?._id);
+                        fetchSubmissions(ele?._id);
+                        setOpnSubmissionModal(true);
+                      }}
+                    ></ButtonAtom>
+                  </>
                 </div>
               </Card>
             );
@@ -138,39 +162,42 @@ const AssignmentTable = () => {
                             text={ele?.student?.name}
                           ></ParagraphAtom>
 
-                          <ButtonAtom
-                            text="Preview"
-                            type="text"
-                            handleButtonClick={() => {
-                              setOpenAssignmnetPreview(true);
-                              setAssignmentFile(ele?.assignmentFileURL);
-                            }}
-                            className="instructor_preview_assignment_btn"
-                          ></ButtonAtom>
-                          <Modal
-                            open={openAssignmentPreview}
-                            onCancel={() => setOpenAssignmnetPreview(false)}
-                            footer={null}
-                          >
-                            <div className="assignment_iframe_div mt-40">
-                              <iframe
-                                src={assignmentFile}
-                                height={600}
-                                width={'100%'}
-                              ></iframe>
-                            </div>
-                          </Modal>
+                          <>
+                            <ButtonAtom
+                              text="Preview"
+                              type="text"
+                              handleButtonClick={() => {
+                                setOpenAssignmnetPreview(true);
+                                setAssignmentFile(ele?.assignmentFileURL);
+                              }}
+                              className="instructor_preview_assignment_btn"
+                            ></ButtonAtom>
+                            <Modal
+                              open={openAssignmentPreview}
+                              onCancel={() => setOpenAssignmnetPreview(false)}
+                              footer={null}
+                              centered
+                            >
+                              <div className="assignment_iframe_div mt-40">
+                                <iframe
+                                  src={assignmentFile}
+                                  height={450}
+                                  width={"100%"}
+                                ></iframe>
+                              </div>
+                            </Modal>
+                          </>
                         </div>
                         <div className="submitted_assignment_card_div_description_right_div">
                           <Space.Compact>
                             <InputNumber
                               min={1}
                               max={ele?.assignment?.point}
-                              style={{ width: '40%' }}
+                              style={{ width: "40%" }}
                               keyboard={false}
                               onChange={(value) => {
-                                if (typeof value != 'number') {
-                                  message.error('Please enter a valid number');
+                                if (typeof value != "number") {
+                                  message.error("Please enter a valid number");
                                 } else {
                                   handleGrade(value);
                                 }
@@ -183,7 +210,7 @@ const AssignmentTable = () => {
                               color="purple"
                             >
                               <InputNumber
-                                style={{ width: '30%' }}
+                                style={{ width: "30%" }}
                                 defaultValue={ele?.assignment?.point}
                                 disabled
                               />

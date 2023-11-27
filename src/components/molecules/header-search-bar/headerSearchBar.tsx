@@ -1,15 +1,15 @@
-import './headerSearchBar.scss';
-import { useCallback, useState } from 'react';
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
+import { useCallback, useState } from "react";
+import "./headerSearchBar.scss";
 
-import { AutoComplete, Image } from 'antd';
-import { Link } from 'react-router-dom';
-import HeadingAtom from '../../atoms/heading/heading.atom';
-import useGetAutoCompleteSearch from '../../../hooks/course/useGetAutoCompleteSearch';
-import InstructorCourseListSkeletonAtom from '../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton';
+import { AutoComplete, Image } from "antd";
+import { Link } from "react-router-dom";
+import useGetAutoCompleteSearch from "../../../hooks/course/useGetAutoCompleteSearch";
+import HeadingAtom from "../../atoms/heading/heading.atom";
+import InstructorCourseListSkeletonAtom from "../../atoms/instructorCourseListSkeleton/instructorCourseListSkeleton";
 
 const HeaderSearchBarMolecules = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const debouncedSetSearchTerm = useCallback(
     debounce((value: string) => {
       setSearchTerm(value);
@@ -25,7 +25,7 @@ const HeaderSearchBarMolecules = () => {
     <div className="desktop-header-searchBar-div">
       <AutoComplete
         id="top_search_bar"
-        style={{ width: '100%', borderRadius: '20px' }}
+        style={{ width: "100%", borderRadius: "20px" }}
         placeholder="Search for anything"
         onSearch={handleSearch}
         listHeight={500}

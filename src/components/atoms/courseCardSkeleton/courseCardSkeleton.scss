@@ -55,4 +55,9 @@
     flex-wrap: wrap;
     gap: 1rem;
   }
+  .course_card_skeleton_div {
+    .ant-skeleton-element {
+      width: 350px !important;
+    }
+  }
 }

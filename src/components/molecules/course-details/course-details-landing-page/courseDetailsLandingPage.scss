@@ -1,6 +1,10 @@
 .paid-course-landing-page__container {
   background-color: #2c2f31;
 }
+.dark-background-inner-position-container {
+  display: grid;
+  place-items: center;
+}
 .dark-background {
   display: grid;
   grid-template-columns: 1fr 0.5fr;
@@ -11,7 +15,7 @@
   grid-gap: 2rem;
 }
 .paid-course-landing-page__container .dark-background {
-  padding-top: 3.2rem;
+  padding-top: 2.2rem;
   background-color: #2d2f31;
   padding-bottom: 2.2rem;
 }
@@ -47,12 +51,17 @@
 
   gap: 1rem;
 }
+.student-progress {
+  .ant-typography {
+    margin-bottom: 0rem !important;
+  }
+}
 @media only screen and (max-width: 768px) {
   .dark-background {
     display: flex;
     flex-direction: column-reverse;
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
   .course-landing-page_sidebar-container_main_content {
     background-color: #2c2f31;
@@ -61,6 +70,15 @@
     padding-left: 0rem;
     gap: 1.6rem;
     padding-right: 0rem;
+  }
+  .student-progress {
+    .ant-typography {
+      margin-bottom: 0rem !important;
+      color: white;
+    }
+    .ant-progress .ant-progress-inner {
+      border: 1px solid white;
+    }
   }
 }
 @media only screen and (max-width: 660px) {
@@ -93,4 +111,14 @@
 .react_player_course_landing_page {
   height: 100% !important;
   width: 100% !important;
+}
+.share_course_div {
+  display: grid;
+  place-items: center;
+}
+
+.qna_share_button {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
 }

@@ -1,22 +1,21 @@
-import { Card, Space, Tooltip, Upload, message } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
-import { Controller, useForm, useFieldArray } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import CourseApi from '../../../../api/CourseApi';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import { SelectField } from '../../../atoms/select-filed/selectField';
-import TextInputAtom from '../../../atoms/text-input/textInput.atom';
-import CenteredBtnOrganism from '../../../molecules/centered-btn/centered-btn.molecules';
-import InstructorDashboardSideBarOrganism from '../dashboard/sidebar/sidebar.organism';
-import './createCourse.scss';
-import JoditEditor from 'jodit-react';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import { zodResolver } from '@hookform/resolvers/zod';
-import CourseSchema from '../../../../schema/course/courseSchema';
-import AlertAtom from '../../../atoms/alert/alertAtom';
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import TextEditor from '../../../molecules/text-editor/textEditor';
-import useGetAllCategory from '../../../../hooks/category/useGetAllCategory';
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, Space, Tooltip, message } from "antd";
+import { useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import CourseApi from "../../../../api/CourseApi";
+import useGetAllCategory from "../../../../hooks/category/useGetAllCategory";
+import CourseSchema from "../../../../schema/course/courseSchema";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import { SelectField } from "../../../atoms/select-filed/selectField";
+import TextInputAtom from "../../../atoms/text-input/textInput.atom";
+import CenteredBtnOrganism from "../../../molecules/centered-btn/centered-btn.molecules";
+import TextEditor from "../../../molecules/text-editor/textEditor";
+import InstructorDashboardSideBarOrganism from "../dashboard/sidebar/sidebar.organism";
+import "./createCourse.scss";
 const CreateCourseOrganism = () => {
   const {
     handleSubmit,
@@ -24,7 +23,7 @@ const CreateCourseOrganism = () => {
     formState: { errors },
     watch,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(CourseSchema),
   });
   const {
@@ -33,7 +32,7 @@ const CreateCourseOrganism = () => {
     remove: removeBenefit,
   } = useFieldArray({
     control,
-    name: 'benefits',
+    name: "benefits",
   });
   const {
     fields: prerequisiteFields,
@@ -41,7 +40,7 @@ const CreateCourseOrganism = () => {
     remove: removePrerequisite,
   } = useFieldArray({
     control,
-    name: 'prerequisites',
+    name: "prerequisites",
   });
   const navigate = useNavigate();
   const { category } = useGetAllCategory();
@@ -53,14 +52,19 @@ const CreateCourseOrganism = () => {
         value: cate?._id,
       };
     });
+  const [createCourseLoader, setCreateCourseLoader] = useState(false);
   const onSubmit = async (data: any) => {
     console.log(data);
     try {
+      setCreateCourseLoader(true);
       const res = await CourseApi.createCourse(data);
       message.success(res?.data?.message);
-      navigate('/instructor/courses');
+      setCreateCourseLoader(false);
+
+      navigate("/instructor/courses");
     } catch (error: any) {
       message.error(error?.response?.message);
+      setCreateCourseLoader(false);
     }
   };
 
@@ -68,12 +72,12 @@ const CreateCourseOrganism = () => {
     <div className="create-course-wrapper">
       <InstructorDashboardSideBarOrganism></InstructorDashboardSideBarOrganism>
       <div className="create-course-form mb-40 mt-40">
-        <Card headStyle={{ fontSize: '30px' }} title="Create a new course">
+        <Card headStyle={{ fontSize: "30px" }} title="Create a new course">
           <form onSubmit={handleSubmit(onSubmit)}>
             <Space
               direction="vertical"
               size="middle"
-              style={{ display: 'flex' }}
+              style={{ display: "flex" }}
             >
               <div className="input-group">
                 <ParagraphAtom text="Enter the course title" />
@@ -82,7 +86,7 @@ const CreateCourseOrganism = () => {
                   control={control}
                   render={({ field }) => (
                     <TextInputAtom
-                      placeholder={'Enter the course title'}
+                      placeholder={"Enter the course title"}
                       fieldValues={field}
                     />
                   )}
@@ -107,7 +111,7 @@ const CreateCourseOrganism = () => {
                   control={control}
                   render={({ field }) => (
                     <TextInputAtom
-                      placeholder={'Enter the course sub title'}
+                      placeholder={"Enter the course sub title"}
                       fieldValues={field}
                     />
                   )}
@@ -166,7 +170,7 @@ const CreateCourseOrganism = () => {
                     control={control}
                     render={({ field }) => (
                       <SelectField
-                        placeholder={'Select your category'}
+                        placeholder={"Select your category"}
                         fieldValues={field}
                         values={categoryValues}
                       />
@@ -192,12 +196,12 @@ const CreateCourseOrganism = () => {
                     control={control}
                     render={({ field }) => (
                       <SelectField
-                        placeholder={'Select the level of this course'}
+                        placeholder={"Select the level of this course"}
                         fieldValues={field}
                         values={[
-                          { label: 'Beginner', value: 'beginner' },
-                          { label: 'Intermediate', value: 'intermediate' },
-                          { label: 'Advance', value: 'advance' },
+                          { label: "Beginner", value: "beginner" },
+                          { label: "Intermediate", value: "intermediate" },
+                          { label: "Advance", value: "advance" },
                         ]}
                       />
                     )}
@@ -229,7 +233,7 @@ const CreateCourseOrganism = () => {
                         render={({ field }) => (
                           <TextInputAtom
                             fieldValues={field}
-                            placeholder={'Enter a benefit of this course'}
+                            placeholder={"Enter a benefit of this course"}
                           />
                         )}
                       />
@@ -253,7 +257,7 @@ const CreateCourseOrganism = () => {
                 )}
                 <ButtonAtom
                   icon={<PlusOutlined />}
-                  handleButtonClick={() => appendBenefit('')}
+                  handleButtonClick={() => appendBenefit("")}
                   className="mt-10 mb-10"
                 />
                 <ParagraphAtom
@@ -273,7 +277,7 @@ const CreateCourseOrganism = () => {
                         render={({ field }) => (
                           <TextInputAtom
                             fieldValues={field}
-                            placeholder={'Enter a prerequisite of this course'}
+                            placeholder={"Enter a prerequisite of this course"}
                           />
                         )}
                       />
@@ -298,7 +302,7 @@ const CreateCourseOrganism = () => {
                 <ButtonAtom
                   icon={<PlusOutlined />}
                   className="mt-10 mb-10"
-                  handleButtonClick={() => appendPrerequisite('')}
+                  handleButtonClick={() => appendPrerequisite("")}
                 />
                 <ParagraphAtom
                   type="secondary"
@@ -312,6 +316,7 @@ const CreateCourseOrganism = () => {
                 type="primary"
                 htmlType="submit"
                 size="large"
+                loading={createCourseLoader}
               />
             </Space>
           </form>

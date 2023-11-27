@@ -1,23 +1,18 @@
 //@ts-nocheck
-import { UploadOutlined } from '@ant-design/icons';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Modal, Space, Upload, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { ReactMediaRecorder } from 'react-media-recorder-2';
-import ReactPlayer from 'react-player';
+import { UploadOutlined } from "@ant-design/icons";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Modal, Space, Upload, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 // import CourseContentSchema from "../../../schema/course/courseContent";
-import { Link } from 'react-router-dom';
-import useUpdateCourseContent from '../../../../hooks/course-content/useUpdateCourseContent';
-import CourseContentSchema from '../../../../schema/course/courseContent';
-import AlertAtom from '../../../atoms/alert/alertAtom';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import { SelectFieldCustom } from '../../../atoms/select-field-custom/selectFieldCustom';
-import { SelectField } from '../../../atoms/select-filed/selectField';
-import TextInputAtom from '../../../atoms/text-input/textInput.atom';
-import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
-import updateCourseContentSchema from '../../../../schema/course/updateCourseContent';
+import { Link } from "react-router-dom";
+import useUpdateCourseContent from "../../../../hooks/course-content/useUpdateCourseContent";
+import updateCourseContentSchema from "../../../../schema/course/updateCourseContent";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import { SelectFieldCustom } from "../../../atoms/select-field-custom/selectFieldCustom";
+import TextInputAtom from "../../../atoms/text-input/textInput.atom";
+import CenteredBtnOrganism from "../../centered-btn/centered-btn.molecules";
 
 interface ICourseContentModalProps {
   courseId?: string | undefined;
@@ -44,26 +39,26 @@ const UpdateCourseContentMolecules: React.FC<ICourseContentModalProps> = ({
     watch,
     setValue,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(updateCourseContentSchema),
   });
   // const { loading, createCourseContent } = useCreateCourseContent();
   const { loading, editCourseContent } = useUpdateCourseContent();
-  const [contentType, setContentType] = useState('');
+  const [contentType, setContentType] = useState("");
   const [recordFile, setRecordedFile] = useState();
   const [fileList, setFileList] = useState([]);
   const [file, setFile] = useState(null);
   const onSubmit = async (data: any) => {
-    console.log('content form', data);
-    console.log('File', file);
+    console.log("content form", data);
+    console.log("File", file);
 
     const formData = new FormData();
 
     if (file) {
-      console.log('file upload');
+      console.log("file upload");
 
-      formData.append('title', data?.title);
-      formData.append('file_to_upload', file);
+      formData.append("title", data?.title);
+      formData.append("file_to_upload", file);
       await editCourseContent(contentData?._id, formData);
     } else {
       const newData = {
@@ -80,21 +75,21 @@ const UpdateCourseContentMolecules: React.FC<ICourseContentModalProps> = ({
 
   const beforeUpload = (file: File) => {
     const allowedTypes = [
-      'image/jpeg',
-      'image/png',
-      'application/pdf',
-      'text/plain',
-      'video/mp4',
+      "image/jpeg",
+      "image/png",
+      "application/pdf",
+      "text/plain",
+      "video/mp4",
     ];
     const isTypeAllowed = allowedTypes.includes(file.type);
     const isLt100M = file.size / 1024 / 1024 < 100;
 
     if (!isTypeAllowed) {
       message.error(
-        'You can only upload images, PDFs, text documents, or videos!'
+        "You can only upload images, PDFs, text documents, or videos!"
       );
     } else if (!isLt100M) {
-      message.error('File must be smaller than 100MB!');
+      message.error("File must be smaller than 100MB!");
     } else {
       setFile(file);
     }
@@ -102,19 +97,19 @@ const UpdateCourseContentMolecules: React.FC<ICourseContentModalProps> = ({
   };
   const [enable, setEnable] = useState(true);
 
-  console.log('Content data', contentData);
-  const [contentURL, setContentURl] = useState('');
+  console.log("Content data", contentData);
+  const [contentURL, setContentURl] = useState("");
   useEffect(() => {
     if (contentData) {
-      setValue('title', contentData?.contentTitle);
+      setValue("title", contentData?.contentTitle);
       setContentURl(contentData?.contentUrl);
     }
   }, [setValue, contentData]);
 
   return (
-    <Modal open={open} onCancel={onClose} footer={null}>
+    <Modal open={open} onCancel={onClose} footer={null} centered>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
           <div className="input-group">
             <ParagraphAtom text="Enter the course title" />
             <Controller
@@ -122,7 +117,7 @@ const UpdateCourseContentMolecules: React.FC<ICourseContentModalProps> = ({
               control={control}
               render={({ field }) => (
                 <TextInputAtom
-                  placeholder={'Enter the course title'}
+                  placeholder={"Enter the course title"}
                   fieldValues={field}
                 />
               )}
@@ -144,13 +139,13 @@ const UpdateCourseContentMolecules: React.FC<ICourseContentModalProps> = ({
             <ParagraphAtom text="* Select the content type" />
             <SelectFieldCustom
               placeholder="Select content type"
-              values={[{ label: 'File', value: 'file' }]}
+              values={[{ label: "File", value: "file" }]}
               handleOnchange={(value: string) => setContentType(value)}
               size="large"
             />
           </div>
 
-          {contentType === 'file' && (
+          {contentType === "file" && (
             <div className="input-group">
               <ParagraphAtom text="Select a appropriate lesson for this section" />
               <Controller
@@ -167,11 +162,11 @@ const UpdateCourseContentMolecules: React.FC<ICourseContentModalProps> = ({
                       setFile(null);
                     }}
                     maxCount={1}
-                    style={{ width: '100%' }}
+                    style={{ width: "100%" }}
                     {...field}
                   >
                     <Button
-                      style={{ width: '100%' }}
+                      style={{ width: "100%" }}
                       icon={<UploadOutlined />}
                       size="large"
                     >
@@ -207,11 +202,11 @@ const UpdateCourseContentMolecules: React.FC<ICourseContentModalProps> = ({
           </div> */}
           <CenteredBtnOrganism
             justify="center"
-            text={'Update'}
+            text={"Update"}
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             loading={loading}
           />
         </Space>

@@ -1,26 +1,35 @@
-import { HeartOutlined } from '@ant-design/icons';
-import { Progress, Rate, Skeleton, message } from 'antd';
-import { useState } from 'react';
-import ReactPlayer from 'react-player';
-import { useMediaQuery } from 'react-responsive';
-import { useNavigate, useParams } from 'react-router-dom';
-import CartApi from '../../../../api/CartApi';
-import WishlistApi from '../../../../api/WishlistApi';
-import useGetStudentBoughtTheCourse from '../../../../hooks/course/useGetStudentBoughtTheCurse';
-import useGetCourseAvailableInWishlistByUser from '../../../../hooks/wishlist/useGetCourseAvailableInWishlist';
-import { recallCartApi } from '../../../../redux/slices/cartSlice';
-import { recallWishListApi } from '../../../../redux/slices/wishListSlice';
-import { useAppDispatch, useAppSelector } from '../../../../redux/store';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import QnAModal from '../../QNA/qna';
-import './courseDetailsLandingPage.scss';
-import { STUDENT } from '../../../../constant/userType';
-
+import { HeartOutlined, ShareAltOutlined } from "@ant-design/icons";
+import {
+  Input,
+  Modal,
+  Progress,
+  QRCode,
+  Rate,
+  Skeleton,
+  Space,
+  message,
+} from "antd";
+import copy from "copy-to-clipboard";
+import { useState } from "react";
+import ReactPlayer from "react-player";
+import { useMediaQuery } from "react-responsive";
+import { useNavigate, useParams } from "react-router-dom";
+import CartApi from "../../../../api/CartApi";
+import WishlistApi from "../../../../api/WishlistApi";
+import { STUDENT } from "../../../../constant/userType";
+import useGetStudentBoughtTheCourse from "../../../../hooks/course/useGetStudentBoughtTheCurse";
+import useGetCourseAvailableInWishlistByUser from "../../../../hooks/wishlist/useGetCourseAvailableInWishlist";
+import { recallCartApi } from "../../../../redux/slices/cartSlice";
+import { recallWishListApi } from "../../../../redux/slices/wishListSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import QnAModal from "../../QNA/qna";
+import "./courseDetailsLandingPage.scss";
 const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  console.log('courseBasicInfo', courseBasicInfo?.data);
+  console.log("courseBasicInfo", courseBasicInfo?.data);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const { courseId } = useParams();
@@ -35,7 +44,7 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const handleAddToWishList = async () => {
     if (!userLoggedIn || userLoggedIn.rank !== STUDENT) {
-      navigate('/log-in');
+      navigate("/log-in");
     } else {
       try {
         setWishlistLoading(true);
@@ -57,7 +66,7 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
 
   const handleAddToCart = async () => {
     if (!userLoggedIn || userLoggedIn.rank !== STUDENT) {
-      navigate('/log-in');
+      navigate("/log-in");
     } else {
       try {
         setLoading(true);
@@ -77,34 +86,35 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
   const showUserProgress = useAppSelector(
     (state) => state?.userProgress.boughtTheCourse
   );
-
+  const [openShareCourseModal, setOpenShareCourseModal] = useState(false);
+  const [courseURL, setCourseURL] = useState("");
   return (
     <main className="paid-course-landing-page__container ">
       <div className="dark-background">
         <div className="dark-background-inner-position-container">
           <div className="course-landing-page__main-content">
             <HeadingAtom
-              style={{ color: 'white' }}
+              style={{ color: "white" }}
               text={courseBasicInfo && courseBasicInfo?.data?.title}
               level={isTabletOrMobile ? 2 : 1}
             />
             <ParagraphAtom
               className={`color-white ${
-                isTabletOrMobile ? 'text-18' : 'text-22'
+                isTabletOrMobile ? "text-18" : "text-22"
               }`}
               text={courseBasicInfo && courseBasicInfo?.data?.sub_title}
             ></ParagraphAtom>
             <div
               className="ratings mt-5 text-20 color-white"
-              style={{ color: 'white' }}
+              style={{ color: "white" }}
             >
-              {courseBasicInfo?.data?.rating}
+              {parseFloat(courseBasicInfo?.data?.rating).toFixed(2)}
               <Rate
                 disabled
-                defaultValue={courseBasicInfo?.data?.rating}
+                defaultValue={parseFloat(courseBasicInfo?.data?.rating)}
                 allowHalf
               />
-              <span className="reviews color-white">{`(${courseBasicInfo?.data?.ratingCount})`}</span>
+              <span className="reviews color-white">{`(${courseBasicInfo?.data?.ratingCount} ratings)`}</span>
               <span>{`${courseBasicInfo?.data?.students?.length} students`}</span>
             </div>
             <div className="course-landing-page__main-content_creator">
@@ -128,7 +138,7 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
                 url={courseBasicInfo?.data?.demoVideo}
                 controls
                 config={{
-                  file: { attributes: { controlsList: 'nodownload' } },
+                  file: { attributes: { controlsList: "nodownload" } },
                 }}
                 onContextMenu={(e: { preventDefault: () => any }) =>
                   e.preventDefault()
@@ -136,7 +146,7 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
               />
             ) : (
               <img
-                style={{ height: '100%' }}
+                style={{ height: "100%" }}
                 src="https://s.udemycdn.com/instructor/dashboard/engaging-course-2x.jpg"
               ></img>
             )}
@@ -146,21 +156,37 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
               </div>
             ) : Object.keys(studentBoughtTheCourseData).length > 0 ? (
               <div
-                style={{ paddingLeft: '2%', paddingRight: '2%', width: '100%' }}
+                style={{ paddingLeft: "2%", paddingRight: "2%", width: "100%" }}
               >
-                <ButtonAtom
-                  text="Open QNA"
-                  type="primary"
-                  style={{ width: '100%' }}
-                  size="large"
-                  className="mt-20"
-                  handleButtonClick={() => setOPENQNAModal(true)}
-                ></ButtonAtom>
+                <div className="qna_share_button">
+                  <ButtonAtom
+                    text="Open QNA"
+                    type="primary"
+                    style={{ width: "100%" }}
+                    size="large"
+                    className="mt-20"
+                    handleButtonClick={() => setOPENQNAModal(true)}
+                  ></ButtonAtom>
+                  <ButtonAtom
+                    className="mt-20"
+                    size="large"
+                    icon={<ShareAltOutlined />}
+                    handleButtonClick={() => {
+                      setCourseURL(window.location.href);
+                      setOpenShareCourseModal(true);
+                    }}
+                  ></ButtonAtom>
+                </div>
                 <div className="student-progress">
+                  <ParagraphAtom
+                    text="Your Progress"
+                    className="mt-10"
+                    strong={true}
+                  ></ParagraphAtom>
                   <Progress
                     strokeLinecap="butt"
                     percent={Number(userProgress.toFixed(2))}
-                    style={{ color: 'white', borderRadius: '20px' }}
+                    style={{ color: "white", borderRadius: "20px" }}
                     size={[300, 20]}
                   />
                 </div>
@@ -168,6 +194,30 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
                   openModal={openQNAModal}
                   closeModal={() => setOPENQNAModal(false)}
                 ></QnAModal>
+                <Modal
+                  open={openShareCourseModal}
+                  onCancel={() => {
+                    setOpenShareCourseModal(false);
+                  }}
+                  footer={null}
+                  centered
+                >
+                  <div className="share_course_div mt-30">
+                    <QRCode value={courseURL} size={200} className="mb-20" />
+                    <Space.Compact style={{ width: "100%" }}>
+                      <Input defaultValue={courseURL} />
+                      <ButtonAtom
+                        text="Copy"
+                        type="primary"
+                        handleButtonClick={() => {
+                          copy(courseURL);
+                          message.success("Link copied");
+                        }}
+                        style={{ backgroundColor: "#1b1c1c" }}
+                      ></ButtonAtom>
+                    </Space.Compact>
+                  </div>
+                </Modal>
               </div>
             ) : (
               <div className="course-landing-page_sidebar-container_main_content_btn-group mt-20">
@@ -175,19 +225,19 @@ const CourseDetailsLandingPage = ({ courseBasicInfo }: any) => {
                   text="Add To Cart"
                   type="primary"
                   size="large"
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                   handleButtonClick={handleAddToCart}
                 ></ButtonAtom>
                 <ButtonAtom
                   icon={<HeartOutlined />}
                   type={
                     courseAvailableInUserWishlist && !error
-                      ? 'primary'
-                      : 'default'
+                      ? "primary"
+                      : "default"
                   }
                   size="large"
                   className="heart-icon"
-                  style={{ width: '4rem' }}
+                  style={{ width: "4rem" }}
                   handleButtonClick={handleAddToWishList}
                   loading={wishlistLoading}
                 ></ButtonAtom>

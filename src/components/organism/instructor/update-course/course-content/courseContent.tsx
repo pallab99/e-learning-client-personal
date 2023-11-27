@@ -1,30 +1,30 @@
 //@ts-nocheck
 import {
+  DeleteOutlined,
   EditOutlined,
   FileOutlined,
   FilePdfOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
-import { Collapse, Dropdown, Empty, MenuProps, Modal, Popconfirm } from 'antd';
-import React, { useEffect, useState } from 'react';
-import ReactPlayer from 'react-player';
-import { Link, useParams } from 'react-router-dom';
-import useGetCourseSection from '../../../../../hooks/course-section/useGetCourseSection';
-import ButtonAtom from '../../../../atoms/button/button.attom';
-import CourseContentSkeleton from '../../../../atoms/course-content skeleton/courseContentSkeleton';
-import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import CourseContentMolecules from '../../../../molecules/course-content/courseContent';
-import CreateAssignmentMolecules from '../../../../molecules/course-content/create-assignment/createAssignment';
-import CreateQuizModal from '../../../../molecules/course-content/create-quiz/createQuiz';
-import UpdateCourseContentMolecules from '../../../../molecules/course-content/update-course-content/updatCourseContentModal';
-import UpdateQuizModal from '../../../../molecules/course-content/update-quiz/updateQuiz';
-import Quiz from '../../../../molecules/quiz-submision/quizSubmission';
-import './courseContent.scss';
+} from "@ant-design/icons";
+import { Collapse, Dropdown, Empty, MenuProps, Modal, Popconfirm } from "antd";
+import React, { useEffect, useState } from "react";
+import ReactPlayer from "react-player";
+import { Link, useParams } from "react-router-dom";
+import useGetCourseSection from "../../../../../hooks/course-section/useGetCourseSection";
+import ButtonAtom from "../../../../atoms/button/button.attom";
+import CourseContentSkeleton from "../../../../atoms/course-content skeleton/courseContentSkeleton";
+import HeadingAtom from "../../../../atoms/heading/heading.atom";
+import CourseContentMolecules from "../../../../molecules/course-content/courseContent";
+import CreateAssignmentMolecules from "../../../../molecules/course-content/create-assignment/createAssignment";
+import CreateQuizModal from "../../../../molecules/course-content/create-quiz/createQuiz";
+import UpdateCourseContentMolecules from "../../../../molecules/course-content/update-course-content/updatCourseContentModal";
+import UpdateQuizModal from "../../../../molecules/course-content/update-quiz/updateQuiz";
+import Quiz from "../../../../molecules/quiz-submision/quizSubmission";
+import "./courseContent.scss";
 // import {EditOutlined} from "@ant-design/icons"
-import { pdfjs } from 'react-pdf';
-import useDeleteCourseContent from '../../../../../hooks/course-content/useDeleteContent';
-import useDisableAssignment from '../../../../../hooks/assignment/useDisableAssignment';
-import UpdateAssignmentMolecules from '../../../../molecules/course-content/update assignment/updateAssignment';
+import { pdfjs } from "react-pdf";
+import useDisableAssignment from "../../../../../hooks/assignment/useDisableAssignment";
+import useDeleteCourseContent from "../../../../../hooks/course-content/useDeleteContent";
+import UpdateAssignmentMolecules from "../../../../molecules/course-content/update assignment/updateAssignment";
 
 const CourseContent = () => {
   const { courseId } = useParams();
@@ -33,20 +33,20 @@ const CourseContent = () => {
 
   const items = [
     {
-      key: '1',
-      label: 'Create Content',
+      key: "1",
+      label: "Create Content",
     },
     {
-      key: '2',
-      label: 'Create Assignment',
+      key: "2",
+      label: "Create Assignment",
     },
     {
-      key: '3',
-      label: 'Create Quiz',
+      key: "3",
+      label: "Create Quiz",
     },
   ];
 
-  const [videoUrl, setVideoUrl] = React.useState('');
+  const [videoUrl, setVideoUrl] = React.useState("");
   const [isVideoModalVisible, setIsVideoModalVisible] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const handleOpenVideoModal = (url: string) => {
@@ -59,9 +59,9 @@ const CourseContent = () => {
     setIsVideoModalVisible(false);
     setIsPlaying(false);
   };
-  const [videoPlayerClassName, setVideoPlayerClassName] = useState('');
+  const [videoPlayerClassName, setVideoPlayerClassName] = useState("");
   useEffect(() => {
-    setVideoPlayerClassName('react-player');
+    setVideoPlayerClassName("react-player");
   }, [isVideoModalVisible]);
   const [openAssignmentModal, setOpenAssignmentModal] = React.useState(false);
   const [openQuizModal, setOpenQuizModal] = React.useState(false);
@@ -76,11 +76,11 @@ const CourseContent = () => {
   const handleOpenQuizModal = () => {
     setOpenQuizModal(true);
   };
-  const [quizData, setQuizData] = useState('');
+  const [quizData, setQuizData] = useState("");
   const [allQuizData, setAllQuizData] = useState({});
   const handleCloseQuizModal = () => {
     setOpenQuizModal(false);
-    setQuizData('');
+    setQuizData("");
   };
 
   // const handleOpenUpdateQuizModal()
@@ -115,7 +115,7 @@ const CourseContent = () => {
     }
   };
   const [openAssignmentPreview, setOpenAssignmnetPreview] = useState(false);
-  const [assignmentFile, setAssignmentFile] = useState('');
+  const [assignmentFile, setAssignmentFile] = useState("");
   const [handleOpenEditAssignmentModal, setHandleOpenEditAssignmentModal] =
     useState(false);
   const [editAssignmentData, setEditAssignmentData] = useState({});
@@ -160,11 +160,11 @@ const CourseContent = () => {
                   title="Title"
                   description="Open Popconfirm with Promise"
                   onConfirm={() => handleDeleteContent(content?._id)}
-                  onOpenChange={() => console.log('open change')}
+                  onOpenChange={() => console.log("open change")}
                 >
                   <DeleteOutlined
                     className="cursor-pointer"
-                    style={{ color: 'red' }}
+                    style={{ color: "red" }}
                   />
                 </Popconfirm>
               </div>
@@ -202,7 +202,7 @@ const CourseContent = () => {
                     <iframe
                       src={assignmentFile}
                       height={600}
-                      width={'100%'}
+                      width={"100%"}
                     ></iframe>
                   </div>
                 </Modal>
@@ -226,7 +226,7 @@ const CourseContent = () => {
                 >
                   <DeleteOutlined
                     className="cursor-pointer"
-                    style={{ color: 'red' }}
+                    style={{ color: "red" }}
                   />
                 </Popconfirm>
               </div>
@@ -277,12 +277,12 @@ const CourseContent = () => {
     };
   });
 
-  const onMenuClick: MenuProps['onClick'] = (e) => {
-    if (e.key === '1') {
+  const onMenuClick: MenuProps["onClick"] = (e) => {
+    if (e.key === "1") {
       handleOpenModal();
-    } else if (e.key === '2') {
+    } else if (e.key === "2") {
       handleOpenAssignmentModal();
-    } else if (e.key === '3') {
+    } else if (e.key === "3") {
       handleOpenQuizModal();
     }
   };

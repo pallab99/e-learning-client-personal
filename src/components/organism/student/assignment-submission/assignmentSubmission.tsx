@@ -1,17 +1,17 @@
 //@ts-nocheck
-import { UploadOutlined } from '@ant-design/icons';
-import type { DescriptionsProps } from 'antd';
-import { Badge, Button, Descriptions, Upload, message } from 'antd';
-import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import AssignmentApi from '../../../../api/AssignmentApi';
-import useGetAssignmentById from '../../../../hooks/assignment/useGetAssignmentById';
-import useGetSubmittedAssignment from '../../../../hooks/assignment/useGetSubmittedAssignment';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import QuizSubmissionSkeleton from '../../../atoms/quiz-submission-skeleton/quizSubmissionSkeleton';
-import './assignmentSubmission.scss';
+import { UploadOutlined } from "@ant-design/icons";
+import type { DescriptionsProps } from "antd";
+import { Badge, Button, Descriptions, Modal, Upload, message } from "antd";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import AssignmentApi from "../../../../api/AssignmentApi";
+import useGetAssignmentById from "../../../../hooks/assignment/useGetAssignmentById";
+import useGetSubmittedAssignment from "../../../../hooks/assignment/useGetSubmittedAssignment";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import QuizSubmissionSkeleton from "../../../atoms/quiz-submission-skeleton/quizSubmissionSkeleton";
+import "./assignmentSubmission.scss";
 const AssignmentSubmission = () => {
   const { courseId, sectionId, assignmentId } = useParams();
   const [recallApi, setRecallApi] = useState(0);
@@ -19,7 +19,7 @@ const AssignmentSubmission = () => {
     useGetSubmittedAssignment(courseId, assignmentId, recallApi);
   console.log(error);
 
-  console.log('submitted assignment', submittedAssignmentData);
+  console.log("submitted assignment", submittedAssignmentData);
 
   const { assignmentData, assignmentLoading } = useGetAssignmentById(
     courseId as string,
@@ -28,56 +28,79 @@ const AssignmentSubmission = () => {
     submittedAssignmentData
   );
 
-  const items: DescriptionsProps['items'] = [
+  const [openAssignmentPreview, setOpenAssignmnetPreview] = useState(false);
+  const [assignmentFile, setAssignmentFile] = useState("");
+
+  const items: DescriptionsProps["items"] = [
     {
-      key: '1',
-      label: 'Submission Status',
+      key: "1",
+      label: "Submission Status",
       children: (
         <Badge
           size="large"
-          status={error && !error?.success ? 'error' : 'success'}
-          text={error && !error?.success ? 'Not Attempted' : 'Submitted'}
+          status={error && !error?.success ? "error" : "success"}
+          text={error && !error?.success ? "Not Attempted" : "Submitted"}
         />
       ),
     },
     {
-      key: '2',
-      label: 'Grading Status',
+      key: "2",
+      label: "Grading Status",
       children: (
         <Badge
           size="large"
           status={
             error && !error?.success
-              ? 'error'
+              ? "error"
               : !submittedAssignmentData?.data?.grade
-              ? 'processing'
-              : 'success'
+              ? "processing"
+              : "success"
           }
           text={
             error && !error?.success
-              ? 'Not Graded'
+              ? "Not Graded"
               : !submittedAssignmentData?.data?.grade
-              ? 'Processing'
+              ? "Processing"
               : submittedAssignmentData?.data?.grade
           }
         />
       ),
     },
     {
-      key: '3',
-      label: 'Assignment File',
+      key: "3",
+      label: "Assignment File",
       children: (
-        <Link to={assignmentData?.data?.assignmentFileURL}>Preview</Link>
+        <>
+          <ButtonAtom
+            text="Preview"
+            type="text"
+            handleButtonClick={() => {
+              setOpenAssignmnetPreview(true);
+              setAssignmentFile(assignmentData?.data?.assignmentFileURL);
+            }}
+            className="instructor_preview_assignment_btn"
+          ></ButtonAtom>
+          <Modal
+            open={openAssignmentPreview}
+            onCancel={() => setOpenAssignmnetPreview(false)}
+            footer={null}
+            centered
+          >
+            <div className="assignment_iframe_div mt-40">
+              <iframe src={assignmentFile} height={450} width={"100%"}></iframe>
+            </div>
+          </Modal>
+        </>
       ),
     },
     {
-      key: '4',
-      label: 'Total Points',
+      key: "4",
+      label: "Total Points",
       children: <ParagraphAtom text={assignmentData?.data?.point} />,
     },
     {
-      key: '5',
-      label: 'Your Submitted File',
+      key: "5",
+      label: "Your Submitted File",
       children: (
         <>
           {error && !error?.success ? (
@@ -85,8 +108,8 @@ const AssignmentSubmission = () => {
           ) : (
             <div className="iframe_container">
               <iframe
-                width={'100%'}
-                height={'700px'}
+                width={"100%"}
+                height={"600px"}
                 className='class="responsive-iframe"'
                 src={
                   submittedAssignmentData &&
@@ -105,7 +128,7 @@ const AssignmentSubmission = () => {
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append('file_to_upload', file);
+      formData.append("file_to_upload", file);
       const response = await AssignmentApi.submitAssignment(
         courseId,
         sectionId,
@@ -124,14 +147,14 @@ const AssignmentSubmission = () => {
     }
   };
   const validateFile = (file: File) => {
-    const isPdf = file.type === 'application/pdf';
+    const isPdf = file.type === "application/pdf";
     const isLt100M = file.size <= 104857600;
 
     if (!isPdf) {
-      message.error('You can only upload PDF file!');
+      message.error("You can only upload PDF file!");
     }
     if (!isLt100M) {
-      message.error('File must smaller than 100MB!');
+      message.error("File must smaller than 100MB!");
     }
     setFile(file);
 
@@ -147,7 +170,7 @@ const AssignmentSubmission = () => {
           <HeadingAtom
             text={assignmentData?.data?.title}
             level={3}
-            style={{ color: 'purple' }}
+            style={{ color: "purple" }}
           />
           <ParagraphAtom
             text={assignmentData?.data?.description}
@@ -163,7 +186,7 @@ const AssignmentSubmission = () => {
               <HeadingAtom
                 text="Submission Status"
                 level={4}
-                style={{ color: 'purple' }}
+                style={{ color: "purple" }}
               ></HeadingAtom>
             }
             layout="vertical"
@@ -178,7 +201,7 @@ const AssignmentSubmission = () => {
                 maxCount={1}
                 beforeUpload={validateFile}
               >
-                <Button style={{ width: '100%' }} icon={<UploadOutlined />}>
+                <Button style={{ width: "100%" }} icon={<UploadOutlined />}>
                   Upload (Max: 1)
                 </Button>
               </Upload>

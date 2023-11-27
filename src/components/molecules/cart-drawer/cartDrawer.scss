@@ -28,3 +28,8 @@
   align-items: center;
   gap: 10px;
 }
+.cart-card-left-description {
+  .ant-typography {
+    margin-bottom: 0rem !important;
+  }
+}

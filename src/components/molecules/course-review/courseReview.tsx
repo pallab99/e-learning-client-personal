@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { EllipsisOutlined } from "@ant-design/icons";
 import {
   Avatar,
@@ -83,7 +85,9 @@ const CourseReview = () => {
                 <Rate style={{ color: "#b4690e" }} count={1} value={1}></Rate>
                 {data?.data ? (
                   <HeadingAtom
-                    text={`${data?.data?.averageRating} course rating  *  ${data?.data?.data?.length} ratings`}
+                    text={`${parseFloat(data?.data?.averageRating).toFixed(
+                      2
+                    )} course rating  *  ${data?.data?.data?.length} ratings`}
                     level={4}
                   />
                 ) : (

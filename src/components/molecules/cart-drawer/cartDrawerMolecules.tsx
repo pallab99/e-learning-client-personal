@@ -1,4 +1,4 @@
-import { Card, Drawer, Empty, Image, Rate } from "antd";
+import { Card, Drawer, Empty, Image } from "antd";
 import React from "react";
 import useRemoveCourseFromCart from "../../../hooks/cart/removeCourseFromCart";
 import useGetCartByUser from "../../../hooks/cart/useGetUserCart";
@@ -97,16 +97,18 @@ const CartDrawerMolecules: React.FC<ICartDrawerMolecules> = ({
                             <ParagraphAtom
                               text={ele.title}
                               ellipsis={true}
+                              strong={true}
                             ></ParagraphAtom>
                             <ParagraphAtom
                               text={`By ${ele?.instructors[0]?.name}`}
                               ellipsis={true}
+                              className="text-18"
                             ></ParagraphAtom>
-                            <Rate
+                            {/* <Rate
                               value={4.5}
                               style={{ fontSize: "15px" }}
                               disabled
-                            ></Rate>
+                            ></Rate> */}
                             <div className="cart-card-right">
                               <ButtonAtom
                                 text="remove"

@@ -1,17 +1,16 @@
-import { SearchOutlined } from '@ant-design/icons';
-import type { InputRef } from 'antd';
-import { Card, Empty, Image, Input, Space, Table, message } from 'antd';
-import type { ColumnType, ColumnsType } from 'antd/es/table';
-import type { FilterConfirmProps } from 'antd/es/table/interface';
-import React, { useRef, useState } from 'react';
-import Highlighter from 'react-highlight-words';
-import subscriptionApi from '../../../../api/subscriptionApi';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import { SelectField } from '../../../atoms/select-filed/selectField';
-import TableSkeletonAtom from '../../../atoms/table-skeleton/tableSkeleton';
-import SubscriptRequestCourseModal from '../../../molecules/subscription-request-course/subscriptionRequestCourseModal';
+import { SearchOutlined } from "@ant-design/icons";
+import type { InputRef } from "antd";
+import { Empty, Image, Input, Space, Table, message } from "antd";
+import type { ColumnType, ColumnsType } from "antd/es/table";
+import type { FilterConfirmProps } from "antd/es/table/interface";
+import React, { useRef, useState } from "react";
+import Highlighter from "react-highlight-words";
+import subscriptionApi from "../../../../api/subscriptionApi";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import TableSkeletonAtom from "../../../atoms/table-skeleton/tableSkeleton";
+import SubscriptRequestCourseModal from "../../../molecules/subscription-request-course/subscriptionRequestCourseModal";
 interface DataType {
   _id: number;
   dp: string;
@@ -36,8 +35,8 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
   setRecallApi,
   recallApi,
 }) => {
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
   const [btnLoading1, setBtnLoading1] = useState(false);
   const [btnLoading2, setBtnLoading2] = useState(false);
@@ -53,7 +52,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
 
   const handleReset = (clearFilters: () => void) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
 
   const getColumnSearchProps = (
@@ -77,7 +76,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
           onPressEnter={() =>
             handleSearch(selectedKeys as string[], confirm, dataIndex)
           }
-          style={{ marginBottom: 8, display: 'block' }}
+          style={{ marginBottom: 8, display: "block" }}
         />
         <Space>
           <ButtonAtom
@@ -109,7 +108,7 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
@@ -124,10 +123,10 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ''}
+          textToHighlight={text ? text.toString() : ""}
         />
       ) : (
         text
@@ -145,49 +144,51 @@ const AllSubscriptionTableOrganism: React.FC<AllAdminOrganismProps> = ({
   };
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Thumbnail',
-      dataIndex: 'thumbnail',
-      key: 'thumbnail',
-      width: '20%',
+      title: "Thumbnail",
+      dataIndex: "thumbnail",
+      key: "thumbnail",
+      width: "20%",
       render: (_: any, record: any) => {
         return (
           <Image
             width={100}
             height={80}
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: "cover" }}
             src={record.dp}
           />
         );
       },
     },
     {
-      title: 'UserName',
-      dataIndex: 'userName',
-      key: 'userName',
-      width: '25%',
-      ...getColumnSearchProps('userName'),
+      title: "UserName",
+      dataIndex: "userName",
+      key: "userName",
+      width: "25%",
+      ...getColumnSearchProps("userName"),
       sorter: (a, b) => a.userName.length - b.userName.length,
-      sortDirections: ['descend', 'ascend'],
+      sortDirections: ["descend", "ascend"],
       render: (_: any, record: any) => {
         return <ParagraphAtom text={record.userName} ellipsis={true} />;
       },
     },
     {
-      title: 'PendingCourses',
-      dataIndex: 'pendingCourses',
-      key: 'pendingCourses',
-      width: '35%',
-      ...getColumnSearchProps('pendingCourses'),
+      title: "PendingCourses",
+      dataIndex: "pendingCourses",
+      key: "pendingCourses",
+      width: "10%",
+      ...getColumnSearchProps("pendingCourses"),
       sorter: (a, b) => a.pendingCourses - b.pendingCourses,
-      sortDirections: ['descend', 'ascend'],
+      sortDirections: ["descend", "ascend"],
       render: (_: any, record: any) => {
         return <ParagraphAtom text={record.pendingCourses} ellipsis={true} />;
       },
     },
     {
-      title: 'action',
-      dataIndex: 'action',
-      key: 'action',
+      title: "action",
+      dataIndex: "action",
+      key: "action",
+      // width: "10%",
+
       render: (_: any, record: any) => {
         return (
           <div className="flex">

@@ -1,15 +1,15 @@
 //@ts-nocheck
-import { Modal, Space, message } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import CourseSectionApi from '../../../api/CourseSectionApi';
-import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
-import TextInputAtom from '../../atoms/text-input/textInput.atom';
-import CenteredBtnOrganism from '../centered-btn/centered-btn.molecules';
-import './courseSection.scss';
-import CourseSectionSchema from '../../../schema/course/courseSection';
-import AlertAtom from '../../atoms/alert/alertAtom';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Modal, Space, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import CourseSectionApi from "../../../api/CourseSectionApi";
+import CourseSectionSchema from "../../../schema/course/courseSection";
+import AlertAtom from "../../atoms/alert/alertAtom";
+import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+import TextInputAtom from "../../atoms/text-input/textInput.atom";
+import CenteredBtnOrganism from "../centered-btn/centered-btn.molecules";
+import "./courseSection.scss";
 interface ICourseSectionModalProps {
   courseId: string | undefined;
   data?: string;
@@ -31,7 +31,7 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
     watch,
     setValue,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(CourseSectionSchema),
   });
   const [loading, setLoading] = useState(false);
@@ -46,10 +46,10 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
           data?.id,
           formData
         );
-        console.log('update');
+        console.log("update");
       } else {
         res = await CourseSectionApi.createSection(courseId, formData);
-        console.log('create');
+        console.log("create");
       }
       message.success(res?.data?.message);
       setLoading(false);
@@ -64,13 +64,13 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
   };
 
   useEffect(() => {
-    setValue('title', data.title || '');
+    setValue("title", data.title || "");
   }, [data, setValue]);
 
   return (
-    <Modal open={open} onCancel={onClose} className="course-modal">
+    <Modal open={open} onCancel={onClose} className="course-modal" centered>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
           <div className="input-group">
             <ParagraphAtom text="Enter the course title" />
             <Controller
@@ -78,7 +78,7 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
               control={control}
               render={({ field }) => (
                 <TextInputAtom
-                  placeholder={'Enter the course title'}
+                  placeholder={"Enter the course title"}
                   fieldValues={field}
                 />
               )}
@@ -98,11 +98,11 @@ const CreateSectionModal: React.FC<ICourseSectionModalProps> = ({
           </div>
           <CenteredBtnOrganism
             justify="center"
-            text={data?.title?.length && data?.id?.length ? 'Update' : 'Create'}
+            text={data?.title?.length && data?.id?.length ? "Update" : "Create"}
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             loading={loading}
           />
         </Space>

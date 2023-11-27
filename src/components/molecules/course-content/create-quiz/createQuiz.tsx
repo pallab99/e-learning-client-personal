@@ -1,16 +1,16 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Modal, Space, message } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import QuizApi from '../../../../api/QuizApi';
-import QuizFormSchema from '../../../../schema/course/quizSchema';
-import AlertAtom from '../../../atoms/alert/alertAtom';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import { SelectField } from '../../../atoms/select-filed/selectField';
-import TextInputAtom from '../../../atoms/text-input/textInput.atom';
-import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Modal, Space, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import QuizApi from "../../../../api/QuizApi";
+import QuizFormSchema from "../../../../schema/course/quizSchema";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import { SelectField } from "../../../atoms/select-filed/selectField";
+import TextInputAtom from "../../../atoms/text-input/textInput.atom";
+import CenteredBtnOrganism from "../../centered-btn/centered-btn.molecules";
 
 interface ICreateQuizModalProps {
   courseId?: string | undefined;
@@ -38,19 +38,19 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
     watch,
     setValue,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(QuizFormSchema),
   });
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
-  console.log('quizData', quizData);
-  console.log('allQuizData', allQuizData);
+  console.log("quizData", quizData);
+  console.log("allQuizData", allQuizData);
 
   const addQuestion = () => {
     setNumberOfQuestions(numberOfQuestions + 1);
   };
   useEffect(() => {
-    setValue('courseSection', quizData?.courseSection);
-    setValue('title', quizData?.title);
+    setValue("courseSection", quizData?.courseSection);
+    setValue("title", quizData?.title);
     if (quizData) {
       // quizData.questions.forEach((question, questionIndex) => {
       //   setValue(`questions[${questionIndex}].question`, question.question);
@@ -72,7 +72,7 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
       //   }
       // });
       setValue(`questions[0].question`, quizData.question);
-      setValue('title', 'Pallab');
+      setValue("title", "Pallab");
 
       quizData?.options.forEach((option, optionIndex) => {
         setValue(`questions[0].options[${optionIndex}]`, option?.toString());
@@ -83,12 +83,12 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
   }, [quizData, setValue]);
   const [loading, setLoading] = useState(false);
   const onSubmit = async (formData: any) => {
-    console.log('form data', formData);
+    console.log("form data", formData);
     const data = {
       ...allQuizData,
       formData,
     };
-    console.log('new data', data);
+    console.log("new data", data);
 
     try {
       setLoading(true);
@@ -106,15 +106,15 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
   };
 
   return (
-    <Modal open={open} onCancel={onClose} footer={null}>
+    <Modal open={open} onCancel={onClose} footer={null} centered>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
           <HeadingAtom
-            text={quizData ? 'Update the existing quiz' : 'Create a new quiz'}
+            text={quizData ? "Update the existing quiz" : "Create a new quiz"}
             level={3}
           />
           <div className="input-group mb-20">
-            <ParagraphAtom text={'Enter the Quiz title'} />
+            <ParagraphAtom text={"Enter the Quiz title"} />
             <Controller
               name="title"
               control={control}
@@ -137,7 +137,7 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
           {[...Array(numberOfQuestions)].map((_, index) => (
             <div key={index}>
               <div className="input-group mb-20">
-                <ParagraphAtom text={'Enter the question'} />
+                <ParagraphAtom text={"Enter the question"} />
                 <Controller
                   name={`questions[${index}].question`}
                   control={control}
@@ -193,10 +193,10 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
                 render={({ field }) => (
                   <SelectField
                     values={[
-                      { label: 'Option 1', value: '1' },
-                      { label: 'Option 2', value: '2' },
-                      { label: 'Option 3', value: '3' },
-                      { label: 'Option 4', value: '4' },
+                      { label: "Option 1", value: "1" },
+                      { label: "Option 2", value: "2" },
+                      { label: "Option 3", value: "3" },
+                      { label: "Option 4", value: "4" },
                     ]}
                     fieldValues={field}
                     size="large"
@@ -260,17 +260,17 @@ const CreateQuizModal: React.FC<ICreateQuizModalProps> = ({
             )}
           </div>
           <ButtonAtom
-            text={'Add Another question'}
+            text={"Add Another question"}
             size="large"
             handleButtonClick={addQuestion}
           />
           <CenteredBtnOrganism
             justify="center"
-            text={'create'}
+            text={"create"}
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             loading={loading}
           />
         </Space>

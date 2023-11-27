@@ -1,15 +1,15 @@
 // import './addReview.scss';
-import { Modal, Rate, message } from 'antd';
-import { Controller, useForm } from 'react-hook-form';
-import TextArea from 'antd/es/input/TextArea';
+import { Modal, Rate, message } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import { Controller, useForm } from "react-hook-form";
 // import './addReview.scss';
-import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import { zodResolver } from '@hookform/resolvers/zod';
-import reviewSchema from '../../../../schema/review-rating/reviewSchema';
-import AlertAtom from '../../../atoms/alert/alertAtom';
-import reviewApi from '../../../../api/reviewApi';
-import { useEffect, useState } from 'react';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import reviewApi from "../../../../api/reviewApi";
+import reviewSchema from "../../../../schema/review-rating/reviewSchema";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import CenteredBtnOrganism from "../../centered-btn/centered-btn.molecules";
 const UpdateReviewModal = ({
   openModal,
   closeModal,
@@ -23,14 +23,14 @@ const UpdateReviewModal = ({
     watch,
     setValue,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(reviewSchema),
   });
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (reviewData) {
-      setValue('rating', reviewData?.rating);
-      setValue('reviewMessage', reviewData?.reviewMessage);
+      setValue("rating", reviewData?.rating);
+      setValue("reviewMessage", reviewData?.reviewMessage);
     }
   }, [setValue, reviewData]);
   const onSubmit = async (data: any) => {
@@ -54,7 +54,7 @@ const UpdateReviewModal = ({
   };
   return (
     <div className="addReviewModal">
-      <Modal open={openModal} onCancel={closeModal} footer={null}>
+      <Modal open={openModal} onCancel={closeModal} footer={null} centered>
         <form onSubmit={handleSubmit(onSubmit)} className=" mt-40">
           <HeadingAtom text="Rate this course" level={3} />
           <div className="input-group justify-center mb-30">
@@ -64,7 +64,7 @@ const UpdateReviewModal = ({
               render={({ field }) => (
                 <Rate
                   {...field}
-                  style={{ fontSize: '34px', color: '#b4690e' }}
+                  style={{ fontSize: "34px", color: "#b4690e" }}
                 />
               )}
             />

@@ -1,18 +1,17 @@
 //@ts-nocheck
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Modal, Space, message } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import QuizApi from '../../../../api/QuizApi';
-import QuizFormSchema from '../../../../schema/course/quizSchema';
-import AlertAtom from '../../../atoms/alert/alertAtom';
-import ButtonAtom from '../../../atoms/button/button.attom';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import ParagraphAtom from '../../../atoms/paragraph/paragraph.atom';
-import { SelectField } from '../../../atoms/select-filed/selectField';
-import TextInputAtom from '../../../atoms/text-input/textInput.atom';
-import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
-import UpdateQuizFormSchema from '../../../../schema/course/updateQuizSchema';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Modal, Space, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import QuizApi from "../../../../api/QuizApi";
+import UpdateQuizFormSchema from "../../../../schema/course/updateQuizSchema";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import ButtonAtom from "../../../atoms/button/button.attom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import ParagraphAtom from "../../../atoms/paragraph/paragraph.atom";
+import { SelectField } from "../../../atoms/select-filed/selectField";
+import TextInputAtom from "../../../atoms/text-input/textInput.atom";
+import CenteredBtnOrganism from "../../centered-btn/centered-btn.molecules";
 
 interface ICreateQuizModalProps {
   courseId?: string | undefined;
@@ -41,12 +40,12 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
     watch,
     setValue,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(UpdateQuizFormSchema),
   });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'questions',
+    name: "questions",
   });
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
 
@@ -56,8 +55,8 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
 
   useEffect(() => {
     if (allQuizData) {
-      setValue('courseSection', allQuizData?.courseSection);
-      setValue('title', allQuizData?.title);
+      setValue("courseSection", allQuizData?.courseSection);
+      setValue("title", allQuizData?.title);
       allQuizData?.questions?.forEach((question, questionIndex) => {
         setValue(`questions[${questionIndex}].question`, question.question);
         setValue(
@@ -86,7 +85,7 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
   }, [allQuizData, setValue, setNumberOfQuestions]);
   const [loading, setLoading] = useState(false);
   const onSubmit = async (formData: any) => {
-    console.log('form data', formData);
+    console.log("form data", formData);
 
     try {
       setLoading(true);
@@ -108,12 +107,12 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
   };
 
   return (
-    <Modal open={open} onCancel={onClose} footer={null}>
+    <Modal open={open} onCancel={onClose} footer={null} centered>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-          <HeadingAtom text={'Update the existing quiz'} level={3} />
+        <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+          <HeadingAtom text={"Update the existing quiz"} level={3} />
           <div className="input-group mb-20">
-            <ParagraphAtom text={'Enter the Quiz title'} />
+            <ParagraphAtom text={"Enter the Quiz title"} />
             <Controller
               name="title"
               control={control}
@@ -137,7 +136,7 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
             <>
               <div key={index}>
                 <div className="input-group mb-20">
-                  <ParagraphAtom text={'Enter the question'} />
+                  <ParagraphAtom text={"Enter the question"} />
                   <Controller
                     name={`questions[${index}].question`}
                     control={control}
@@ -193,10 +192,10 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
                   render={({ field }) => (
                     <SelectField
                       values={[
-                        { label: 'Option 1', value: '1' },
-                        { label: 'Option 2', value: '2' },
-                        { label: 'Option 3', value: '3' },
-                        { label: 'Option 4', value: '4' },
+                        { label: "Option 1", value: "1" },
+                        { label: "Option 2", value: "2" },
+                        { label: "Option 3", value: "3" },
+                        { label: "Option 4", value: "4" },
                       ]}
                       fieldValues={field}
                       size="large"
@@ -238,7 +237,7 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
               </div>
 
               <ButtonAtom
-                text={'Delete Question'}
+                text={"Delete Question"}
                 size="large"
                 dangerBtn
                 handleButtonClick={() => deleteQuestion(index)}
@@ -247,17 +246,17 @@ const UpdateQuizModal: React.FC<ICreateQuizModalProps> = ({
           ))}
 
           <ButtonAtom
-            text={'Add Another question'}
+            text={"Add Another question"}
             size="large"
             handleButtonClick={addQuestion}
           />
           <CenteredBtnOrganism
             justify="center"
-            text={'Update Quiz'}
+            text={"Update Quiz"}
             type="primary"
             htmlType="submit"
             size="large"
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             loading={loading}
           />
         </Space>

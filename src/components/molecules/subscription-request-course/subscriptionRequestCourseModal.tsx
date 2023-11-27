@@ -1,9 +1,9 @@
-import { Card, Image, Modal } from 'antd';
-import React from 'react';
-import ButtonAtom from '../../atoms/button/button.attom';
-import FlexAtom from '../../atoms/flex/flex.atom';
-import ParagraphAtom from '../../atoms/paragraph/paragraph.atom';
-import './SubscriptRequestCourseModal.scss';
+import { Card, Image, Modal } from "antd";
+import React from "react";
+import ButtonAtom from "../../atoms/button/button.attom";
+import FlexAtom from "../../atoms/flex/flex.atom";
+import ParagraphAtom from "../../atoms/paragraph/paragraph.atom";
+import "./SubscriptRequestCourseModal.scss";
 interface ISubscriptRequestCourseModal {
   isModalOpen: boolean;
   closeModal: any;
@@ -28,6 +28,8 @@ const SubscriptRequestCourseModal: React.FC<ISubscriptRequestCourseModal> = ({
         className="Subscription-request-course-modal-div"
         open={isModalOpen}
         onCancel={closeModal}
+        footer={null}
+        centered
       >
         {courseData &&
           courseData?.courses?.map((ele: any) => {
@@ -38,7 +40,7 @@ const SubscriptRequestCourseModal: React.FC<ISubscriptRequestCourseModal> = ({
                 class="mt-20 cursor-pointer card-hover"
                 key={ele._id}
               >
-                <Card className="course-card" style={{ width: '100%' }}>
+                <Card className="course-card" style={{ width: "100%" }}>
                   <FlexAtom gap="large" align="center">
                     <div className="card-left">
                       <Image

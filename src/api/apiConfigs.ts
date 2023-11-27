@@ -1,5 +1,5 @@
-import axios, { AxiosInstance } from 'axios';
-import Cookies from 'js-cookie';
+import axios, { AxiosInstance } from "axios";
+import Cookies from "js-cookie";
 
 interface IApi {
   http: AxiosInstance | undefined;
@@ -11,8 +11,6 @@ class Api implements IApi {
   token: string | undefined;
 
   constructor() {
-    console.log(import.meta.env.VITE_BACKEND_BASE_URL);
-
     this.http = axios.create({
       baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
       withCredentials: true,
@@ -20,7 +18,7 @@ class Api implements IApi {
     this.handleError = this.handleError.bind(this);
 
     this.http.interceptors.response.use(this.handleSuccess, this.handleError);
-    this.token = Cookies.get('accessToken');
+    this.token = Cookies.get("accessToken");
   }
 
   handleSuccess(response: any) {
@@ -28,16 +26,16 @@ class Api implements IApi {
   }
 
   async handleError(error: any) {
-    console.log('token', this.token);
+    console.log("token", this.token);
     try {
       console.log(error);
       if (
         this.token &&
-        error.config.url !== '/auth/sign-up' &&
+        error.config.url !== "/auth/sign-up" &&
         error.response.status === 401
       ) {
         console.log(error.response);
-        await this.http!.post('/auth/refreshToken');
+        await this.http!.post("/auth/refreshToken");
         return this.http!.request(error.config);
       }
     } catch (refreshError) {

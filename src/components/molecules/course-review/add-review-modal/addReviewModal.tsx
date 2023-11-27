@@ -1,16 +1,15 @@
-import './addReview.scss';
-import { Modal, Rate, message } from 'antd';
-import { Controller, useForm } from 'react-hook-form';
-import TextArea from 'antd/es/input/TextArea';
-import './addReview.scss';
-import CenteredBtnOrganism from '../../centered-btn/centered-btn.molecules';
-import HeadingAtom from '../../../atoms/heading/heading.atom';
-import { zodResolver } from '@hookform/resolvers/zod';
-import reviewSchema from '../../../../schema/review-rating/reviewSchema';
-import AlertAtom from '../../../atoms/alert/alertAtom';
-import reviewApi from '../../../../api/reviewApi';
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Modal, Rate, message } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import reviewApi from "../../../../api/reviewApi";
+import reviewSchema from "../../../../schema/review-rating/reviewSchema";
+import AlertAtom from "../../../atoms/alert/alertAtom";
+import HeadingAtom from "../../../atoms/heading/heading.atom";
+import CenteredBtnOrganism from "../../centered-btn/centered-btn.molecules";
+import "./addReview.scss";
 const AddReviewModal = ({ openModal, closeModal, setRecallApi }: any) => {
   const {
     handleSubmit,
@@ -18,7 +17,7 @@ const AddReviewModal = ({ openModal, closeModal, setRecallApi }: any) => {
     formState: { errors },
     watch,
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
     resolver: zodResolver(reviewSchema),
   });
   const { courseId } = useParams();
@@ -41,7 +40,7 @@ const AddReviewModal = ({ openModal, closeModal, setRecallApi }: any) => {
   };
   return (
     <div className="addReviewModal">
-      <Modal open={openModal} onCancel={closeModal} footer={null}>
+      <Modal open={openModal} onCancel={closeModal} footer={null} centered>
         <form onSubmit={handleSubmit(onSubmit)} className=" mt-40">
           <HeadingAtom text="Rate this course" level={3} />
           <div className="input-group justify-center mb-30">
@@ -51,7 +50,7 @@ const AddReviewModal = ({ openModal, closeModal, setRecallApi }: any) => {
               render={({ field }) => (
                 <Rate
                   {...field}
-                  style={{ fontSize: '34px', color: '#b4690e' }}
+                  style={{ fontSize: "34px", color: "#b4690e" }}
                 />
               )}
             />

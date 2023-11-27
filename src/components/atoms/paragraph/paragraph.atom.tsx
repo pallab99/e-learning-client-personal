@@ -1,7 +1,7 @@
-import { Typography } from 'antd';
-import { BaseType } from 'antd/es/typography/Base';
+import { Typography } from "antd";
+import { BaseType } from "antd/es/typography/Base";
 // import './heading.style.scss';
-import React from 'react';
+import React from "react";
 const { Paragraph } = Typography;
 interface ParagraphAtomProps {
   text?: string;
@@ -9,6 +9,7 @@ interface ParagraphAtomProps {
   className?: string;
   ellipsis?: boolean;
   handleOnClick?: any;
+  strong?: any;
 }
 const ParagraphAtom: React.FC<ParagraphAtomProps> = ({
   text,
@@ -16,6 +17,7 @@ const ParagraphAtom: React.FC<ParagraphAtomProps> = ({
   className,
   ellipsis,
   handleOnClick,
+  strong,
 }) => {
   return (
     <Paragraph
@@ -23,6 +25,7 @@ const ParagraphAtom: React.FC<ParagraphAtomProps> = ({
       className={className}
       ellipsis={ellipsis}
       onClick={handleOnClick}
+      strong={strong}
     >
       {text}
     </Paragraph>

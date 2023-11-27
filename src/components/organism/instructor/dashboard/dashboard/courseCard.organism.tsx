@@ -1,9 +1,9 @@
-import { Card, Image, Tag } from 'antd';
-import { Link } from 'react-router-dom';
-import FlexAtom from '../../../../atoms/flex/flex.atom';
-import HeadingAtom from '../../../../atoms/heading/heading.atom';
-import './courseCard.style.scss';
-import { SyncOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, SyncOutlined } from "@ant-design/icons";
+import { Card, Image, Tag } from "antd";
+import { Link } from "react-router-dom";
+import FlexAtom from "../../../../atoms/flex/flex.atom";
+import HeadingAtom from "../../../../atoms/heading/heading.atom";
+import "./courseCard.style.scss";
 
 const CourseCardOrganism = ({ data }: any) => {
   return (
@@ -15,7 +15,7 @@ const CourseCardOrganism = ({ data }: any) => {
           class="mt-20 cursor-pointer card-hover"
           key={ele._id}
         >
-          <Card className="course-card" style={{ width: '100%' }}>
+          <Card className="course-card" style={{ width: "100%" }}>
             <div className="course-card-div">
               <div className="card-left">
                 <Image
@@ -26,7 +26,7 @@ const CourseCardOrganism = ({ data }: any) => {
                 />
                 <Link to={`/instructor/course/update/${ele?._id}`}>
                   <HeadingAtom
-                    text={ele.title}
+                    text={ele?.title}
                     level={5}
                     ellipsis={true}
                   ></HeadingAtom>

@@ -1,22 +1,22 @@
 //@ts-nocheck
-import { Card, Empty, Pagination, Rate } from 'antd';
-import { FaChartSimple } from 'react-icons/fa6';
-import useGetAllCourse from '../../../hooks/course/useGetAllCourse';
-import ButtonAtom from '../../atoms/button/button.attom';
-import SortSelect from '../sort-select/sortSelect';
-import './courseCard.scss';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import useGetAllCategory from '../../../hooks/category/useGetAllCategory';
-import { levelOption, selectOption } from '../../../constant/courseFilter';
-import CourseCardSkeleton from '../../atoms/courseCardSkeleton/courseCardSkeleton';
-import { useAppDispatch, useAppSelector } from '../../../redux/store';
+import { Card, Empty, Pagination, Rate } from "antd";
+import { FaChartSimple } from "react-icons/fa6";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useNavigate } from "react-router-dom";
+import { levelOption, selectOption } from "../../../constant/courseFilter";
+import useGetAllCategory from "../../../hooks/category/useGetAllCategory";
+import useGetAllCourse from "../../../hooks/course/useGetAllCourse";
 import {
   courseSortProperty,
   filterByLevel,
   handleCourseFilterByCategory,
   handleCoursePagination,
-} from '../../../redux/slices/courseSlice';
-import { useNavigate } from 'react-router-dom';
+} from "../../../redux/slices/courseSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import ButtonAtom from "../../atoms/button/button.attom";
+import CourseCardSkeleton from "../../atoms/courseCardSkeleton/courseCardSkeleton";
+import SortSelect from "../sort-select/sortSelect";
+import "./courseCard.scss";
 
 const CourseCardMolecules = () => {
   const { data, loading } = useGetAllCourse();
@@ -67,7 +67,7 @@ const CourseCardMolecules = () => {
           options={categoryOption}
           placeholder="Select Category"
           mode="multiple"
-          style={{ width: '300px' }}
+          style={{ width: "300px" }}
           onChange={handleFilterByCategory}
         />
         <SortSelect
@@ -101,29 +101,33 @@ const CourseCardMolecules = () => {
                         alt="course"
                         effect="blur"
                         style={{
-                          overflow: 'hidden',
-                          width: '90%',
-                          height: '300px',
-                          objectFit: 'cover',
+                          overflow: "hidden",
+                          width: "90%",
+                          height: "300px",
+                          objectFit: "cover",
                         }}
                       />
                       <div className="lowerCard mb-20">
                         <p className="title mt-5">{course.title}</p>
                         <p className="author mt-5">{course.author}</p>
                         <div className="ratings mt-5 text-18">
-                          {course?.rating}
-                          <Rate disabled defaultValue={course?.rating} />
-                          <span className="reviews">{`  (${course?.ratingCount})`}</span>
+                          {parseFloat(course?.rating).toFixed(2)}
+                          <Rate
+                            disabled
+                            defaultValue={course?.rating}
+                            allowHalf
+                          />
+                          <span className="reviews">{`(${course?.ratingCount} rating)`}</span>
                         </div>
                         <p className="Price mt-5 text-18">
-                          <FaChartSimple />{' '}
+                          <FaChartSimple />{" "}
                           <span className="cross">{course.level}</span>
                         </p>
                         <p className="Hover">
                           <ButtonAtom
                             text="Add To Cart"
                             type="primary"
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                           ></ButtonAtom>
                         </p>
                       </div>

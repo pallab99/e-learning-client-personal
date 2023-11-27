@@ -1,9 +1,9 @@
-import { ConfigProvider } from 'antd';
-import { useScrollToTop } from './hooks/useScrollToTop';
-import AllRoutes from './routes/routes';
+import { ConfigProvider } from "antd";
+import { useScrollToTop } from "./hooks/useScrollToTop";
+import AllRoutes from "./routes/routes";
 
 function App() {
-  const colorPrimary = '#8710d8';
+  const colorPrimary = "#8710d8";
 
   useScrollToTop();
 

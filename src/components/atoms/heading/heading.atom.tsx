@@ -1,6 +1,6 @@
-import { Typography } from 'antd';
-import { BaseType } from 'antd/es/typography/Base';
-import './heading.style.scss';
+import { Typography } from "antd";
+import { BaseType } from "antd/es/typography/Base";
+import "./heading.style.scss";
 const { Title } = Typography;
 interface HeadingAtomProps {
   text?: string;
@@ -23,7 +23,7 @@ const HeadingAtom = ({
       level={level}
       type={type}
       className={className}
-      ellipsis={ellipsis}
+      ellipsis={ellipsis ? { rows: 1, expandable: true } : false}
       style={style}
     >
       {text}

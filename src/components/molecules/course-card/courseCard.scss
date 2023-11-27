@@ -144,7 +144,7 @@
   cursor: pointer;
   display: inline-block;
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
-    'Helvetica Neue', sans-serif;
+    "Helvetica Neue", sans-serif;
   font-size: 16px;
   font-weight: 600;
   line-height: 20px;
@@ -226,8 +226,8 @@
     width: 100% !important;
   }
   .CardContainer {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .select-field-course {
     flex-wrap: wrap;
